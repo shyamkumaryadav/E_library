@@ -1,0 +1,203 @@
+{% extends 'system/master.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="icon" href="{%static 'system/images/imgs/generaluser.png'%}" sizes="144x144" >
+<title>{{ title }}</title>
+
+{% endblock head %}
+
+
+{% block main %}
+<div class="container-fluid">
+   <div class="row">
+      <div class="col-md-5">
+         <div class="card">
+            <div class="card-body">
+               <div class="row">
+                  <div class="col">
+                     <center>
+                        <img width="100px" src="{% static 'system/images/imgs/generaluser.png'%} "/>
+                     </center>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col">
+                     <center>
+                        <h4>Your Profile</h4>
+                        <span>Account Status - </span>
+                        <label class="badge badge-pill badge-info" Text="Your status">Active</label>
+                     </center>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col">
+                     <hr>
+                  </div>
+               </div>
+               <form method="POST" action="#">{% csrf_token %}
+                  <div class="row">
+                     <div class="col-md-6">
+                        <label>Full Name</label>
+                        <div class="form-group">
+                           <input type="text" class="form-control" name='fname' placeholder="Full Name" required>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <label>Date of Birth</label>
+                        <div class="form-group">
+                           <input type="date" class="form-control" name='dateofbirth'  required>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-6">
+                        <label>Contact No</label>
+                        <div class="form-group">
+                           <input type="tel" name='contactnumber' class="form-control" size="20" minlength="10" maxlength="14" ID="TextBox3" placeholder="Contact No" required>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <label>Email ID</label>
+                        <div class="form-group">
+                           <input type="email" name="emailid" class="form-control" ID="TextBox4" placeholder="Email ID" required>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-4">
+                        <label>State</label>
+                        <div class="from-grupe">
+                           <select class="custom-select" name='state' id="state" size="0" required>
+                              <option selected disabled>Select State</option>
+                              <option Value="Arunachal Pradesh">Arunachal Pradesh</option>
+                              <option Value="Assam">Assam</option>
+                              <option Value="Bihar">Bihar</option>
+                              <option Value="Chhattisgarh">Chhattisgarh</option>
+                              <option Value="Goa">Goa</option>
+                              <option Value="Gujarat">Gujarat</option>
+                              <option Value="Haryana">Haryana</option>
+                              <option Value="Himachal Pradesh">Himachal Pradesh</option>
+                              <option Value="Jammu and Kashmir">Jammu and Kashmir</option>
+                              <option Value="Jharkhand">Jharkhand</option>
+                              <option Value="Karnataka">Karnataka</option>
+                              <option Value="Kerala">Kerala</option>
+                              <option Value="Madhya Pradesh">Madhya Pradesh</option>
+                              <option Value="Maharashtra">Maharashtra</option>
+                              <option Value="Manipur">Manipur</option>
+                              <option Value="Meghalaya">Meghalaya</option>
+                              <option Value="Mizoram">Mizoram</option>
+                              <option Value="Nagaland">Nagaland</option>
+                              <option Value="Odisha">Odisha</option>
+                              <option Value="Punjab">Punjab</option>
+                              <option Value="Rajasthan">Rajasthan</option>
+                              <option Value="Sikkim">Sikkim</option>
+                              <option Value="Tamil Nadu">Tamil Nadu</option>
+                              <option Value="Telangana">Telangana</option>
+                              <option Value="Tripura">Tripura</option>
+                              <option Value="Uttar Pradesh">Uttar Pradesh</option>
+                              <option Value="Uttarakhand">Uttarakhand</option>
+                              <option Value="West Bengal">West Bengal</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <label>City</label>
+                        <div class="form-group">
+                           <input type="text" class="form-control" name='city' placeholder="City" required>
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <label>Pincode</label>
+                        <div class="form-group">
+                           <input type="tel" class="form-control" name='pincode' placeholder="Pincode" size="6" minlength="5" maxlength="8" required>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col">
+                        <label>Full Address</label>
+                        <div class="form-group">
+                           <input type="text" class="form-control" name='fulladdress' placeholder="Full Address" Rows="2" required>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col">
+                        <center>
+                           <span class="badge badge-pill badge-info">Login Credentials</span>
+                        </center>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-4">
+                        <label>User ID</label>
+                        <div class="form-group">
+                           <input type="text" class="form-control" ID="TextBox8" placeholder="User ID" ReadOnly="True">
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <label>Old Password</label>
+                        <div class="form-group">
+                           <input type="text" class="form-control" ID="TextBox9" placeholder="Old Password" ReadOnly="True">
+                        </div>
+                     </div>
+                     <div class="col-md-4">
+                        <label>New Password</label>
+                        <div class="form-group">
+                           <input type="text" class="form-control" ID="TextBox10" placeholder="New Password">
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-8 mx-auto">
+                        <center>
+                           <div class="form-group">
+                              <input type="submit" class="btn btn-primary btn-block btn-lg" value="Update">
+                           </div>
+                        </center>
+                     </div>
+                  </div>
+                  <a href="{% url 'system:home' %}"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                  <br>
+                  <br>
+               </form>
+            </div>
+         </div>
+      </div>
+      
+
+      <div class="col-md-7">
+         <div class="card">
+            <div class="card-body">
+               <div class="row">
+                  <div class="col">
+                     <center>
+                        <img width="100px" src="{% static 'system/images/imgs/books1.png' %}"/>
+                     </center>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col">
+                     <center>
+                        <h4>Your Issued Books</h4>
+                        <label class="badge badge-pill badge-info" ID="Label2" Text="your books info"></label>
+                     </center>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col">
+                     <hr>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col">
+                     <td></td>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock main %}

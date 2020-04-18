@@ -1,0 +1,21 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test Form</title>
+</head>
+<body>
+
+	<h2>Shyamkumar Yadav</h2><hr>
+
+	{% render_field form.state id="state" onchange="statechange()"%}
+
+	<script type="text/javascript">
+		function statechange(){
+			var a = document.getElementById('state').value;
+
+		}
+	</script>
+
+</body>
+</html>

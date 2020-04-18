@@ -1,4 +1,16 @@
 from django.shortcuts import render
+from . import forms
+
+# Test 1 form
+def test(request):
+	template_name = 'system/test.html'
+	form = forms.Test()
+	context = {
+		# 'title' : 'Home'
+		'form' : form
+
+	}
+	return render(request, template_name, context)
 
 def home(request):
 	template_name = 'system/home.html'

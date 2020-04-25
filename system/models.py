@@ -1,100 +1,28 @@
 from django.db import models
+import requests
+
+url = 'https://api.covid19india.org/state_district_wise.json'
+r = requests.get(url).json()
+list_state = [key for key in r]
+list_state_code = [r[key]['statecode'] for key in r]
+list_states = [(None, 'Select state')]+[(j,i) for i, j in zip(list_state, list_state_code)]
+citys = tuple(
+			( i, 
+				tuple((j.lower(), j.title()) for j in tuple(r[i]['districtData']))) for i in list_state
+		)
+		# tuple(( i, tuple(j.upper() for j in tuple(d[i]['districtData']))) for i in l) 
 
 
-states = [
-	('AP', 'Andhra Pradesh'),
-	('AR', 'Arunachal Pradesh'),
-	('AS', 'Assam'),
-	('BR', 'Bihar'),
-	('CT', 'Chhattisgarh'),
-	('GA', 'Goa'),
-	('GJ', 'Gujarat'),
-	('HR', 'Haryana'),
-	('HP', 'Himachal Pradesh'),
-	('JH', 'Jharkhand'),
-	('KA', 'Karnataka'),
-	('KL', 'Kerala'),
-	('MP', 'Madhya Pradesh'),
-	('MH', 'Maharashtra'),
-	('MN', 'Manipur'),
-	('ML', 'Meghalaya'),
-	('MZ', 'Mizoram'),
-	('NL', 'Nagaland'),
-	('OR', 'Odisha'),
-	('PB', 'Punjab'),
-	('RJ', 'Rajasthan'),
-	('SK', 'Sikkim'),
-	('TN', 'Tamil Nadu'),
-	('TG', 'Telangana'),
-	('TR', 'Tripura'),
-	('UT', 'Uttarakhand'),
-	('UP', 'Uttar Pradesh'),
-	('WB', 'West Bengal'),
-	('AN', 'Andaman and Nicobar Islands'),
-	('CH', 'Chandigarh'),
-	('DB', 'Dadra and Nagar Haveli'),
-	('DD', 'Daman and Diu'),
-	('DL', 'Delhi'),
-	('JK', 'Jammu and Kashmir'),
-	('LA', 'Ladakh'),
-	('LD', 'Lakshadweep'),
-	('PY', 'Puducherry'),
-]
-'''
-To Run 
-for i in range(len(states)):
-	State(id=i+1, name=states[i][1]).save()
-'''
 
-citys = [
-	(None, 'choice City'),
-	('Andhra Pradesh', (
-			('mp', 'Madesdsds'),
-		)),
-	('Arunachal Pradesh', (
-			('as', 'asasasasa'),
-		)),
-	
-]
-
-# Mumbai	1,756
-# Pune	351
-# Thane	270
-# Nashik	46
-# Nagpur	44
-# Palghar	34
-# Ahmadnagar	27
-# Sangli	26
-# Aurangabad	23
-# Buldana	17
-# Raigarh	15
-# Akola	12
-# Other States*	11
-# Latur	8
-# Satara	6
-# Ratnagiri	6
-# Kolhapur	6
-# Amravati	6
-# Yavatmal	5
-# Osmanabad	4
-# Jalgaon	2
-# Dhule	2
-# Washim	1
-# Solapur	1
-# Sindhudurg	1
-# Jalna	1
-# Hingoli	1
-# Gondiya	1
-# Bid
 class State(models.Model):
 	name = models.CharField(max_length=120)
-
 	def __str__(self):
 		return self.name
 
 
 class City(models.Model):
 	name = models.CharField(max_length=120)
+	state = models.ForeignKey(State, on_delete=models.CASCADE)
 	def __str__(self):
 		return self.name
 
@@ -142,8 +70,8 @@ class Member(models.Model):
 	phone = models.PositiveIntegerField(verbose_name=' Contact No')
 	email = models.EmailField(verbose_name='Email ID')
 	# state = models.ForeignKey(State, on_delete=models.CASCADE)
-	state = models.CharField(max_length=2,verbose_name='State', choices=states)
-	city = models.CharField(max_length=102, verbose_name='City')
+	state = models.CharField(max_length=2,verbose_name='State', choices=list_states)
+	city = models.CharField(max_length=120, verbose_name='City', choices=citys)
 	pincode = models.CharField(max_length=102, verbose_name='Pincode')
 	address = models.CharField(max_length=102, verbose_name='Full Address')
 	password = models.CharField(max_length=102, verbose_name='Password')

@@ -1,5 +1,11 @@
+import requests
+
+url = 'https://api.covid19india.org/state_district_wise.json'
+
 from django.shortcuts import render
-from . import forms
+from . import forms, models
+
+
 
 
 def home(request):
@@ -20,10 +26,17 @@ def about(request):
 def terms(request):
 	template_name = 'system/terms.html'
 	form = forms.UserLoginForm()
-	context = {
-		'title' : 'terms',
-		'form' : form
+	model = models.State.objects.all()
+	context = {'title' : 'terms',
+				'form' : form,
+				'model' : model
 	}
+	if request.GET.get('state'):
+		r = dict(requests.get(url).json())
+		code = request.GET.get('state')
+		for _ in r:
+			if r[_]['statecode'] == code:
+				context.update({'data':r[_]})
 	return render(request, template_name, context)
 
 def viewbooks(request):

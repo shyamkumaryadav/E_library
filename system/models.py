@@ -15,6 +15,7 @@ citys = tuple(
 
 
 class State(models.Model):
+	state_id = models.CharField(max_length=2, primary_key=True)
 	name = models.CharField(max_length=120)
 	def __str__(self):
 		return self.name
@@ -22,7 +23,7 @@ class State(models.Model):
 
 class City(models.Model):
 	name = models.CharField(max_length=120)
-	state = models.ForeignKey(State, on_delete=models.CASCADE)
+	state = models.ForeignKey(State, on_delete=models.CASCADE, verbose_name='State')
 	def __str__(self):
 		return self.name
 

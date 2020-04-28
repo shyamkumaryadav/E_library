@@ -6,6 +6,9 @@
 ### *Use Me*  
 #####    ```python programming (Django)```  
 #####     ```PostgreSQL DATABASE (From Heroku)```  
+#####     ```HTML CSS JavaScript```  
+#####     ```BOOTSTRAP```  
+#####     ```jQuery AJAX```  
 
 ### *Detail*   
      0. Member Signup -- New users can sign up```  
@@ -16,3 +19,5 @@
      5. Publisher Management -- Add/Update/Delete Publisher details```  
      6. Book Inventory -- Add/Update/Delete Book details```  
      7. Book Issuing Process -- Issue/Return Books```  
+       
+#### *Live At*    [GoTo](https://shyamkumaryadav.herokuapp.com/)

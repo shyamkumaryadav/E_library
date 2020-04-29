@@ -4,13 +4,15 @@ url = 'https://api.covid19india.org/state_district_wise.json'
 
 from django.shortcuts import render
 from . import forms, models
+from apiclient.discovery import build                                                           
 
+api_key = 'AIzaSyDrecpXxZFguNK9-yW__Xmk-g4qFB1hwfE'                                             
+youtube = build('youtube','v3', developerKey=api_key) 
 
 
 
 def home(request):
 	template_name = 'system/home.html'
-
 	context = {
 		'title' : 'Home'
 	}
@@ -18,9 +20,13 @@ def home(request):
 
 def about(request):
 	template_name = 'system/about.html'
+
 	context = {
-		'title' : 'about'
+		'title' : 'YouTube'
 	}
+	if request.GET.get('q'):
+		req = youtube.search().list(q=request.GET.get('q'), part="snippet", type="channel")
+		context.update({'data':req.execute()})
 	return render(request, template_name, context)
 
 def terms(request):

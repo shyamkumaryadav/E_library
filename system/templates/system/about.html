@@ -7,5 +7,39 @@
 {% endblock head %}
 
 {% block main %}
-<h1 class="pd-5">About</h1>
+<form action="" method="GET">
+<div class="container">
+  <div class="row">
+    <div class="col">
+    	<h3 style="background-color: red;border-radius: 5px;text-align: center;">SkyTube</h3>
+    </div>
+    <div class="col">
+    	<input class="form-control" name='q' type="text" placeholder="Search" aria-label="Search">
+    </div>
+    <div class="col">
+	    <button class="btn btn-outline-warning " type="submit">Search</button>
+	</div>
+</div>
+</div>
+</form>
+{% if data %}
+{% for i in data.items %}
+<div class="card mb-3" style="max-width: 540px;">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img src="{{ i.snippet.thumbnails.medium.url }}" class="card-img" height="200" width="200" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{ i.snippet.title }}</h5>
+        <p class="card-text">{{i.snippet.description}}</p>
+        <p class="card-text"><small class="text-muted">{{i.snippet.publishedAt}}</small></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+
+</div>
 {% endblock main %}

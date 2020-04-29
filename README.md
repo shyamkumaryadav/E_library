@@ -20,4 +20,4 @@
      6. Book Inventory -- Add/Update/Delete Book details```  
      7. Book Issuing Process -- Issue/Return Books```  
        
-#### *Live At*    [GoTo](https://shyamkumaryadav.herokuapp.com/)
+#### *Live At*    [Heroku](https://shyamkumaryadav.herokuapp.com/)

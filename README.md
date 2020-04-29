@@ -1,4 +1,4 @@
-<h1 align="center" >Online Library Management System <a style="color: red;" href="https://simplesnippets.tech/courses/asp-net-with-csharp-programming-dynamic-web-application-development" target="_blank" >&copy;</a></h1>
+<h1 align="center" >Online Library Management System <a style="color: red;" href="#" target="_blank" >&copy;</a></h1>
 
 ### *About*   
 ##### ```Dynamic Web Application & Bootstrap helps in responsive mobile web development. Perform DATABASE connectivity with PostgreSQL using Python.```  

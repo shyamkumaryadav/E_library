@@ -1,4 +1,4 @@
-<h1 align="center" >Online Library Management System <a style="color: red;" href="github.com/shyamkumaryadav" target="_blank" >&copy;</a></h1>
+<h1 align="center" >Online Library Management System <a style="color: red;" href="https://www.github.com/shyamkumaryadav" target="_blank" >&copy;</a></h1>
 
 ### *About*   
 ##### ```Dynamic Web Application & Bootstrap helps in responsive mobile web development. Perform DATABASE connectivity with PostgreSQL using Python.```  

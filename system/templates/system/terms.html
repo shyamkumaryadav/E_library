@@ -4,84 +4,52 @@
 <link rel="icon" href="#" sizes="144x144" >
 <title>{{ title }}</title>
 
-<style type="text/css">
-	.main{
-		background-color: #82b4dd;
-	}
-	
-	#ctype{
-		text-align: left;
-	}
-	#cvalue{
-		color: black;
-	}
-	
-</style>
-
 {% endblock head %}
 
 {% block main %}
 
 
-<div class="container-fluid card bg-light mb-1">
-<form action="" method="GET" class='input-group-prepend'>
-{{form.state}}
-</form>
-{% if dataTitle %}
-<h1 style="background-color: red;color: white"></h1>
-{% endif %}
-<div>
-{% if data %}
 
-{% for a, b in data.items %}
-{% for c, d in b.items %}
-
-<p id="city" class='alert alert-primary m-1'><b>{{ c }}</b></p>
-
-{% for f, e in d.items %}
-{% if f != "delta" and f != "notes" %}
-<button id="ctype" class="btn w-50 disabled m-1" data-placement="right" data-toggle="tooltip" title='in {{ c }}'><b>{{ f }}   :   </b><span id='cvalue'>{{e}}</span></button><br>
-{% endif%}
-{% endfor %}
-{% endfor %}
-{% endfor %}
-{% endif %}
-</div>
-<script>
-	$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
-
-	function ChangeUrl(page, url) {
-        if (typeof (history.pushState) != "undefined") {
-            var obj = { Page: page, Url: url };
-            history.pushState(obj, obj.Page, obj.Url);
-        } else {
-            alert("Browser does not support HTML5.");
-        }
-    }
+<form action="" method="POST"> {% csrf_token %}
+{{ form2.as_p }}
+<script type="text/javascript">
 	$(document).ready(function(){
-		$("#id_state").addClass("custom-select m-1").on('change', function() {
-			ChangeUrl('terms', '?state='+$(this).val());
-			// alert(location);
-			// window.location = location+'?state='+$(this).val();
-			location.reload(true);
+		
+		$('p select optgroup').each(function(){
+		  if ($(this).prop('label')=='Audio'){
+		  	console.log('audio');
+		  	$(this).toggle(1000);
+		  }
 		});
-		$('div button[id="ctype"]').each(function(i, e){
-			if ((i+1)%4 == 1){
-				$(this).addClass("btn-outline-danger");
-			}if ((i+1)%4 == 2){
-				$(this).addClass("btn-outline-info");
-			}if ((i+1)%4 == 3){
-				$(this).addClass("btn-outline-dark");
-			}if ((i+1)%4 == 0){
-				$(this).addClass("btn-outline-success");
-			}
-
-		});
-
 	});
 </script>
-</div>
+
+
+
+
+{{ form1.as_p }}
+<input type="submit" name="Submit">
+</form>
+
+<script type="text/javascript">
+	function myFunction() {
+		$.get("http://127.0.0.1:8000/api/city/", function(data, status){
+				for (i in data){
+					if (data[i].state_id!=$('#id_state').val()){
+					$('#id_city option').each(function(){
+						if ($(this).val()==data[i].id){
+							return (this.tog = !this.tog) ? hide() : show();
+							// $(this).hide().show();
+							// console.log($(this).val());
+							// console.log(data[i].id);
+						}
+					});
+
+					// (data[i].id);
+					}
+				}
+		});
+	}
+</script>
 
 {% endblock main %}

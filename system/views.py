@@ -1,14 +1,12 @@
-import requests
-
-url = 'https://api.covid19india.org/state_district_wise.json'
-
+from rest_framework import viewsets, permissions
 from django.shortcuts import render
-from . import forms, models
-from apiclient.discovery import build                                                           
+from .models import City, Member
+from .forms import MemberForm, TestForm
+from .serializers import CitySerializer
 
-api_key = 'AIzaSyDrecpXxZFguNK9-yW__Xmk-g4qFB1hwfE'                                             
-youtube = build('youtube','v3', developerKey=api_key) 
-
+class CityView(viewsets.ModelViewSet):
+	queryset = City.objects.all()
+	serializer_class = CitySerializer
 
 
 def home(request):
@@ -24,25 +22,19 @@ def about(request):
 	context = {
 		'title' : 'YouTube'
 	}
-	if request.GET.get('q'):
-		req = youtube.search().list(q=request.GET.get('q'), part="snippet", type="channel")
-		context.update({'data':req.execute()})
+	
 	return render(request, template_name, context)
 
 def terms(request):
 	template_name = 'system/terms.html'
-	form = forms.UserLoginForm()
-	model = models.State.objects.all()
-	context = {'title' : 'terms',
-				'form' : form,
-				'model' : model
+
+	form1 = MemberForm(request.POST or None)
+	form2 = TestForm(request.POST or None)
+	context = {
+		'title' : 'YouTube',
+		'form1': form1,
+		'form2': form2,
 	}
-	if request.GET.get('state'):
-		r = dict(requests.get(url).json())
-		code = request.GET.get('state')
-		for _ in r:
-			if r[_]['statecode'] == code:
-				context.update({'data':r[_]})
 	return render(request, template_name, context)
 
 def viewbooks(request):

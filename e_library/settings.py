@@ -20,12 +20,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
+SECRET_KEY = os.environ.get('H_DEBUG', 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u')
+DEBUG = os.environ.get('H_DEBUG', True)
+ALLOWED_HOSTS = [os.environ.get('H_DEBUG', '*')]
 
 
 # Application definition
@@ -37,8 +34,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
+    'rest_framework',
     'system.apps.SystemConfig',
-    # 'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -74,13 +72,23 @@ WSGI_APPLICATION = 'e_library.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if os.environ.get('H_DEBUG', False):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2', # pip install psycopg2
+            'NAME': os.environ['H_NAME']
+    ,        'USER': os.environ['H_USER'],
+            'PASSWORD': os.environ['H_PASSWORD'],
+            'HOST': os.environ['H_HOST'],
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 # Password validation
@@ -126,3 +134,12 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PERMISSION_CLASSES' : (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    )
+}

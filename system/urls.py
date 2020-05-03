@@ -1,8 +1,14 @@
-from django.urls import path
+from rest_framework import routers
+from django.urls import path, include
 from . import views
+
+router = routers.DefaultRouter()
+router.register('city', views.CityView)
 
 app_name = 'system'
 urlpatterns = [
+
+    path('api/', include(router.urls)),
 	path('', views.home, name='home'),
 	path('about/', views.about, name='about'),
     path('terms/', views.terms, name='terms'),

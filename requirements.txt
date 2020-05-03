@@ -1,2 +1,3 @@
+psycopg2
 Django
-requests
+djangorestframework

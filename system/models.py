@@ -1,17 +1,4 @@
 from django.db import models
-import requests
-
-url = 'https://api.covid19india.org/state_district_wise.json'
-r = requests.get(url).json()
-list_state = [key for key in r]
-list_state_code = [r[key]['statecode'] for key in r]
-list_states = [(None, 'Select state')]+[(j,i) for i, j in zip(list_state, list_state_code)]
-citys = tuple(
-			( i, 
-				tuple((j.lower(), j.title()) for j in tuple(r[i]['districtData']))) for i in list_state
-		)
-		# tuple(( i, tuple(j.upper() for j in tuple(d[i]['districtData']))) for i in l) 
-
 
 
 class State(models.Model):
@@ -23,7 +10,7 @@ class State(models.Model):
 
 class City(models.Model):
 	name = models.CharField(max_length=120)
-	state = models.ForeignKey(State, on_delete=models.CASCADE, verbose_name='State')
+	state_id = models.ForeignKey(State, on_delete=models.CASCADE)
 	def __str__(self):
 		return self.name
 
@@ -70,9 +57,8 @@ class Member(models.Model):
 	birthday = models.DateField(verbose_name='Date of Birth')
 	phone = models.PositiveIntegerField(verbose_name=' Contact No')
 	email = models.EmailField(verbose_name='Email ID')
-	# state = models.ForeignKey(State, on_delete=models.CASCADE)
-	state = models.CharField(max_length=2,verbose_name='State', choices=list_states)
-	city = models.CharField(max_length=120, verbose_name='City', choices=citys)
+	state = models.ForeignKey(State, verbose_name='State', on_delete=models.CASCADE)
+	city = models.ForeignKey(City, verbose_name='City', on_delete=models.CASCADE)
 	pincode = models.CharField(max_length=102, verbose_name='Pincode')
 	address = models.CharField(max_length=102, verbose_name='Full Address')
 	password = models.CharField(max_length=102, verbose_name='Password')
@@ -90,3 +76,28 @@ class Issue(models.Model):
 	due_date = models.DateField()
 
 
+class Test(models.Model):
+	F_MEDIA_CHOICES = [
+		(None, 'Select Media'),
+		('vinyl', 'Vinyl'),
+		('cd', 'CD'),
+		('vhs', 'VHS Tape'),
+		('dvd', 'DVD'),
+	]
+	MEDIA_CHOICES = [
+		(None, 'Select Media'),
+		('Audio', (
+			('vinyl', 'Vinyl'),
+			('cd', 'CD'),
+			)
+		),
+		('Video', (
+			('vhs', 'VHS Tape'),
+			('dvd', 'DVD'),
+			)
+		),
+		
+	]
+	f_name =  models.CharField(max_length=120, choices=F_MEDIA_CHOICES, blank=True)
+	name = models.CharField(max_length=120, choices=MEDIA_CHOICES, blank=True)
+	

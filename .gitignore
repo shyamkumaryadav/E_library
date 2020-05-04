@@ -5,6 +5,7 @@ system/migrations/
 __pycache__/
 # my database file
 db.sqlite3
+.ipynb_checkpoints/
 db.txt
 index.py
 .vscode/
@@ -12,6 +13,11 @@ index.py
 *$py.class
 .idea/
 .vscode/
+#Jupyter Notebook
+Panda_Bake*
+#copy from Github https://github.com/dr5hn/countries-states-cities-database
+countries_states_cities.json
+
 # C extensions
 *.so
 

@@ -9,47 +9,9 @@
 {% block main %}
 
 
-
-<form action="" method="POST"> {% csrf_token %}
-{{ form2.as_p }}
-<script type="text/javascript">
-	$(document).ready(function(){
-		
-		$('p select optgroup').each(function(){
-		  if ($(this).prop('label')=='Audio'){
-		  	console.log('audio');
-		  	$(this).toggle(1000);
-		  }
-		});
-	});
-</script>
-
-
-
-
-{{ form1.as_p }}
-<input type="submit" name="Submit">
+<h1>Hi</h1>
+<form action="" method="POST">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit">
 </form>
-
-<script type="text/javascript">
-	function myFunction() {
-		$.get("http://127.0.0.1:8000/api/city/", function(data, status){
-				for (i in data){
-					if (data[i].state_id!=$('#id_state').val()){
-					$('#id_city option').each(function(){
-						if ($(this).val()==data[i].id){
-							return (this.tog = !this.tog) ? hide() : show();
-							// $(this).hide().show();
-							// console.log($(this).val());
-							// console.log(data[i].id);
-						}
-					});
-
-					// (data[i].id);
-					}
-				}
-		});
-	}
-</script>
-
 {% endblock main %}

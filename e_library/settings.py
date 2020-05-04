@@ -34,9 +34,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #some cool stuf
     'django_extensions',
-    'rest_framework',
-    'system.apps.SystemConfig',
+    #my system
+    'system',
 ]
 
 MIDDLEWARE = [
@@ -94,6 +95,7 @@ else:
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -135,11 +137,6 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-    ],
-    'DEFAULT_PERMISSION_CLASSES' : (
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-    )
-}
+
+LOGIN_REDIRECT_URL = 'masterji'
+LOGOUT_REDIRECT_URL = 'masterji'

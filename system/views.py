@@ -1,13 +1,5 @@
-from rest_framework import viewsets, permissions
 from django.shortcuts import render
-from .models import City, Member
-from .forms import MemberForm, TestForm
-from .serializers import CitySerializer
-
-class CityView(viewsets.ModelViewSet):
-	queryset = City.objects.all()
-	serializer_class = CitySerializer
-
+from django.http import Http404, HttpResponseNotFound
 
 def home(request):
 	template_name = 'system/home.html'
@@ -27,13 +19,8 @@ def about(request):
 
 def terms(request):
 	template_name = 'system/terms.html'
-
-	form1 = MemberForm(request.POST or None)
-	form2 = TestForm(request.POST or None)
 	context = {
-		'title' : 'YouTube',
-		'form1': form1,
-		'form2': form2,
+		'title' : 'Terms',
 	}
 	return render(request, template_name, context)
 
@@ -109,3 +96,7 @@ def shyamkumaryadav(request):
 		'title' : 'shyamkumar yadav'
 	}
 	return render(request, template_name, context)
+
+
+def handler404(request, *args, **argv):
+	return HttpResponseNotFound("i thin you are not find this on page")

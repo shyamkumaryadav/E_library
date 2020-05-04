@@ -1,26 +1,15 @@
-from rest_framework import routers
-from django.urls import path, include
+from django.urls import path
 from . import views
-
-router = routers.DefaultRouter()
-router.register('city', views.CityView)
 
 app_name = 'system'
 urlpatterns = [
-
-    path('api/', include(router.urls)),
 	path('', views.home, name='home'),
 	path('about/', views.about, name='about'),
     path('terms/', views.terms, name='terms'),
-
-
-
     path('view_books/', views.viewbooks, name='viewbooks'),
     path('user_login/', views.userlogin, name='userlogin'),
     path('admin_login/', views.adminlogin, name='adminlogin'),
     path('signup/', views.signup, name='signup'),
-
-
     path('admin_author_management/', views.adminauthormanagement, name='adminauthormanagement'),
     path('admin_member_management/', views.adminmembermanagement, name='adminmembermanagement'),
     path('admin_book_issuing/', views.adminbookissuing, name='adminbookissuing'),

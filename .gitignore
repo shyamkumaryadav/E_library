@@ -1,13 +1,12 @@
 # Byte-compiled / optimized / DLL files
-system/__pycache__/
-e_library/__pycache__/
-system/migrations/
+src/system/__pycache__/
+src/e_library/__pycache__/
+src/system/migrations/
+src/__pycache__/
 __pycache__/
 # my database file
-db.sqlite3
+src/db.sqlite3
 .ipynb_checkpoints/
-db.txt
-index.py
 .vscode/
 *.py[cod]
 *$py.class

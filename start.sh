@@ -1,5 +1,5 @@
 pip3 install -r requirements.txt --user
-python3 manage.py makemigrations
-python3 manage.py migrate
+python3 src/manage.py makemigrations
+python3 src/manage.py migrate
 # python3 manage.py collectstatic --noinput
-python3 manage.py runserver $PORT
+python3 src/manage.py runserver $PORT

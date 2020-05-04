@@ -1,6 +1,6 @@
 <h1 align="center" >Online Library Management System <a style="color: red;" href="https://www.github.com/shyamkumaryadav" target="_blank" >&copy;</a></h1>
 
-![version](https://img.shields.io/github/v/release/shyamkumaryadav/E_library?style=for-the-badge) ![Star](https://img.shields.io/github/stars/shyamkumaryadav/E_library?style=for-the-badge) ![Licence](https://img.shields.io/apm/l/vim-mode?style=for-the-badge) ![last-commit](https://img.shields.io/github/last-commit/shyamkumaryadav/E_library?style=for-the-badge) ![twitter](https://img.shields.io/twitter/follow/shyamkumaryada?style=for-the-badge) ![Github Follwers](https://img.shields.io/twitter/follow/shyamkumaryada?logo=Twitter&style=for-the-badge) ![Size Repo](https://img.shields.io/github/repo-size/shyamkumaryadav/E_library?style=for-the-badge)
+![version](https://img.shields.io/github/v/release/shyamkumaryadav/E_library?style=for-the-badge) ![Star](https://img.shields.io/github/stars/shyamkumaryadav/E_library?style=for-the-badge) ![Licence](https://img.shields.io/apm/l/vim-mode?style=for-the-badge) ![last-commit](https://img.shields.io/github/last-commit/shyamkumaryadav/E_library?style=for-the-badge) ![twitter](https://img.shields.io/twitter/follow/shyamkumaryada?logo=Twitter&style=for-the-badge) ![Size Repo](https://img.shields.io/github/repo-size/shyamkumaryadav/E_library?style=for-the-badge)
 
 ### *About*   
 ##### ```Dynamic Web Application & Bootstrap helps in responsive mobile web development. Perform DATABASE connectivity with PostgreSQL using Python.```  

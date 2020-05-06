@@ -4,7 +4,7 @@
 <head>
 
 	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	
 	<!-- bootstrap css -->
@@ -27,6 +27,9 @@
 	<script type="text/javascript" src="{% static 'system/bootstrap/javascript/bootstrap.min.js'%}"></script>
 	<!-- end bootstrap -->
 
+	<!-- jquery -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
 	
 	{% block head %}
 	{% endblock head %}
@@ -35,59 +38,59 @@
 	
 </head>
 <body>
-	<div>
-		<nav class="navbar navbar-expand-lg navbar-light">
-			<a class="navbar-brand" href="{% url 'system:home' %}">
-				<img src="{% static 'system/images/imgs/books.png' %}" width="30" height="30">
-				E-Library
-			</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>					
-			</button>
+	<nav class="navbar navbar-expand-lg navbar-light">
+		<a class="navbar-brand" href="{% url 'system:home' %}">
+			<img src="{% static 'system/images/imgs/books.png' %}" width="30" height="30">
+			E-Library
+		</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>					
+		</button>
 
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'system:home' %}">Home</a>
-					</li>
-					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'system:about'%}">about</a>
-					</li>
-					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'system:terms'%}">Terms</a>
-					</li>												
-				</ul>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="{% url 'system:home' %}">Home</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="{% url 'system:about'%}">about</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="{% url 'system:terms'%}">Terms</a>
+				</li>												
+			</ul>
 
-				<ul class="navbar-nav">
-					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'system:viewbooks'%}">View Books</a>
-					</li>
-					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'system:userlogin' %}">User Login</a>
-					</li>
-					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'system:signup' %}">Sign Up</a>
-					</li>
-					<li class="nav-item active">
-						<a class="nav-link" href="#">Logout</a>
-					</li>
-					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'system:shyamkumaryadav' %}">Hello user</a>
-					</li>
-				</ul>
-			</div>
-		</nav>
-		<div class="row">
-			<div class="col-md-8">
-				{% if messages %}
-					{% for message in messages %}
-						<div class="alert alert-{{ message.tags}}">
-							{{ message }}
-						</div>
-					{% endfor %}
-				{% endif %}
-			</div>
+			<ul class="navbar-nav">
+				<li class="nav-item active">
+					<a class="nav-link" href="{% url 'system:viewbooks'%}">View Books</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="{% url 'system:userlogin' %}">User Login</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="{% url 'system:signup' %}">Sign Up</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="#">Logout</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="{% url 'system:shyamkumaryadav' %}">Hello user</a>
+				</li>
+			</ul>
 		</div>
+	</nav>
+
+	<div class="row">
+		<div class="col-md-8">
+			{% if messages %}
+				{% for message in messages %}
+					<div class="alert alert-{{ message.tags}}">
+						{{ message }}
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
 
 
 		<!-- main block  -->
@@ -98,28 +101,28 @@
 		<!-- endmain block  -->
 
 		<!-- Footer -->
-		<footer>
-			<div id="footer1" class="container-fluid">
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-sm-12 text-center">
-						<p>
-							<a id="linkbtn1" class="footerlinks" href="{% url 'system:adminlogin' %}">Admin Login</a>&nbsp;
-							<a id="linkbtn2" class="footerlinks" href="{% url 'system:adminauthormanagement' %}">Author Management</a>&nbsp;
-							<a id="linkbtn3" class="footerlinks" href="{% url 'system:adminpublishermanagement' %}">Publisher Mangement</a>&nbsp;
-							<a id="linkbtn4" class="footerlinks" href="{% url 'system:adminbookinventory' %}">Book Inventory</a>&nbsp;
-							<a id="linkbtn5" class="footerlinks" href="{% url 'system:adminbookissuing' %}">Book Issuing</a>&nbsp;
-							<a id="linkbtn6" class="footerlinks" href="{% url 'system:adminmembermanagement' %}">Member Management</a>
-						</p>
-					</div>		
-				</div>
+	<footer>
+		<div id="footer1" class="container-fluid">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-sm-12 text-center">
+					<p>
+						<a id="linkbtn1" class="footerlinks" href="{% url 'system:adminlogin' %}">Admin Login</a>&nbsp;
+						<a id="linkbtn2" class="footerlinks" href="{% url 'system:adminauthormanagement' %}">Author Management</a>&nbsp;
+						<a id="linkbtn3" class="footerlinks" href="{% url 'system:adminpublishermanagement' %}">Publisher Mangement</a>&nbsp;
+						<a id="linkbtn4" class="footerlinks" href="{% url 'system:adminbookinventory' %}">Book Inventory</a>&nbsp;
+						<a id="linkbtn5" class="footerlinks" href="{% url 'system:adminbookissuing' %}">Book Issuing</a>&nbsp;
+						<a id="linkbtn6" class="footerlinks" href="{% url 'system:adminmembermanagement' %}">Member Management</a>
+					</p>
+				</div>		
 			</div>
-			<div class="container-fluid" id="footer2">
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 text-center">
-						<p style="color: whitesmoke"><i class="far fa-copyright"></i> All right Reversed. <a class="footerlinks" href="{%url 'system:shyamkumaryadav'%}" target="_blank">Shyamkumar Yadav</a></p>
-					</div>	
-				</div>
+		</div>
+		<div class="container-fluid" id="footer2">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12 text-center">
+					<p style="color: whitesmoke"><i class="far fa-copyright"></i> All right Reversed. <a class="footerlinks" href="{%url 'system:shyamkumaryadav'%}" target="_blank">Shyamkumar Yadav</a></p>
+				</div>	
 			</div>
-		</footer>
+		</div>
+	</footer>
 </body>
 </html>

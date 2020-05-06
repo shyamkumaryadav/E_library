@@ -1,5 +1,7 @@
-from django.shortcuts import render
-from django.http import Http404, HttpResponseNotFound
+from django.shortcuts import render, redirect
+from django.http import Http404, HttpResponseNotFound, HttpResponseRedirect
+from django.urls import reverse
+from .forms import UserCreationForm
 
 def home(request):
 	template_name = 'system/home.html'
@@ -49,8 +51,13 @@ def adminlogin(request):
 
 def signup(request):
 	template_name = 'system/signup.html'
+	form = UserCreationForm(request.POST or None)
+	if form.is_valid():
+		form.save()
+		return redirect('system:user_login')
 	context = {
-		'title' : 'sign up'
+		'title' : 'sign up',
+		'form' : form
 	}
 	return render(request, template_name, context)
 

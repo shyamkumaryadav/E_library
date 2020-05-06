@@ -12,6 +12,7 @@ src/db.sqlite3
 *$py.class
 .idea/
 .vscode/
+src/media/
 #Jupyter Notebook
 Panda_Bake*
 #copy from Github https://github.com/dr5hn/countries-states-cities-database

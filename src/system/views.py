@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import Http404, HttpResponseNotFound, HttpResponseRedirect
+from django.template import RequestContext
+from django.http import Http404, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from .forms import UserCreationForm
+from crispy_forms.utils import render_crispy_form
+
 
 def home(request):
 	template_name = 'system/home.html'
@@ -52,12 +55,18 @@ def adminlogin(request):
 def signup(request):
 	template_name = 'system/signup.html'
 	form = UserCreationForm(request.POST or None)
-	if form.is_valid():
-		form.save()
-		return redirect('system:user_login')
+	if request.is_ajax():
+		context_dict={}
+		context_dict['success']=True
+		if form.is_valid():
+			form.save()
+			return redirect('system:userlogin')
+		else:
+			context_dict['success']=False
+			return JsonResponse(context_dict)
 	context = {
 		'title' : 'sign up',
-		'form' : form
+		'forms' : form,
 	}
 	return render(request, template_name, context)
 

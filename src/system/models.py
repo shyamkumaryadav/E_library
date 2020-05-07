@@ -1,6 +1,5 @@
 from django.db import models
-from django.utils import timezone
-from django.core.exceptions import ValidationError
+import hashlib
 from django.core import validators
 from PIL import Image
 from django.contrib.auth.models import User
@@ -8,14 +7,11 @@ from django.contrib.auth.models import (
 	BaseUserManager, AbstractBaseUser
 )
 
-# def validate_even(value):
-#     if value % 2 != 0:
-#         raise ValidationError(f'{value}s is not an even number')
-
-def validate_image_file_extension(value):
-	return validators.FileExtensionValidator(
-		allowed_extensions=validators.get_available_image_extensions(), 
-		message="Allowed Image of extensions are: .bmp, .gif, .png, .jpe, .jpg, .jpeg, .pdf, .tiff.")(value)
+def upload_to_sky(instance, filename):
+	name = instance.full_name.replace(' ','_')
+	*filenames, ext = filename.split('.')
+	a = hashlib.sha224(b'{name}').hexdigest()
+	return f"Member_Img/{a[::-1]}{a}.{extention}"
 
 class MyUserManager(BaseUserManager):
 	def create_user(self, full_name, email, contactNo, date_of_birth, state, city, pincode,full_address, profile, password=None):
@@ -143,9 +139,10 @@ class MyUser(AbstractBaseUser):
 		null=True,
 		max_length=50,
 	)
-	profile = models.FileField(upload_to='Member_Img/',
-		validators=[validate_image_file_extension,],
-		default='Member_Img/default_user.jpg.')
+	profile = models.FileField(upload_to=upload_to_sky,
+		default='Member_Img/default_user.jpg.',
+		blank=True,
+	)
 
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
@@ -176,16 +173,6 @@ class MyUser(AbstractBaseUser):
 		"Is the user a member of staff?"
 		# Simplest possible answer: All admins are staff
 		return self.is_admin
-	
-	# def save(self):
-	# 	super().save()
-	# 	with Image.open(self.profile.path) as img:
-	# 		if img.height > 300 or img.width > 300:
-	# 			size = (300,300)
-	# 			img.thumbnail(size)
-	# 			img.save(self.profile.path)
-
-
 
 class BookAuthor(models.Model):
 	name = models.CharField(max_length=120)

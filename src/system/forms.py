@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth import password_validation as pv
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, Row, Column
 from django.core.exceptions import ValidationError
 from .models import MyUser
 
@@ -18,41 +20,50 @@ class UserCreationForm(forms.ModelForm):
 		label="Password",
 		strip=False,
 		# validators=[password_validation],
-		widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+		widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'Enter Password','autocomplete': 'new-password'}),
 	)
 	password2 = forms.CharField(
 		label="Password confirmation",
 		validators=[password_validation],
-		widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+		widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'Enter Same Password','autocomplete': 'new-password'}),
 		strip=False,
 	)
 
 	class Meta:
 		model = MyUser
-		fields = ('full_name', 'email', 'date_of_birth','contactNo','state','city','pincode','full_address','profile')
+		fields = ('full_name', 'email', 'date_of_birth','contactNo',
+		'state','city','pincode','full_address','profile')
 		widgets = {
+			'full_name': forms.TextInput(
+				attrs={'class':'form-control invalid','aria-describedby':"passwordHelpBlock", 'placeholder':'Enter Full Name'}
+			),
+			'email': forms.EmailInput(
+				attrs={'class':'form-control', 'placeholder':'Enter Email Address'}
+			),
 			'contactNo': forms.NumberInput(
-				attrs={'id':'member_id_name','class':'id_name_member test'}
+				attrs={'class':'form-control', 'placeholder':'Enter Contact Number'}
 			),
 			'pincode': forms.NumberInput(
-				attrs={'id':'pincode_test','class':'d_name_member test'}
+				attrs={'class':'form-control', 'placeholder':'Enter 6 digit PinCode'}
+			),
+			'city': forms.TextInput(
+				attrs={'class':'form-control', 'placeholder':'Enter City'}
+			),
+			'state': forms.Select(
+				attrs={'class':'form-control'}
 			),
 			'date_of_birth': DateInput(
-				attrs={'id':'DateOfBirth','class':'id_name_member1 test1'}
+				attrs={'class':'form-control'}
 			),
-			'pull_address': forms.TextInput(
-				attrs={'id':'pull_addres','class':'id_name_member test'}
+			'full_address': forms.Textarea(
+				attrs={'class':'form-control','placeholder':'Full Address', 'maxlength':10,'rows':5}
 			),
-		}
-		error_messages = {
+			'profile': forms.FileInput(
+				attrs={'class':'custom-file-input'}
+			),
 			
-			'pincode': {
-				'invalid': 'Enter a valid Pincode',
-			},
-			'contactNo': {
-				'invalid': 'Enter a valid Contact Number.',
-			},
 		}
+		error_messages = {}
 
 	def clean_password2(self):
 		# Check that the two password entries match
@@ -70,16 +81,34 @@ class UserCreationForm(forms.ModelForm):
 			user.save()
 		return user
 
-	# def _post_clean(self):
-	# 	super()._post_clean()
-	# 	# Validate the password after self.instance is updated with form data
-	# 	# by super().
-	# 	password = self.cleaned_data.get('password2')
-	# 	if password:
-    #         try:
-    #             password_validation.validate_password(password, self.instance)
-    #         except ValidationError as error:
-    #             self.add_error('password2', error)
+	def __init__(self, *args, **kwargs):
+		super(UserCreationForm, self).__init__(*args, **kwargs)
+		self.helper = FormHelper()
+		self.helper.layout = Layout(
+			Row(
+				Column('full_name'),
+				Column('email'),
+			),
+			Row(
+				Column('date_of_birth'),
+				Column('contactNo'),
+			),
+			'state',
+			Row(
+				Column('city'),
+				Column('pincode'),
+			),
+			'full_address',
+			'profile',
+			'password1',
+			'password2',
+
+		)
+		self.helper.form_id = 'userCreationForm'
+		self.helper.form_class = 'blueForms'
+		self.helper.form_method = 'post'
+		self.helper.form_action = ''
+		self.helper.add_input(Submit('submit', 'Sign Up'))
 
 
 

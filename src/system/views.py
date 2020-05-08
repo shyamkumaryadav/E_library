@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from django.template import RequestContext
-from django.http import Http404, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
+from django.views.generic.base import TemplateResponseMixin
+from django.http import Http404, HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from .forms import UserCreationForm
 from crispy_forms.utils import render_crispy_form
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from system import models
 
 
 def home(request):
@@ -55,15 +58,12 @@ def adminlogin(request):
 def signup(request):
 	template_name = 'system/signup.html'
 	form = UserCreationForm(request.POST or None)
-	if request.is_ajax():
-		context_dict={}
-		context_dict['success']=True
-		if form.is_valid():
-			form.save()
-			return redirect('system:userlogin')
-		else:
-			context_dict['success']=False
-			return JsonResponse(context_dict)
+	if form.is_valid():
+		form.save()
+		print("hi from form sis valid")
+		return redirect('system:userlogin')
+	else:
+		print("hi from form is not valid")
 	context = {
 		'title' : 'sign up',
 		'forms' : form,
@@ -112,7 +112,11 @@ def shyamkumaryadav(request):
 		'title' : 'shyamkumar yadav'
 	}
 	return render(request, template_name, context)
-
+class AuthorUpdate(UpdateView):
+	model = models.MyUser
+	fields = ('__all__')
 
 def handler404(request, *args, **argv):
-	return HttpResponseNotFound("i thin you are not find this on page")
+	return HttpResponseNotFound(f"<h1>This Page <br><u>{request.is_secure()}</u><br> you are not find this on page</h1>")
+def handler500(request, *args, **argv):
+	return HttpResponseNotFound(f"<h1>This Page <br><u>{request}</u><br> you are not find this on page</h1>")

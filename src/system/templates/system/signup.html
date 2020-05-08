@@ -36,37 +36,8 @@
                </div>
                   {% crispy forms %}
             </div>
-         </div>
+         </div><br><br>
       </div>
-      <script>
-         $("#submit-id-submit").on('click', function(){
-               jQuery(this).remove();
-               var example_form = '#userCreationForm';
-
-               $.ajax({
-                  url: window.location.href,
-                  type: "POST",
-                  data: $(example_form).serialize(),
-                  success: function(data) {
-                     if (!(data['success'])) {
-                           // Here we replace the form, for the
-                           $(example_form)[0].reset();
-                           console.log("hi from succes");
-                     }
-                     else {
-                           // Here you can show the user a success message or do whatever you need
-                           console.log("hi from else part");
-                           $(example_form).find('.error-message').show();
-                     }
-                  },
-                  error: function () {
-                     // $(example_form).find('.error-message').show()
-                  }
-               });
-         });
-
-      </script>
-
       <div class="col-md-7">
          <div class="card">
             <div class="card-body">

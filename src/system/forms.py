@@ -19,7 +19,7 @@ class UserCreationForm(forms.ModelForm):
 	password1 = forms.CharField(
 		label="Password",
 		strip=False,
-		# validators=[password_validation],
+		validators=[password_validation],
 		widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'Enter Password','autocomplete': 'new-password'}),
 	)
 	password2 = forms.CharField(
@@ -28,7 +28,6 @@ class UserCreationForm(forms.ModelForm):
 		widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'Enter Same Password','autocomplete': 'new-password'}),
 		strip=False,
 	)
-
 	class Meta:
 		model = MyUser
 		fields = ('full_name', 'email', 'date_of_birth','contactNo',
@@ -61,26 +60,20 @@ class UserCreationForm(forms.ModelForm):
 			'profile': forms.FileInput(
 				attrs={'class':'custom-file-input'}
 			),
-			
 		}
 		error_messages = {}
-
 	def clean_password2(self):
-		# Check that the two password entries match
 		password1 = self.cleaned_data.get("password1")
 		password2 = self.cleaned_data.get("password2")
 		if password1 and password2 and password1 != password2:
 			raise forms.ValidationError("Passwords don't match")
 		return password2
-
 	def save(self, commit=True):
-		# Save the provided password in hashed format
 		user = super().save(commit=False)
 		user.set_password(self.cleaned_data["password1"])
 		if commit:
 			user.save()
 		return user
-
 	def __init__(self, *args, **kwargs):
 		super(UserCreationForm, self).__init__(*args, **kwargs)
 		self.helper = FormHelper()
@@ -102,43 +95,17 @@ class UserCreationForm(forms.ModelForm):
 			'profile',
 			'password1',
 			'password2',
-
 		)
 		self.helper.form_id = 'userCreationForm'
 		self.helper.form_class = 'blueForms'
 		self.helper.form_method = 'post'
 		self.helper.form_action = ''
 		self.helper.add_input(Submit('submit', 'Sign Up'))
-
-
-
-
 class UserChangeForm(forms.ModelForm):
-	"""A form for updating users. Includes all the fields on
-	the user, but replaces the password field with admin's
-	password hash display field.
-	"""
 	password = ReadOnlyPasswordHashField()
-
 	class Meta:
 		model = MyUser
 		fields = ('email', 'password', 'date_of_birth', 'is_active', 'is_admin')
 
 	def clean_password(self):
-		# Regardless of what the user provides, return the initial value.
-		# This is done here, rather than on the field, because the
-		# field does not have access to the initial value
 		return self.initial["password"]
-
-
-# labels = {
-#     'name': 'Writer',
-# }
-# widgets = {
-#     'name': forms.TextInput(attrs={'id':'member_id_name','class':'id_name_member test'}),
-# }
-# error_messages = {
-#     'name': {
-#         'max_length': "This writer's name is too long.",
-# 	},
-# }

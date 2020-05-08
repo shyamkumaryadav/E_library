@@ -17,5 +17,6 @@ urlpatterns = [
     path('admin_book_inventory/', views.adminbookinventory, name='adminbookinventory'),
     path('admin_publisher_management/', views.adminpublishermanagement, name='adminpublishermanagement'),
     path('shyamkumaryadav/', views.shyamkumaryadav	, name='shyamkumaryadav'),
+    path('<int:pk>/update', views.AuthorUpdate.as_view(template_name="system/shyamkumaryadav.html"), name="update"),
     # path('', ),
 ]

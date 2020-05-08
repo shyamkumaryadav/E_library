@@ -1,7 +1,6 @@
 {% extends 'system/master.html' %}
 {% load static %}
-
-
+{% load crispy_forms_tags %}
 {% block head %}
 <link rel="icon" href="{%static 'system/images/imgs/generaluser.png'%}" sizes="144x144" >
 <title>{{ title }}</title>
@@ -33,7 +32,7 @@
 							<hr>
 						</div>
 					</div>
-
+					{% crispy form %}
 					<!-- User loging Acction -->
 					<form action="/user_login/" method="post">{% csrf_token %}
 						<div class="row">

@@ -1,8 +1,21 @@
 from django import forms
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import (
+	ReadOnlyPasswordHashField,
+	AuthenticationForm,
+	UsernameField
+)
 from django.contrib.auth import password_validation as pv
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
+from crispy_forms.layout import (
+	Layout,
+	Submit,
+	Row,
+	Column,
+	Fieldset,
+	ButtonHolder,
+	HTML,
+	Div,
+)
 from django.core.exceptions import ValidationError
 from .models import MyUser
 
@@ -95,17 +108,75 @@ class UserCreationForm(forms.ModelForm):
 			'profile',
 			'password1',
 			'password2',
+			Div(ButtonHolder(Submit('submit', 'Sign Up')), css_class='text-center'),
 		)
 		self.helper.form_id = 'userCreationForm'
 		self.helper.form_class = 'blueForms'
 		self.helper.form_method = 'post'
 		self.helper.form_action = ''
-		self.helper.add_input(Submit('submit', 'Sign Up'))
+		# self.helper.add_input(Submit('submit', 'Sign Up'))
+
 class UserChangeForm(forms.ModelForm):
-	password = ReadOnlyPasswordHashField()
+	password = ReadOnlyPasswordHashField(
+		label="Password",
+        help_text='Raw passwords are not stored, so there is no way to see this '
+            'user’s password, but you can change the password using '
+            '<a href="{}">this form</a>.',
+	)
 	class Meta:
 		model = MyUser
 		fields = ('email', 'password', 'date_of_birth', 'is_active', 'is_admin')
 
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		password = self.fields.get('password')
+		if password:
+			password.help_text = password.help_text.format('../password/')
+		user_permissions = self.fields.get('user_permissions')
+		if user_permissions:
+			user_permissions.queryset = user_permissions.queryset.select_related('content_type')
+
 	def clean_password(self):
 		return self.initial["password"]
+
+class UserLoginForm(AuthenticationForm):
+
+	username = UsernameField(widget=forms.TextInput(attrs={'autofocus': True, 'placeholder':'Enter Your Email'}))
+	password = forms.CharField(
+		label="Password",
+		strip=False,
+		widget=forms.PasswordInput(attrs={'autocomplete': 'current-password','placeholder':'Enter Password'}),
+	)
+
+	error_messages = {
+		'invalid_login': "Please enter a correct %(username)s and password. Note that both "
+		"fields may be case-sensitive.",
+		'inactive': "This account is inactive.",
+	}
+
+	def __init__(self, *args, **kwargs):
+		super(UserLoginForm, self).__init__(*args, **kwargs)
+		self.helper = FormHelper()
+		self.helper.layout = Layout(
+			Column('username'),
+			Column('password'),
+			Fieldset(
+				'first arg is the legend of the fieldset',
+				'like_website',
+				'favorite_number',
+				'favorite_color',
+				HTML("""
+					<p>We use notes to get better, <strong>please help us {{ username }}</strong></p>
+				"""),
+				'favorite_food',
+				'notes'
+			),
+			ButtonHolder(
+				Submit('', 'HI', css_class='button white')
+		)
+		)
+		self.helper.form_id = 'userLoginForm'
+		self.helper.form_class = 'blueForms'
+		self.helper.form_method = 'post'
+		self.helper.form_action = ''
+		self.helper.add_input(Submit('submit', 'Login'))

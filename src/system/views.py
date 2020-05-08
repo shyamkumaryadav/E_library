@@ -3,10 +3,11 @@ from django.template import RequestContext
 from django.views.generic.base import TemplateResponseMixin
 from django.http import Http404, HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from .forms import UserCreationForm
+from .forms import UserCreationForm, UserLoginForm
 from crispy_forms.utils import render_crispy_form
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from system import models
+from django.contrib.auth.forms import AuthenticationForm
 
 
 def home(request):
@@ -34,8 +35,16 @@ def terms(request):
 
 def viewbooks(request):
 	template_name = 'system/viewbooks.html'
+	form = UserLoginForm(request.POST or None)
+	if form.is_valid():
+		form.save()
+		print("hi from form sis valid")
+		return redirect('system:userlogin')
+	else:
+		print("hi from form is not valid")
 	context = {
-		'title' : 'view books'
+		'title' : 'view books',
+		'form' : form
 	}
 	return render(request, template_name, context)
 

@@ -7,6 +7,7 @@ from .forms import UserCreationForm, UserLoginForm
 from crispy_forms.utils import render_crispy_form
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from system import models
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 
 
@@ -36,12 +37,15 @@ def terms(request):
 def viewbooks(request):
 	template_name = 'system/viewbooks.html'
 	form = UserLoginForm(request.POST or None)
-	if form.is_valid():
-		form.save()
-		print("hi from form sis valid")
-		return redirect('system:userlogin')
-	else:
-		print("hi from form is not valid")
+	if request.method == 'POST':
+		print("post", request)
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(request, username=username, password=password)
+		if user is not None:
+			login(request, user)
+			print('Login')
+			return redirect('system:home')
 	context = {
 		'title' : 'view books',
 		'form' : form

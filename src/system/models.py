@@ -1,6 +1,8 @@
 from django.db import models
 import secrets
 from django.conf import settings
+from django.urls import reverse
+from django.core.mail import send_mail
 from django.core import validators
 from PIL import Image
 from django.contrib.auth.models import User
@@ -12,14 +14,14 @@ def upload_to_sky(instance, filename):
 	name = instance.full_name.replace(' ','_')
 	*filenames, ext = filename.split('.')
 	a = secrets.token_urlsafe(32)
-	print(f"Member_Img/{a[::-1]}SKY{a}.{ext}")
+	# print(f"Member_Img/{a[::-1]}SKY{a}.{ext}")
 	return f"Member_Img/{a[::-1]}SKY{a}.{ext}"
 
 def upload_to_book(instance, filename):
-	name = instance.full_name.replace(' ','_')
+	name = instance.name.replace(' ','_')
 	*filenames, ext = filename.split('.')
 	a = secrets.token_urlsafe(32)
-	print(f"Member_Img/{a[::-1]}SKY{a}.{ext}")
+	# print(f"Member_Img/{a[::-1]}SKY{a}.{ext}")
 	return f"Member_Img/{a[::-1]}SKY{a}.{ext}"
 
 class MyUserManager(BaseUserManager):
@@ -159,20 +161,32 @@ class MyUser(AbstractBaseUser):
 	objects = MyUserManager()
 
 	USERNAME_FIELD = 'email'
+	EMAIL_FIELD = 'email'
 	REQUIRED_FIELDS = []
 	REQUIRED_FIELDS+=['full_name', 'contactNo', 'date_of_birth', 'state', 'city', 'full_address', 'profile']
 
 	#add +91 on Number Bug #552020
 
 	def __str__(self):
-		return f"{self.id}, {self.email}"
+		return f"id :{self.id}, {self.email}"
 
 	def has_perm(self, perm, obj=None):
 		return True
 
 	def has_module_perms(self, app_label):
 		return True
+		
+	@property
+	def get_full_name(self):
+		return self.full_name
 
+	@property
+	def get_short_name(self):
+		return " ".join(self.full_name.split(' ')[::2])
+
+	def email_user(self, subject, message, from_email=None, **kwargs):
+		send_mail(subject, message, from_email, [self.email], **kwargs)
+		
 	@property
 	def is_staff(self):
 		return self.is_admin
@@ -184,7 +198,7 @@ class BookAuthor(models.Model):
 	date_of_death = models.DateField('Died', null=True, blank=True)
 
 	def __str__(self):
-		return f"{self.first_name} {self.last_name}"
+		return f"{self.first_name}_{self.last_name}"
 
 class BookPublish(models.Model):
 	name = models.CharField(max_length=120)
@@ -244,6 +258,7 @@ class Genre(models.Model):
 		(47, 'Young adult')
 	)
 	name = models.IntegerField(verbose_name="Genre Name", choices=book_genre)
+
 	def __str__(self):
 		return self.get_name_display()
 
@@ -262,22 +277,31 @@ class Book(models.Model):
 	stock = models.PositiveIntegerField(verbose_name="Current Stock")
 	today_stock = models.PositiveIntegerField(verbose_name="stock")
 	rating = models.DecimalField(max_digits=3, decimal_places=1, verbose_name="Rating")
-	profile = models.FileField(upload_to=upload_to_book, verbose_name="Book cover page",
+	profile = models.FileField(upload_to=upload_to_book, verbose_name="Book cover",
 		default="Book_Img/default.png",blank=True,
 	)
 
+	def save(self, *args, **kwargs):
+		self.today_stock = self.stock
+		super(Book, self).save(*args, **kwargs)
+
 	def __str__(self):
-		return f"{self.id}, {self.name}"
+		return f"{self.bookid}, {self.name}"
+
 	def display_genre(self):
 		return ', '.join(genre.get_name_display() for genre in self.genre.all())
 	display_genre.short_description = 'Genre'
+
 	def get_absolute_url(self):
-		return reverse('book-detail', args=[str(self.bookid)])
+		return f'/book/{str(self.bookid)}/{self.author.__str__()}/{self.publish.__str__()}/'
 
 class Issue(models.Model):
 	member_id = models.ForeignKey(MyUser, on_delete=models.CASCADE)
 	book_id = models.ForeignKey(Book, on_delete=models.CASCADE)
 	date=models.DateField()
 	due_date = models.DateField()
+
+	def __str__(self):
+		return f"{self.book_id.bookid} {self.member_id.get_short_name}"
 
 # 4006056 40223  5 55 1212 12 45  12 12 45 4545454545 123456

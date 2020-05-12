@@ -92,7 +92,13 @@
 			{% endif %}
 		</div>
 	</div>
-
+	{% if user.is_authenticated %}
+	Email {{ user.email}} <br>
+	is_active {{ user.is_active}} <br>
+	is_admin {{ user.is_admin}} <br>
+	has_perms {{ user.has_prems }} <br>
+	user: {{ user }} <br>
+	{% endif %}
 
 		<!-- main block  -->
 <div id="mainblock">
@@ -125,7 +131,7 @@
 			</div>
 		</div>
 	</footer>
-<script src="{% static 'system/javascrip/main.js' %}"></script>
+<script src="{% static 'system/javascript/main.js' %}"></script>
 </body>
 
 </html>

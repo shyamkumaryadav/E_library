@@ -32,8 +32,9 @@
 							<hr>
 						</div>
 					</div>
-					{% crispy form %}
-					<!-- User loging Acction -->
+					{% crispy form user_login_form.form.helper %}
+					<div class="text-center"><button type="submit" class='btn btn-success'>LogIn</button></div>
+					<!-- User loging Acction
 					<form action="/user_login/" method="post">{% csrf_token %}
 						<div class="row">
 							<div class="col">
@@ -50,12 +51,12 @@
 								</div>
 							</div>
 						</div>
-					</form>
+					</form> -->
 							<!-- User loging Acction End-->
-							<br>
+							<!-- <br>
 							<div class="form-group">
 								<a href="{% url 'system:signup' %}"><input type="button" class="btn btn-info btn-block btn-lg" id="Button2" value="Sign Up"/></a>
-							</div>
+							</div> -->
 							<a href="{% url 'system:home' %}"><i class="fas fa-arrow-left"></i> Back to Home</a><br>
 			<br>
 						</div>

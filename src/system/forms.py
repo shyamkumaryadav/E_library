@@ -4,18 +4,20 @@ from django.contrib.auth.forms import (
 	AuthenticationForm,
 	UsernameField
 )
-from django.contrib.auth import password_validation as pv
+from django.contrib.auth import password_validation as passwordvalidation
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import (
-	Layout,
-	Submit,
-	Row,
-	Column,
-	Fieldset,
-	ButtonHolder,
-	HTML,
-	Div,
-)
+from crispy_forms.layout import *
+# (
+	# Layout,
+	# Submit,
+	# Row,
+	# Column,
+	# Fieldset,
+	# ButtonHolder,
+	# HTML,
+	# Div,
+	# Reset,
+# )
 from django.core.exceptions import ValidationError
 from .models import MyUser
 
@@ -23,7 +25,7 @@ class DateInput(forms.DateInput):
 	input_type='date'
 
 def password_validation(value):
-	pv.validate_password(value)
+	passwordvalidation.validate_password(value)
 
 
 class UserCreationForm(forms.ModelForm):
@@ -108,13 +110,12 @@ class UserCreationForm(forms.ModelForm):
 			'profile',
 			'password1',
 			'password2',
-			Div(ButtonHolder(Submit('submit', 'Sign Up')), css_class='text-center'),
+			Div(Submit('submit', 'Sign Up'), css_class='text-center'),
 		)
 		self.helper.form_id = 'userCreationForm'
 		self.helper.form_class = 'blueForms'
 		self.helper.form_method = 'post'
 		self.helper.form_action = ''
-		# self.helper.add_input(Submit('submit', 'Sign Up'))
 
 class UserChangeForm(forms.ModelForm):
 	password = ReadOnlyPasswordHashField(
@@ -140,43 +141,18 @@ class UserChangeForm(forms.ModelForm):
 		return self.initial["password"]
 
 class UserLoginForm(AuthenticationForm):
-
-	username = UsernameField(widget=forms.TextInput(attrs={'autofocus': True, 'placeholder':'Enter Your Email'}))
-	password = forms.CharField(
-		label="Password",
-		strip=False,
-		widget=forms.PasswordInput(attrs={'autocomplete': 'current-password','placeholder':'Enter Password'}),
-	)
-
-	error_messages = {
-		'invalid_login': "Please enter a correct %(username)s and password. Note that both "
-		"fields may be case-sensitive.",
-		'inactive': "This account is inactive.",
-	}
-
 	def __init__(self, *args, **kwargs):
-		super(UserLoginForm, self).__init__(*args, **kwargs)
+		super().__init__(*args, **kwargs)
 		self.helper = FormHelper()
 		self.helper.layout = Layout(
-			Column('username'),
-			Column('password'),
-			Fieldset(
-				'first arg is the legend of the fieldset',
-				'like_website',
-				'favorite_number',
-				'favorite_color',
-				HTML("""
-					<p>We use notes to get better, <strong>please help us {{ username }}</strong></p>
-				"""),
-				'favorite_food',
-				'notes'
-			),
-			ButtonHolder(
-				Submit('', 'HI', css_class='button white')
+			# Column(Field('username', placeholder="Email")),
+			# Column(Field('password', placeholder="password")),
+			Div(Submit('submit', 'Login'), css_class='text-center mb-2'),
+			# Hidden('next', 'value'),
 		)
-		)
-		self.helper.form_id = 'userLoginForm'
+		self.helper.form_id = 'LoginForm'
 		self.helper.form_class = 'blueForms'
 		self.helper.form_method = 'post'
 		self.helper.form_action = ''
-		self.helper.add_input(Submit('submit', 'Login'))
+		# self.helper.
+		# self.helper.add_input(Div(Submit('submit', 'Login'), css_class='text-center'))

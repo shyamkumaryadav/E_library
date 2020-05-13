@@ -13,6 +13,8 @@ src/db.sqlite3
 *$py.class
 .idea/
 .vscode/
+src/media/User_Profile/
+src/media/Book_cover/
 !src/media/User_Profile/default.png
 !src/media/Book_cover/default.png
 

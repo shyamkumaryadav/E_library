@@ -21,5 +21,12 @@
      5. Publisher Management -- Add/Update/Delete Publisher details  
      6. Book Inventory -- Add/Update/Delete Book details  
      7. Book Issuing Process -- Issue/Return Books  
-       
+
+### My Model
+    [<img src="Image_db/All_Model.png">](Image_db/All_Model.png)
+    
+    [<img src="Image_db/Book_Model.png">](Image_db/Book_Model.png)
+
+
+
 #### *Live At*    [Heroku](https://shyamkumaryadav.herokuapp.com/)

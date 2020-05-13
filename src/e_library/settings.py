@@ -87,7 +87,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-DATE_INPUT_FORMATS = ['%d %B, %Y',]
+# DATE_INPUT_FORMATS = ['%d %B, %Y',]
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
@@ -140,3 +140,54 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+
+
+BOOK_GENRE = [
+    (1, 'Action and adventure'), 
+    (2, 'Art'), 
+    (3, 'Alternate history'), 
+    (4, 'Autobiography'), 
+    (5, 'Anthology'), 
+    (6, 'Biography'), 
+    (7, 'Chick lit'), 
+    (8, 'Book review'), 
+    (9, "Children's"), 
+    (10, 'Cookbook'), 
+    (11, 'Comic book'), 
+    (12, 'Diary'), 
+    (13, 'Coming-of-age'), 
+    (14, 'Dictionary'), 
+    (15, 'Crime'), 
+    (16, 'Encyclopedia'), 
+    (17, 'Drama'), 
+    (18, 'Guide'), 
+    (19, 'Fairytale'), 
+    (20, 'Health'), 
+    (21, 'Fantasy'), 
+    (22, 'History'), 
+    (23, 'Graphic novel'), 
+    (24, 'Journal'), 
+    (25, 'Historical fiction'), 
+    (26, 'Math'), 
+    (27, 'Horror'), 
+    (28, 'Memoir'), 
+    (29, 'Mystery Prayer'), 
+    (30, 'Paranormal romance'), 
+    (31, 'Religion, spirituality and new age'), 
+    (32, 'Picture book'), 
+    (33, 'Textbook'), 
+    (34, 'Poetry'), 
+    (35, 'Review'), 
+    (36, 'Political thriller'), 
+    (37, 'Science'), 
+    (38, 'Romance'), 
+    (39, 'Self help'), 
+    (40, 'Satire'), 
+    (41, 'Travel'), 
+    (42, 'Science fiction'), 
+    (43, 'True crime'), 
+    (44, 'Short story'), 
+    (45, 'Suspense'), 
+    (46, 'Thriller'), 
+    (47, 'Young adult')
+]

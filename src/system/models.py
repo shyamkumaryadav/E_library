@@ -10,19 +10,18 @@ from django.contrib.auth.models import (
 	BaseUserManager, AbstractBaseUser
 )
 
-def upload_to_sky(instance, filename):
+
+def upload_to_user(instance, filename):
 	name = instance.full_name.replace(' ','_')
 	*filenames, ext = filename.split('.')
 	a = secrets.token_urlsafe(32)
-	# print(f"Member_Img/{a[::-1]}SKY{a}.{ext}")
-	return f"Member_Img/{a[::-1]}SKY{a}.{ext}"
+	return f"User_Profile/{name}_SKY_{a}.{ext}"
 
 def upload_to_book(instance, filename):
 	name = instance.name.replace(' ','_')
 	*filenames, ext = filename.split('.')
 	a = secrets.token_urlsafe(32)
-	# print(f"Member_Img/{a[::-1]}SKY{a}.{ext}")
-	return f"Member_Img/{a[::-1]}SKY{a}.{ext}"
+	return f"Book_cover/{name}_SKY_{a}.{ext}"
 
 class MyUserManager(BaseUserManager):
 	def create_user(self, full_name, email, contactNo, date_of_birth, state, city, pincode,full_address, profile, password=None):
@@ -150,9 +149,10 @@ class MyUser(AbstractBaseUser):
 		null=True,
 		max_length=50,
 	)
-	profile = models.FileField(upload_to=upload_to_sky,
+	profile = models.FileField(upload_to=upload_to_user,
 		default='Member_Img/default_user.jpg.',
 		blank=True,
+		validators=[validators.FileExtensionValidator(allowed_extensions=validators.get_available_image_extensions(), message="Select valid Image.")],
 	)
 
 	is_active = models.BooleanField(default=True)
@@ -182,9 +182,9 @@ class MyUser(AbstractBaseUser):
 
 	@property
 	def get_short_name(self):
-		return " ".join(self.full_name.split(' ')[::2])
+		return "_".join(self.full_name.split(' ')[::2])
 
-	def email_user(self, subject, message, from_email=None, **kwargs):
+	def send_email(self, subject, message, from_email=None, **kwargs):
 		send_mail(subject, message, from_email, [self.email], **kwargs)
 		
 	@property
@@ -207,57 +207,7 @@ class BookPublish(models.Model):
 		return self.name
 
 class Genre(models.Model):
-	book_genre = (
-		(None, 'select genre'), 
-		(1, 'Action and adventure'), 
-		(2, 'Art'), 
-		(3, 'Alternate history'), 
-		(4, 'Autobiography'), 
-		(5, 'Anthology'), 
-		(6, 'Biography'), 
-		(7, 'Chick lit'), 
-		(8, 'Book review'), 
-		(9, "Children's"), 
-		(10, 'Cookbook'), 
-		(11, 'Comic book'), 
-		(12, 'Diary'), 
-		(13, 'Coming-of-age'), 
-		(14, 'Dictionary'), 
-		(15, 'Crime'), 
-		(16, 'Encyclopedia'), 
-		(17, 'Drama'), 
-		(18, 'Guide'), 
-		(19, 'Fairytale'), 
-		(20, 'Health'), 
-		(21, 'Fantasy'), 
-		(22, 'History'), 
-		(23, 'Graphic novel'), 
-		(24, 'Journal'), 
-		(25, 'Historical fiction'), 
-		(26, 'Math'), 
-		(27, 'Horror'), 
-		(28, 'Memoir'), 
-		(29, 'Mystery Prayer'), 
-		(30, 'Paranormal romance'), 
-		(31, 'Religion, spirituality and new age'), 
-		(32, 'Picture book'), 
-		(33, 'Textbook'), 
-		(34, 'Poetry'), 
-		(35, 'Review'), 
-		(36, 'Political thriller'), 
-		(37, 'Science'), 
-		(38, 'Romance'), 
-		(39, 'Self help'), 
-		(40, 'Satire'), 
-		(41, 'Travel'), 
-		(42, 'Science fiction'), 
-		(43, 'True crime'), 
-		(44, 'Short story'), 
-		(45, 'Suspense'), 
-		(46, 'Thriller'), 
-		(47, 'Young adult')
-	)
-	name = models.IntegerField(verbose_name="Genre Name", choices=book_genre)
+	name = models.IntegerField(verbose_name="Genre Name", choices=[(None,"Select Language")]+settings.BOOK_GENRE)
 
 	def __str__(self):
 		return self.get_name_display()
@@ -275,15 +225,29 @@ class Book(models.Model):
 	page = models.PositiveIntegerField(verbose_name="Total Page")
 	description = models.TextField(verbose_name="Book Description")
 	stock = models.PositiveIntegerField(verbose_name="Current Stock")
-	today_stock = models.PositiveIntegerField(verbose_name="stock")
+	today_stock = models.PositiveIntegerField(verbose_name="stock", blank=True)
 	rating = models.DecimalField(max_digits=3, decimal_places=1, verbose_name="Rating")
 	profile = models.FileField(upload_to=upload_to_book, verbose_name="Book cover",
 		default="Book_Img/default.png",blank=True,
+		validators=[validators.FileExtensionValidator(allowed_extensions=validators.get_available_image_extensions(), message="Select valid Cover.")],
 	)
+	class Meta:
+		ordering = ["name"]
 
 	def save(self, *args, **kwargs):
-		self.today_stock = self.stock
-		super(Book, self).save(*args, **kwargs)
+		self.today_stock = self.stock - self.issue_set.all().count()
+		super().save(self, *args, **kwargs)
+		if self.profile:
+				
+			img = Image.open(self.profile.path)
+			if img.height > 300 or img.width > 300:
+				output_size = (300, 300)
+				img.thumbnail(output_size)
+				img.save(self.profile.path)
+	
+	def delete(self, *args, **kwargs):
+		self.profile.delete()
+		super(Book, self).delete(*args, **kwargs)
 
 	def __str__(self):
 		return f"{self.bookid}, {self.name}"
@@ -292,16 +256,23 @@ class Book(models.Model):
 		return ', '.join(genre.get_name_display() for genre in self.genre.all())
 	display_genre.short_description = 'Genre'
 
+	@property
+	def get_book_name(self):
+		return f"{self.name.replace(' ','_')}"
+
 	def get_absolute_url(self):
 		return f'/book/{str(self.bookid)}/{self.author.__str__()}/{self.publish.__str__()}/'
 
 class Issue(models.Model):
-	member_id = models.ForeignKey(MyUser, on_delete=models.CASCADE)
-	book_id = models.ForeignKey(Book, on_delete=models.CASCADE)
-	date=models.DateField()
+	member = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+	book = models.ForeignKey(Book, on_delete=models.CASCADE)
+	date=models.DateField(auto_now_add=True)
 	due_date = models.DateField()
 
 	def __str__(self):
-		return f"{self.book_id.bookid} {self.member_id.get_short_name}"
+		return f"{self.book.get_book_name}@{self.member.get_short_name}"
+	
+	def save(self, *args, **kwargs):
+		print("my save")
+		super().save(*args, **kwargs)
 
-# 4006056 40223  5 55 1212 12 45  12 12 45 4545454545 123456

@@ -1,3 +1,5 @@
-psycopg2
 Django
-djangorestframework
+django-crispy-forms
+django-extensions
+pillow
+psycopg2

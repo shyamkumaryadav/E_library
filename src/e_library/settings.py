@@ -1,5 +1,5 @@
 import os
-from django.utils.translation import ugettext_lazy as _
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('H_SECRET_KEY', 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u')
@@ -57,7 +57,7 @@ WSGI_APPLICATION = 'e_library.wsgi.application'
 if os.environ.get('H_DEBUG', False):
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2', # pip install psycopg2
+            'ENGINE': 'django.db.backends.postgresql_psycopg2', # pip install psycopg2 in case error $ sudo apt install libpq-dev python3-dev
             'NAME': os.environ['H_DB_NAME']
     ,        'USER': os.environ['H_DB_USER'],
             'PASSWORD': os.environ['H_DB_PASSWORD'],
@@ -94,14 +94,14 @@ USE_L10N = True
 USE_TZ = True
 
 LANGUAGES = [
-    ('en', _('English')),
-    ('hi', _('Hindi')),
-    ('ta', _('Tamil')),
-    ('te', _('Telugu')),
-    ('ur', _('Urdu')),
-    ('pa', _('Punjabi')),
-    ('mr', _('Marathi')),
-    ('bn', _('Bengali')),
+    ('en', 'English'),
+    ('hi', 'Hindi'),
+    ('ta', 'Tamil'),
+    ('te', 'Telugu'),
+    ('ur', 'Urdu'),
+    ('pa', 'Punjabi'),
+    ('mr', 'Marathi'),
+    ('bn', 'Bengali'),
 ]
 LANGUAGES_BIDI = ['ur', ]
 
@@ -127,7 +127,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Custome User Model
 AUTH_USER_MODEL = 'account.User'
 
-LOGIN_URL = 'system:login' 
+LOGIN_URL = 'system:login'
 LOGIN_REDIRECT_URL = 'system:home'
 LOGOUT_REDIRECT_URL = 'system:home'
 
@@ -142,52 +142,52 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 
 BOOK_GENRE = [
-    (1, 'Action and adventure'), 
-    (2, 'Art'), 
-    (3, 'Alternate history'), 
-    (4, 'Autobiography'), 
-    (5, 'Anthology'), 
-    (6, 'Biography'), 
-    (7, 'Chick lit'), 
-    (8, 'Book review'), 
-    (9, "Children's"), 
-    (10, 'Cookbook'), 
-    (11, 'Comic book'), 
-    (12, 'Diary'), 
-    (13, 'Coming-of-age'), 
-    (14, 'Dictionary'), 
-    (15, 'Crime'), 
-    (16, 'Encyclopedia'), 
-    (17, 'Drama'), 
-    (18, 'Guide'), 
-    (19, 'Fairytale'), 
-    (20, 'Health'), 
-    (21, 'Fantasy'), 
-    (22, 'History'), 
-    (23, 'Graphic novel'), 
-    (24, 'Journal'), 
-    (25, 'Historical fiction'), 
-    (26, 'Math'), 
-    (27, 'Horror'), 
-    (28, 'Memoir'), 
-    (29, 'Mystery Prayer'), 
-    (30, 'Paranormal romance'), 
-    (31, 'Religion, spirituality and new age'), 
-    (32, 'Picture book'), 
-    (33, 'Textbook'), 
-    (34, 'Poetry'), 
-    (35, 'Review'), 
-    (36, 'Political thriller'), 
-    (37, 'Science'), 
-    (38, 'Romance'), 
-    (39, 'Self help'), 
-    (40, 'Satire'), 
-    (41, 'Travel'), 
-    (42, 'Science fiction'), 
-    (43, 'True crime'), 
-    (44, 'Short story'), 
-    (45, 'Suspense'), 
-    (46, 'Thriller'), 
+    (1, 'Action and adventure'),
+    (2, 'Art'),
+    (3, 'Alternate history'),
+    (4, 'Autobiography'),
+    (5, 'Anthology'),
+    (6, 'Biography'),
+    (7, 'Chick lit'),
+    (8, 'Book review'),
+    (9, "Children's"),
+    (10, 'Cookbook'),
+    (11, 'Comic book'),
+    (12, 'Diary'),
+    (13, 'Coming-of-age'),
+    (14, 'Dictionary'),
+    (15, 'Crime'),
+    (16, 'Encyclopedia'),
+    (17, 'Drama'),
+    (18, 'Guide'),
+    (19, 'Fairytale'),
+    (20, 'Health'),
+    (21, 'Fantasy'),
+    (22, 'History'),
+    (23, 'Graphic novel'),
+    (24, 'Journal'),
+    (25, 'Historical fiction'),
+    (26, 'Math'),
+    (27, 'Horror'),
+    (28, 'Memoir'),
+    (29, 'Mystery Prayer'),
+    (30, 'Paranormal romance'),
+    (31, 'Religion, spirituality and new age'),
+    (32, 'Picture book'),
+    (33, 'Textbook'),
+    (34, 'Poetry'),
+    (35, 'Review'),
+    (36, 'Political thriller'),
+    (37, 'Science'),
+    (38, 'Romance'),
+    (39, 'Self help'),
+    (40, 'Satire'),
+    (41, 'Travel'),
+    (42, 'Science fiction'),
+    (43, 'True crime'),
+    (44, 'Short story'),
+    (45, 'Suspense'),
+    (46, 'Thriller'),
     (47, 'Young adult')
 ]
 
@@ -221,26 +221,26 @@ LIST_STATE = [
     ('MP', 'Madhya Pradesh'),
     ('MH', 'Maharashtra'),
     ('MN', 'Manipur'),
-    ('ML', 'Meghalaya'),	
-    ('MZ', 'Mizoram'),	
-    ('NL', 'Nagaland'),	
-    ('OR', 'Odisha'),	
-    ('PB', 'Punjab'),	
-    ('RJ', 'Rajasthan'),	
-    ('SK', 'Sikkim'),	
-    ('TN', 'Tamil Nadu'),	
-    ('TG', 'Telangana'),	
-    ('TR', 'Tripura'),	
-    ('UT', 'Uttarakhand'),	
-    ('UP', 'Uttar Pradesh'),	
-    ('WB', 'West Bengal'),	
-    ('AN', 'Andaman and Nicobar Islands'),	
-    ('CH', 'Chandigarh'),	
-    ('DB', 'Dadra and Nagar Haveli'),	
-    ('DD', 'Daman and Diu'),	
-    ('DL', 'Delhi'),	
-    ('JK', 'Jammu and Kashmir'),	
-    ('LA', 'Ladakh'),	
-    ('LD', 'Lakshadweep'),	
+    ('ML', 'Meghalaya'),
+    ('MZ', 'Mizoram'),
+    ('NL', 'Nagaland'),
+    ('OR', 'Odisha'),
+    ('PB', 'Punjab'),
+    ('RJ', 'Rajasthan'),
+    ('SK', 'Sikkim'),
+    ('TN', 'Tamil Nadu'),
+    ('TG', 'Telangana'),
+    ('TR', 'Tripura'),
+    ('UT', 'Uttarakhand'),
+    ('UP', 'Uttar Pradesh'),
+    ('WB', 'West Bengal'),
+    ('AN', 'Andaman and Nicobar Islands'),
+    ('CH', 'Chandigarh'),
+    ('DB', 'Dadra and Nagar Haveli'),
+    ('DD', 'Daman and Diu'),
+    ('DL', 'Delhi'),
+    ('JK', 'Jammu and Kashmir'),
+    ('LA', 'Ladakh'),
+    ('LD', 'Lakshadweep'),
     ('PY', 'Puducherry'),
 ]

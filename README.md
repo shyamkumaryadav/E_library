@@ -24,7 +24,7 @@
 
 ### My Model
 [<img src="Image_db/All_Model.png">](Image_db/All_Model.png)
-  
+## vs
 [<img src="Image_db/Book_Model.jpeg">](Image_db/Book_Model.jpeg)
 
 

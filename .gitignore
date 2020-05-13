@@ -6,13 +6,18 @@ src/__pycache__/
 __pycache__/
 # my database file
 src/db.sqlite3
+
 .ipynb_checkpoints/
 .vscode/
 *.py[cod]
 *$py.class
 .idea/
 .vscode/
-src/media/
+!src/media/User_Profile/default.png
+!src/media/Book_cover/default.png
+src/media/User_Profile/
+src/media/Book_cover/
+
 #Jupyter Notebook
 Panda_Bake*
 #copy from Github https://github.com/dr5hn/countries-states-cities-database

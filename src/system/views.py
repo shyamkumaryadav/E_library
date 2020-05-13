@@ -1,14 +1,12 @@
 from django.shortcuts import render, redirect
-from django.template import RequestContext
-from django.views.generic.base import TemplateResponseMixin
 from django.http import Http404, HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from .forms import UserCreationForm, UserLoginForm
+
 from crispy_forms.utils import render_crispy_form
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+from account.forms import UserCreationForm, UserLoginForm
 from system import models
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from account.models import User
 
 
 def home(request):
@@ -20,11 +18,9 @@ def home(request):
 
 def about(request):
 	template_name = 'system/about.html'
-
 	context = {
-		'title' : 'YouTube'
-	}
-	
+		'title' : 'About'
+	}	
 	return render(request, template_name, context)
 
 def terms(request):
@@ -39,13 +35,6 @@ def viewbooks(request):
 	form = UserLoginForm(request.POST or None)
 	if request.method == 'POST':
 		print("post", request)
-		username = request.POST['username']
-		password = request.POST['password']
-		user = authenticate(request, username=username, password=password)
-		if user is not None:
-			login(request, user)
-			print('Login')
-			return redirect('system:home')
 	context = {
 		'title' : 'view books',
 		'form' : form
@@ -125,11 +114,3 @@ def shyamkumaryadav(request):
 		'title' : 'shyamkumar yadav'
 	}
 	return render(request, template_name, context)
-class AuthorUpdate(UpdateView):
-	model = models.MyUser
-	fields = ('__all__')
-
-def handler404(request, *args, **argv):
-	return HttpResponseNotFound(f"<h1>This Page <br><u>{request.is_secure()}</u><br> you are not find this on page</h1>")
-def handler500(request, *args, **argv):
-	return HttpResponseNotFound(f"<h1>This Page <br><u>{request}</u><br> you are not find this on page</h1>")

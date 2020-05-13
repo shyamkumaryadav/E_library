@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     'django_extensions',
     #myApps
     'system.apps.SystemConfig',
-    #App fror Account
+    #App fro Account
     'account.apps.AccountConfig',
     #Crispy Form is Best
     'crispy_forms',
@@ -87,7 +87,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# DATE_INPUT_FORMATS = ['%d %B, %Y',]
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
@@ -126,7 +125,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Custome User Model
-AUTH_USER_MODEL = 'system.MyUser'
+AUTH_USER_MODEL = 'account.User'
 
 LOGIN_URL = 'system:login' 
 LOGIN_REDIRECT_URL = 'system:home'
@@ -190,4 +189,58 @@ BOOK_GENRE = [
     (45, 'Suspense'), 
     (46, 'Thriller'), 
     (47, 'Young adult')
+]
+
+BOOK_EDITION = [
+    (1, '1st'),
+    (2, '2nd'),
+    (3, '3rd'),
+    (4, '4th'),
+    (5, '5th'),
+    (6, '6th'),
+    (7, '7th'),
+    (8, '8th'),
+    (9, '9th'),
+    (10, '10th')
+]
+
+LIST_STATE = [
+    (None, "Select State"),
+    ('AP', 'Andhra Pradesh'),
+    ('AR', 'Arunachal Pradesh'),
+    ('AS', 'Assam'),
+    ('BR', 'Bihar'),
+    ('CT', 'Chhattisgarh'),
+    ('GA', 'Goa'),
+    ('GJ', 'Gujarat'),
+    ('HR', 'Haryana'),
+    ('HP', 'Himachal Pradesh'),
+    ('JH', 'Jharkhand'),
+    ('KA', 'Karnataka'),
+    ('KL', 'Kerala'),
+    ('MP', 'Madhya Pradesh'),
+    ('MH', 'Maharashtra'),
+    ('MN', 'Manipur'),
+    ('ML', 'Meghalaya'),	
+    ('MZ', 'Mizoram'),	
+    ('NL', 'Nagaland'),	
+    ('OR', 'Odisha'),	
+    ('PB', 'Punjab'),	
+    ('RJ', 'Rajasthan'),	
+    ('SK', 'Sikkim'),	
+    ('TN', 'Tamil Nadu'),	
+    ('TG', 'Telangana'),	
+    ('TR', 'Tripura'),	
+    ('UT', 'Uttarakhand'),	
+    ('UP', 'Uttar Pradesh'),	
+    ('WB', 'West Bengal'),	
+    ('AN', 'Andaman and Nicobar Islands'),	
+    ('CH', 'Chandigarh'),	
+    ('DB', 'Dadra and Nagar Haveli'),	
+    ('DD', 'Daman and Diu'),	
+    ('DL', 'Delhi'),	
+    ('JK', 'Jammu and Kashmir'),	
+    ('LA', 'Ladakh'),	
+    ('LD', 'Lakshadweep'),	
+    ('PY', 'Puducherry'),
 ]

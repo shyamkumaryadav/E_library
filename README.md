@@ -23,9 +23,9 @@
      7. Book Issuing Process -- Issue/Return Books  
 
 ### My Model
-    [<img src="Image_db/All_Model.png">](Image_db/All_Model.png)
-    
-    [<img src="Image_db/Book_Model.png">](Image_db/Book_Model.png)
+[<img src="Image_db/All_Model.png">](Image_db/All_Model.png)
+  
+[<img src="Image_db/Book_Model.png">](Image_db/Book_Model.png)
 
 
 

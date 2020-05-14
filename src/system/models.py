@@ -3,7 +3,6 @@ from django.db import models
 from django.conf import settings
 from django.core import validators
 from PIL import Image
-
 from account.models import User
 
 

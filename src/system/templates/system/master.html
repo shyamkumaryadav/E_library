@@ -1,13 +1,10 @@
 {% load static %}
 {% load crispy_forms_tags %}
-<!doctype html>
-<html lang="en">
+<html>
 <head>
 
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-	
 	<!-- bootstrap css -->
 	<link rel="stylesheet" type="text/css" href="{% static 'system/bootstrap/css/bootstrap.min.css'%}">
 	<!-- datatables css -->
@@ -31,12 +28,12 @@
 	<!-- jquery -->
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-	
+
 	{% block head %}
 	{% endblock head %}
 
 	<!-- test messages -->
-	
+
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light">
@@ -45,7 +42,7 @@
 			E-Library
 		</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>					
+			<span class="navbar-toggler-icon"></span>
 		</button>
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -58,7 +55,7 @@
 				</li>
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'system:terms'%}">Terms</a>
-				</li>												
+				</li>
 			</ul>
 
 			<ul class="navbar-nav">
@@ -66,17 +63,19 @@
 					<a class="nav-link" href="{% url 'system:viewbooks'%}">View Books</a>
 				</li>
 				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'system:userlogin' %}">User Login</a>
+					<a class="nav-link" href="{% url 'account:login' %}">User Login</a>
 				</li>
 				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'system:signup' %}">Sign Up</a>
+					<a class="nav-link" href="{% url 'account:signup' %}">Sign Up</a>
 				</li>
+				{% if user.is_active %}
 				<li class="nav-item active">
-					<a class="nav-link" href="#">Logout</a>
+					<a class="nav-link" href="{% url 'account:logout' %}">Logout</a>
 				</li>
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'system:shyamkumaryadav' %}">Hello user</a>
 				</li>
+				{% endif %}
 			</ul>
 		</div>
 	</nav>
@@ -120,14 +119,14 @@
 						<a id="linkbtn5" class="footerlinks" href="{% url 'system:adminbookissuing' %}">Book Issuing</a>&nbsp;
 						<a id="linkbtn6" class="footerlinks" href="{% url 'system:adminmembermanagement' %}">Member Management</a>
 					</p>
-				</div>		
+				</div>
 			</div>
 		</div>
 		<div class="container-fluid" id="footer2">
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12 text-center">
 					<p style="color: whitesmoke"><i class="far fa-copyright"></i> All right Reversed. <a class="footerlinks" href="{%url 'system:shyamkumaryadav'%}" target="_blank">Shyamkumar Yadav</a></p>
-				</div>	
+				</div>
 			</div>
 		</div>
 	</footer>

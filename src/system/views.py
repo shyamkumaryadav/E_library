@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
+from django.contrib.auth import login
 from crispy_forms.utils import render_crispy_form
 from account.forms import UserCreationForm, UserLoginForm
 from system import models
 from account.models import User
+from account.forms import AuthenticationForm
 
 
 def home(request):
@@ -33,9 +35,13 @@ def terms(request):
 
 def viewbooks(request):
     template_name = 'system/viewbooks.html'
-    form = UserLoginForm(request.POST or None)
     if request.method == 'POST':
-        print("post", request)
+        form = UserLoginForm(request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            return redirect('system:home')
+    else:
+        form = UserLoginForm(None)
     context = {
         'title': 'view books',
         'form': form
@@ -45,9 +51,13 @@ def viewbooks(request):
 
 def userlogin(request):
     template_name = 'system/userlogin.html'
-
+    forms = UserLoginForm(request.POST or None)
+    if forms.is_valid():
+        login(request, forms.get_user())
+        return redirect('system:home')
     context = {
-        'title': 'user login'
+        'title': 'user login',
+        'form': forms
     }
     return render(request, template_name, context)
 

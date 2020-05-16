@@ -1,1 +1,1 @@
-# default_app_config = 'system.apps.SystemConfig'
+default_app_config = 'system.apps.SystemConfig'

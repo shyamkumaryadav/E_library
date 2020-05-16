@@ -16,9 +16,9 @@ INSTALLED_APPS = [
     #Django Extensions
     'django_extensions',
     #myApps
-    'system.apps.SystemConfig',
+    'system',
     #App fro Account
-    'account.apps.AccountConfig',
+    'account',
     #Crispy Form is Best
     'crispy_forms',
 ]
@@ -131,8 +131,10 @@ LOGIN_URL = 'system:login'
 LOGIN_REDIRECT_URL = 'system:home'
 LOGOUT_REDIRECT_URL = 'system:home'
 
+# crispy-form
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+# password Email send
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -150,7 +152,7 @@ BOOK_GENRE = [
     (6, 'Biography'),
     (7, 'Chick lit'),
     (8, 'Book review'),
-    (9, "Children's"),
+    (9, 'Children\'s'),
     (10, 'Cookbook'),
     (11, 'Comic book'),
     (12, 'Diary'),
@@ -205,7 +207,6 @@ BOOK_EDITION = [
 ]
 
 LIST_STATE = [
-    (None, "Select State"),
     ('AP', 'Andhra Pradesh'),
     ('AR', 'Arunachal Pradesh'),
     ('AS', 'Assam'),

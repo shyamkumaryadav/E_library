@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.views.generic import View
 from django import views
+from django.conf import settings
 from django.contrib.auth import login, logout
 
 
@@ -13,10 +13,12 @@ def user_login(request):
     login(request, *args, **kwargs)
 
 
-class Login():
-	template_name = "login.html"
-    def get(self, request, *args, **kwargs):
-        pass
+class Logout(views.View):
+    template_name = "logout.html"
 
-    def post(self, request, *args, **kwargs):
+    def get(self, request):
+        logout(request)
+        return redirect(settings.LOGOUT_REDIRECT_URL)
+
+    def post(self, request):
         pass

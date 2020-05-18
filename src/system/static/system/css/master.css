@@ -1,3 +1,7 @@
+*{
+	padding: 0;
+	margin: 0;
+}
 .footerlinks{
 	color: #ffffff;
 	text-decoration: none !important;

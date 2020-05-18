@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core import validators
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
@@ -16,11 +17,15 @@ def upload_to_user(instance, filename):
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, full_name, email, contactNo, date_of_birth, state, city, pincode, full_address, profile, is_defaulter=False, password=None):
+    def create_user(self, first_name, last_name, username, email, contactNo, date_of_birth, state, city, pincode, full_address, profile, is_defaulter=False, password=None):
         if not email:
-            raise ValueError('User must have an email address')
+            raise ValueError('User must have an email address.')
+        if not username:
+            raise ValueError('User must have an Username.')
         user = self.model(
-            full_name=full_name,
+            first_name=first_name,
+            last_name=last_name,
+            username=self.model.normalize_username(username),
             email=self.normalize_email(email),
             date_of_birth=date_of_birth,
             contactNo=contactNo,
@@ -35,9 +40,11 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, full_name=None, contactNo=None, date_of_birth=None, state=None, city=None, pincode=None, full_address=None, profile=None, password=None):
+    def create_superuser(self, username, email=None, first_name=None, last_name=None, contactNo=None, date_of_birth=None, state=None, city=None, pincode=None, full_address=None, profile=None, password=None):
         user = self.create_user(
-            full_name=full_name,
+            first_name=first_name,
+            last_name=last_name,
+            username=username,
             email=email,
             contactNo=contactNo,
             date_of_birth=date_of_birth,
@@ -49,22 +56,37 @@ class UserManager(BaseUserManager):
             password=password,
         )
         user.is_admin = True
-        user.is_defaulter = False
         user.save(using=self._db)
         return user
 
 
 class User(AbstractBaseUser):
-    full_name = models.CharField(
-        verbose_name="Full Name",
+    first_name = models.CharField(
+        verbose_name="First Name",
         max_length=50,
         validators=[
-            validators.RegexValidator(regex=r"[A-Za-z]*\s[A-Za-z]*\s[A-Za-z]*", message="Enter Valid Full Name Ex.shyam kumar yadav")],
+            validators.RegexValidator(regex=r"^[A-Za-z ]+$", message="Enter Valid First Name.")],
         null=True,
     )
+    last_name = models.CharField(
+        verbose_name="Last Name",
+        max_length=20,
+        validators=[
+            validators.RegexValidator(regex=r"^[A-Za-z]+$", message="Enter Valid Last Name.")],
+        null=True,
+    )
+    username = models.CharField(
+        verbose_name='Username',
+        max_length=16,
+        unique=True,
+        help_text='16 characters or fewer. Letters, digits and @ or _ only.',
+        validators=[UnicodeUsernameValidator()],
+        # error_messages={
+        #     'unique': "A user with that username already exists.", }
+    )
     email = models.EmailField(
-        verbose_name='email ',
-        max_length=255,
+        verbose_name='email',
+        max_length=30,
         unique=True,
     )
     date_of_birth = models.DateField(
@@ -111,13 +133,17 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['full_name', 'contactNo',
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'contactNo',
                        'date_of_birth', 'state', 'city', 'full_address', 'profile']
 
+    class Meta:
+        verbose_name = 'user'
+        verbose_name_plural = 'users'
+
     def __str__(self):
-        return f"id :{self.id}, {self.email}"
+        return self.email
 
     def has_perm(self, perm, obj=None):
         return True
@@ -130,23 +156,11 @@ class User(AbstractBaseUser):
 
     @property
     def get_full_name(self):
-        return self.full_name
+        return f"{self.first_name} {self.last_name}"
 
     @property
     def get_first_name(self):
-        return self.full_name.split(' ')[0]
-
-    @property
-    def get_short_name(self):
-        return "_".join(self.full_name.split(' ')[::2])
-
-    @property
-    def defaulter(self):
-        return self.is_defaulter
-
-    @property
-    def get_book_list(self):
-        return self.full_name
+        return self.first_name
 
     @property
     def is_staff(self):

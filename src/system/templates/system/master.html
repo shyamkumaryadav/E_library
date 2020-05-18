@@ -88,28 +88,28 @@
 	</nav>
 	{% if messages %}
 	    {% for message in messages %}
-		    <div class="alert alert-{{ message.tags }}" role="alert">
-			    <p>{{ message }}</p>
-		    </div>
+			<div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-0" role="alert">
+				{{ message }}
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			    	<span aria-hidden="true">&times;</span>
+			  	</button>
+			</div>
 	    {% endfor %}
 	{% endif %}
-
-	{% if user.is_authenticated %}
-	Email {{ user.email}} <br>
-	is_active {{ user.is_active}} <br>
-	is_admin {{ user.is_admin}} <br>
-	has_perms {{ user.has_prems }} <br>
-	user: {{ user }} <br>
-	{% endif %}
-
-		<!-- main block  -->
+	<div class="alert alert-info alert-dismissible fade in out show mb-0" role="alert">
+				lor
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			    	<span aria-hidden="true">&times;</span>
+			  	</button>
+			</div>
+	<!-- main block  -->
 	<div id="mainblock">
-				{% block main %}
-				{% endblock main %}
+		{% block main %}
+		{% endblock main %}
 	</div>
-		<!-- endmain block  -->
+	<!-- endmain block  -->
 
-		<!-- Footer -->
+	<!-- Footer -->
 	<footer>
 		{% if user.is_admin %}
 		<div id="footer1" class="container-fluid">

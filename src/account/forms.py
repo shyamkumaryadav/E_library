@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import (
     authenticate, get_user_model, password_validation
 )
+from django.contrib import messages
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import *
 from django.contrib.auth.forms import (
@@ -27,7 +28,6 @@ class UserCreationForm(forms.ModelForm):
     )
     password2 = forms.CharField(
         label="Password confirmation",
-        # validators=[password_validation.validate_password],
         widget=forms.PasswordInput(
             attrs={'class': 'form-control', 'placeholder': 'Enter Same Password', 'autocomplete': 'new-password'}),
         strip=False,
@@ -43,13 +43,16 @@ class UserCreationForm(forms.ModelForm):
                        'aria-describedby': "passwordHelpBlock", 'placeholder': 'Enter Full Name'}
             ),
             'email': forms.EmailInput(
-                attrs={'class': 'form-control', 'placeholder': 'Enter Email Address'}
+                attrs={'class': 'form-control',
+                       'placeholder': 'Enter Email Address'}
             ),
             'contactNo': forms.NumberInput(
-                attrs={'class': 'form-control', 'placeholder': 'Enter Contact Number'}
+                attrs={'class': 'form-control',
+                       'placeholder': 'Enter Contact Number'}
             ),
             'pincode': forms.NumberInput(
-                attrs={'class': 'form-control', 'placeholder': 'Enter 6 digit PinCode'}
+                attrs={'class': 'form-control',
+                       'placeholder': 'Enter 6 digit PinCode'}
             ),
             'city': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Enter City'}
@@ -68,7 +71,6 @@ class UserCreationForm(forms.ModelForm):
                 attrs={'class': 'custom-file-input'}
             ),
         }
-        error_messages = {}
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -79,7 +81,7 @@ class UserCreationForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
+        user.set_password(self.cleaned_data["password2"])
         if commit:
             user.save()
         return user
@@ -132,30 +134,32 @@ class UserChangeForm(forms.ModelForm):
             password.help_text = password.help_text.format('../password/')
         user_permissions = self.fields.get('user_permissions')
         if user_permissions:
-            user_permissions.queryset = user_permissions.queryset.select_related('content_type')
+            user_permissions.queryset = user_permissions.queryset.select_related(
+                'content_type')
 
     def clean_password(self):
         return self.initial["password"]
 
 
 class UserLoginForm(forms.Form):
-    email = forms.EmailField()
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'autofocus': True}))
     password = forms.CharField(
         label="Password",
         strip=False,
-        widget=forms.PasswordInput(
-            attrs={'class': 'form-control', 'placeholder': 'Enter Password', 'autocomplete': 'new-password'}),
+        widget=forms.PasswordInput(),
     )
 
-    def __init__(self, *args, **kwargs):
-        self.request = None
+    def __init__(self, request=None, *args, **kwargs):
+        self.request = request
         self.user_cache = None
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Column(Field('email', placeholder="Enter Email")),
             Column(Field('password', placeholder="Enter Password")),
-            Div(Submit('submit', 'Login', css_class="btn-block btn-lg"), css_class='text-center m-4'),
+            Div(Submit('submit', 'Login', css_class="btn-block btn-lg"),
+                css_class='text-center m-4'),
             Div(HTML('<input type="button" name="signup" value="signup" class="btn btn btn-info btn-block btn-lg" id="button-id-signup" onclick="location.href=\'{% url \'system:signup\'%}\'">'),
                 css_class='text-center m-4')
         )
@@ -168,8 +172,8 @@ class UserLoginForm(forms.Form):
         email = self.cleaned_data.get('email')
         password = self.cleaned_data.get("password")
         if email is not None and password:
-            print("good")
-            self.user_cache = authenticate(self.request, email=email, password=password)
+            self.user_cache = authenticate(
+                self.request, email=email, password=password)
             if self.user_cache is None:
                 raise forms.ValidationError(
                     "Please enter a correct email and password."

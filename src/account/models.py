@@ -98,11 +98,12 @@ class User(AbstractBaseUser):
                                     max_length=50,
                                     )
     profile = models.FileField(upload_to=upload_to_user,
-                               default='Member_Img/default_user.jpg',
+                               default='User_Profile/default.png',
                                blank=True,
                                validators=[validators.FileExtensionValidator(
-                                   allowed_extensions=validators.get_available_image_extensions(), message="Select valid Image.")],
-                               )
+                                   allowed_extensions=validators.get_available_image_extensions(),
+                                   message="Select valid Profile Image.")
+                               ],)
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -112,9 +113,8 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = []
-    REQUIRED_FIELDS += ['full_name', 'contactNo',
-                        'date_of_birth', 'state', 'city', 'full_address', 'profile']
+    REQUIRED_FIELDS = ['full_name', 'contactNo',
+                       'date_of_birth', 'state', 'city', 'full_address', 'profile']
 
     def __str__(self):
         return f"id :{self.id}, {self.email}"
@@ -131,6 +131,10 @@ class User(AbstractBaseUser):
     @property
     def get_full_name(self):
         return self.full_name
+
+    @property
+    def get_first_name(self):
+        return self.full_name.split(' ')[0]
 
     @property
     def get_short_name(self):

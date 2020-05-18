@@ -1,11 +1,13 @@
 from django.contrib import admin
-from .models import Book,Issue,BookAuthor,BookPublish,Genre
+from .models import Book, Issue, BookAuthor, BookPublish, Genre
+
 
 class BookAdmin(admin.ModelAdmin):
-	list_display = ('bookid', 'name','author', 'language', 'display_genre','stock','today_stock')
-	search_fields = ('name',)
-	ordering = ('bookid',)
-	list_filter = ('genre', 'language',)
+    list_display = ('bookid', 'name', 'author', 'language',
+                    'display_genre', 'stock', 'today_stock')
+    search_fields = ('name',)
+    ordering = ('bookid',)
+    list_filter = ('genre', 'language',)
 
 
 admin.site.register(Book, BookAdmin)

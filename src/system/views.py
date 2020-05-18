@@ -5,7 +5,9 @@ from django.contrib.auth import login
 from crispy_forms.utils import render_crispy_form
 from account.forms import UserCreationForm, UserLoginForm
 from system import models
+from django.contrib.auth.decorators import login_required
 from account.models import User
+from django.contrib import messages
 from account.forms import AuthenticationForm
 
 
@@ -25,8 +27,10 @@ def about(request):
     return render(request, template_name, context)
 
 
+@login_required
 def terms(request):
     template_name = 'system/terms.html'
+    messages.add_message(request, messages.INFO, 'Hello world.')
     context = {
         'title': 'Terms',
     }

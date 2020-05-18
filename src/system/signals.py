@@ -10,4 +10,5 @@ def update_book_today_stock(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=Book)
 def p_update_book_today_stock(sender, instance, **kwargs):
+    instance.today_stock = instance.stock - instance.issue_set.all().count()
     print("Issue is p_update!!!")

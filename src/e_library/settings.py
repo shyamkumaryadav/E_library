@@ -19,7 +19,7 @@ INSTALLED_APPS = [
     'system',
     #App fro Account
     'account',
-    #Crispy Form is Best
+    #Crispy Form is Best idea
     'crispy_forms',
 ]
 
@@ -127,7 +127,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Custome User Model
 AUTH_USER_MODEL = 'account.User'
 
-LOGIN_URL = 'system:login'
+LOGIN_URL = 'account:login'
 LOGIN_REDIRECT_URL = 'system:home'
 LOGOUT_REDIRECT_URL = 'system:home'
 

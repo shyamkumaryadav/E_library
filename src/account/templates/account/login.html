@@ -1,7 +1,7 @@
 {% extends 'system/master.html' %}
 {% load static %}
 
-
+{% load crispy_forms_tags %}
 {% block head %}
 <link rel="icon" href="{%static 'system/images/imgs/adminuser.png'%}" sizes="144x144" >
 <title>{{ title }}</title>
@@ -9,9 +9,8 @@
 {% endblock head %}
 
 {% block main %}
-
 <div class="container">
-   <div class="row">
+   <div class="row pb-4">
       <div class="col-md-6 mx-auto">
          <div class="card">
             <div class="card-body">
@@ -25,7 +24,7 @@
                <div class="row">
                   <div class="col">
                      <center>
-                        <h3>Admin Login</h3>
+                        <h3>User Login</h3>
                      </center>
                   </div>
                </div>
@@ -34,24 +33,9 @@
                      <hr>
                   </div>
                </div>
-               <div class="row">
-                  <div class="col">
-                     <label>Admin ID</label>
-                     <div class="form-group">
-                        <input type="text" class="form-control" ID="TextBox1" placeholder="Admin ID"></input>
-                     </div>
-                     <label>Password</label>
-                     <div class="form-group">
-                        <input type="password" class="form-control" ID="TextBox2" placeholder="Password"></input>
-                     </div>
-                     <div class="form-group">
-                        <Button class="btn btn-success btn-block btn-lg" ID="Button1" Text="Login">Login</Button>
-                     </div>
-                  </div>
-               </div>
+               {% crispy form %}
             </div>
          </div>
-         <a href="{% url 'system:home' %}"><i class="fas fa-arrow-left"></i> Back to Home</a><br><br>
       </div>
    </div>
 </div>

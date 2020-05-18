@@ -62,35 +62,38 @@
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'system:viewbooks'%}">View Books</a>
 				</li>
+				{% if user.is_authenticated is False %}
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'account:login' %}">User Login</a>
 				</li>
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'account:signup' %}">Sign Up</a>
 				</li>
-				{% if user.is_active %}
+				{% elif user.is_authenticated is True %}
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'account:logout' %}">Logout</a>
 				</li>
 				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'system:shyamkumaryadav' %}">Hello user</a>
+					<a class="nav-link" href="{% url 'system:shyamkumaryadav' %}">
+						Hello, {% if user.is_admin %}
+									Admin
+								{% else %}
+									{{ user.get_first_name|default:"user"|capfirst }}
+								{% endif %}
+					</a>
 				</li>
 				{% endif %}
 			</ul>
 		</div>
 	</nav>
+	{% if messages %}
+	    {% for message in messages %}
+		    <div class="alert alert-{{ message.tags }}" role="alert">
+			    <p>{{ message }}</p>
+		    </div>
+	    {% endfor %}
+	{% endif %}
 
-	<div class="row">
-		<div class="col-md-8">
-			{% if messages %}
-				{% for message in messages %}
-					<div class="alert alert-{{ message.tags}}">
-						{{ message }}
-					</div>
-				{% endfor %}
-			{% endif %}
-		</div>
-	</div>
 	{% if user.is_authenticated %}
 	Email {{ user.email}} <br>
 	is_active {{ user.is_active}} <br>
@@ -100,19 +103,19 @@
 	{% endif %}
 
 		<!-- main block  -->
-<div id="mainblock">
-			{% block main %}
-			{% endblock main %}
-</div>
+	<div id="mainblock">
+				{% block main %}
+				{% endblock main %}
+	</div>
 		<!-- endmain block  -->
 
 		<!-- Footer -->
 	<footer>
+		{% if user.is_admin %}
 		<div id="footer1" class="container-fluid">
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-sm-12 text-center">
 					<p>
-						<a id="linkbtn1" class="footerlinks" href="{% url 'system:adminlogin' %}">Admin Login</a>&nbsp;
 						<a id="linkbtn2" class="footerlinks" href="{% url 'system:adminauthormanagement' %}">Author Management</a>&nbsp;
 						<a id="linkbtn3" class="footerlinks" href="{% url 'system:adminpublishermanagement' %}">Publisher Mangement</a>&nbsp;
 						<a id="linkbtn4" class="footerlinks" href="{% url 'system:adminbookinventory' %}">Book Inventory</a>&nbsp;
@@ -122,10 +125,11 @@
 				</div>
 			</div>
 		</div>
+		{% endif %}
 		<div class="container-fluid" id="footer2">
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12 text-center">
-					<p style="color: whitesmoke"><i class="far fa-copyright"></i> All right Reversed. <a class="footerlinks" href="{%url 'system:shyamkumaryadav'%}" target="_blank">Shyamkumar Yadav</a></p>
+					<p class="pt-2" style="color: whitesmoke"><i class="far fa-copyright"></i> All right Reversed. <a class="footerlinks" href="{%url 'system:shyamkumaryadav'%}" target="_blank">Shyamkumar Yadav</a></p>
 				</div>
 			</div>
 		</div>

@@ -1,24 +1,30 @@
 from django.shortcuts import render, redirect
-from django import views
-from django.conf import settings
-from django.contrib.auth import login, logout
+from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
+from django.contrib.auth.views import LoginView, LogoutView
+from django.views.generic import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from .forms import UserLoginForm, UserCreationForm
 
 
-def user_logout(request):
-    logout(request)
-    return redirect('system:home')
+class UserLoginView(LoginView):
+    form_class = UserLoginForm
+    template_name = 'account/login.html'
+    redirect_authenticated_user = True
 
 
-def user_login(request):
-    login(request, *args, **kwargs)
+class UserLogoutView(LoginRequiredMixin, LogoutView):
+    template_name = 'account/logout.html'
 
 
-class Logout(views.View):
-    template_name = "logout.html"
+class UserCreateView(CreateView):
+    form_class = UserCreationForm
+    template_name = 'account/signup.html'
+    success_url = reverse_lazy('account:login')
 
-    def get(self, request):
-        logout(request)
-        return redirect(settings.LOGOUT_REDIRECT_URL)
-
-    def post(self, request):
-        pass
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('system:home')
+        else:
+            return super().get(request, *args, **kwargs)

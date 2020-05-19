@@ -1,7 +1,6 @@
 # Byte-compiled / optimized / DLL files
 src/system/__pycache__/
 src/e_library/__pycache__/
-src/system/migrations/
 src/__pycache__/
 __pycache__/
 # my database file
@@ -18,7 +17,9 @@ src/media/Book_cover/
 !src/media/User_Profile/default.png
 !src/media/Book_cover/default.png
 src/account/migrations/
+!src/system/migrations/__init__.py
 src/system/migrations/
+!src/system/migrations/__init__.py
 #Jupyter Notebook
 Panda_Bake*
 #copy from Github https://github.com/dr5hn/countries-states-cities-database

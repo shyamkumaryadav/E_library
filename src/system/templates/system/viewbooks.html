@@ -1,5 +1,4 @@
 {% extends 'system/master.html' %}
-{% load crispy_forms_tags %}
 {% block head %}
 <link rel="icon" href="#" sizes="144x144" >
 <title>{{ title }}</title>
@@ -7,10 +6,33 @@
 {% endblock head %}
 
 {% block main %}
+{% for book in books %}
+	<h3>{{ book.name}}</h3><br>
+{% endfor %}
 
+{% if is_paginated %}
+<nav aria-label="Page navigation example">
+	<ul class="pagination justify-content-center">
+	    <li class="page-item {% if page_obj.has_previous is False %}disabled{% endif %}">
+	    	<a class="page-link" href="{% if page_obj.has_previous %} ?page=1 {% else %} # {% endif %}">First
+	    	</a>
+	    </li>
+	    <li class="page-item {% if page_obj.has_previous is False %}disabled{% endif %}">
+	    	<a class="page-link" href="{% if page_obj.has_previous %} ?page={{ page_obj.previous_page_number }} {% else %} # {% endif %}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+	    </li>
 
-<h1 class="pd-5"> View Books </h1>
+		{% for num in page_obj.paginator.page_range %}
+		    {% if page_obj.number == num %}
+		      <li class="page-item active"><span class="page-link">{{ num }}<span class="sr-only">(current)</span>
+		      </span></li>
+		    {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
+		      <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+		    {% endif %}
+		{% endfor %}
 
-    {% crispy form %}
-
+		<li class="page-item {% if page_obj.has_next is False %}disabled{% endif %}"><a class="page-link" href="{% if page_obj.has_next %} ?page={{ page_obj.next_page_number }}{%endif%}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+		<li class="page-item {% if page_obj.has_next is False %}disabled{% endif %}"><a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.paginator.num_pages }}{%endif%}">Last</a></li>
+	</ul>
+</nav>
+{% endif %}
 {% endblock main %}

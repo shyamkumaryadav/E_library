@@ -151,7 +151,7 @@ class UserLoginForm(forms.Form):
                                 )),
             Div(Submit('submit', 'Login', css_class="btn-block btn-lg"),
                 css_class='text-center m-4'),
-            Div(HTML('<input type="button" name="signup" value="signup" class="btn btn btn-info btn-block btn-lg" id="button-id-signup" onclick="location.href=\'{% url \'system:signup\'%}\'">'),
+            Div(HTML('<input type="button" name="signup" value="signup" class="btn btn btn-info btn-block btn-lg" id="button-id-signup" onclick="location.href=\'{% url \'account:signup\'%}\'">'),
                 css_class='text-center m-4'),
             HTML('''<script>
                 $(document).ready(function() {

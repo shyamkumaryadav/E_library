@@ -17,10 +17,11 @@ class BookAuthor(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
-    date_of_death = models.DateField('Died', null=True, blank=True)
+    date_of_death = models.DateField(
+        verbose_name='Died', null=True, blank=True)
 
     def __str__(self):
-        return f"{self.first_name}_{self.last_name}"
+        return f"{self.first_name} {self.last_name}"
 
 
 class BookPublish(models.Model):
@@ -40,7 +41,7 @@ class Genre(models.Model):
 
 class Book(models.Model):
     bookid = models.CharField(
-        max_length=20, primary_key=True, verbose_name="Book ID")
+        max_length=120, primary_key=True, verbose_name="Book ID")
     name = models.CharField(max_length=120, verbose_name="Book Name")
     genre = models.ManyToManyField(Genre, verbose_name="Genre")
     author = models.ForeignKey(
@@ -62,34 +63,36 @@ class Book(models.Model):
         verbose_name="Current stock", null=True, blank=True)
     rating = models.DecimalField(
         max_digits=3, decimal_places=1, verbose_name="Rating")
-    profile = models.FileField(upload_to=upload_to_book, verbose_name="Book cover",
-                               default="Book_cover/default.png", blank=True,
-                               validators=[validators.FileExtensionValidator(
-                                   allowed_extensions=validators.get_available_image_extensions(),
-                                   message="Select valid Cover Image.")
-                               ],
-                               )
+    profile = models.FileField(
+        upload_to=upload_to_book, verbose_name="Book cover",
+        default="Book_cover/default.png", blank=True,
+        validators=[validators.FileExtensionValidator(
+                allowed_extensions=validators.get_available_image_extensions(),
+                message="Select valid Cover Image.")
+        ],
+    )
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["bookid"]
 
     def delete(self, *args, **kwargs):
         self.profile.delete()
         super(Book, self).delete(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.bookid}, {self.name}"
+        return self.name
+
+    @property
+    def list_genre(self):
+        return ', '.join(genre.get_name_display() for genre in self.genre.all())
 
     def display_genre(self):
         return ', '.join(genre.get_name_display() for genre in self.genre.all())
     display_genre.short_description = 'Genre'
 
-    def get_absolute_url(self):
-        return f'/book/{str(self.bookid)}/{self.author.__str__()}/{self.publish.__str__()}/'
-
-    @property
-    def get_book_name(self):
-        return f"{self.name.replace(' ','_')}"
+    # def get_absolute_url(self):
+    #     return f'/book/{str(self.bookid)}/{self.author.__str__()}/\
+    # {self.publish.__str__()}/'
 
 
 class Issue(models.Model):

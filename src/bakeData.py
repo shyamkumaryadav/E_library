@@ -1,21 +1,66 @@
 # import requests, bs4, faker
-# import os, django
+import os
+import django
+import faker
 
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'e_library.settings')
-# django.setup()
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'e_library.settings')
+django.setup()
 
-######################################################################################################
+
+from django.conf import settings
+from system.models import Book, BookAuthor, BookPublish, Genre
+lg = [settings.LANGUAGES[i][0] for i in range(len(settings.LANGUAGES))]
+be = [settings.BOOK_EDITION[i][0] for i in range(len(settings.BOOK_EDITION))]
+bg = [settings.BOOK_GENRE[i][0] for i in range(len(settings.BOOK_GENRE))]
+
+f = faker.Faker()
+
+
+def AddBook():
+    publish = BookPublish.objects.get_or_create(name=f.company())[0]
+    author = BookAuthor.objects.get_or_create(
+        first_name=f.first_name(),
+        last_name=f.last_name(),
+        date_of_birth=f.date_of_birth(),
+        date_of_death=f.date_this_year()
+    )[0]
+    genre = Genre.objects.filter(
+        name__in=f.random_elements(
+            bg, length=f.random_int(
+                min=1, max=6),
+            unique=True)
+    )
+    book = Book.objects.get_or_create(
+        bookid=f.uuid4(),
+        name=f.name(),
+        author=author,
+        publish=publish,
+        publish_Date=f.date(),
+        language=f.random_element(lg),
+        edition=f.random_element(be),
+        cost=f.pydecimal(
+            right_digits=2, positive=True, min_value=100, max_value=9999
+        ), page=f.pyint(),
+        description=f.catch_phrase(),
+        stock=f.pyint(),
+        rating=f.pydecimal(right_digits=1, positive=True,
+                           min_value=0, max_value=10),
+    )[0]
+    book.genre.set([*genre])
+
+
+##################################################
 # url = "http://127.0.0.1:8000/signup/"
 # fake = faker.Faker()
 # rg = requests.get(url)
 # html = bs4.BeautifulSoup(rq.content, "html.parser")
 # def all():
-# 	for _ in html.find_all('input'): 
+# 	for _ in html.find_all('input'):
 # 		print(f"{_['name']} : {_['type']}")
 
-# data = { 
+# data = {
 # 	html.input['name']:html.input['value'],
-# 	'email':"admin@123.com", 
+# 	'email':"admin@123.com",
 # 	'password':'as'
 # }
 # cookies = { 'csrftoken':html.input['value']}
@@ -23,8 +68,7 @@
 
 # def makeAcc()
 
-######################################################################################################
-
+########################################################
 
 
 # url = 'https://api.covid19india.org/state_district_wise.json'
@@ -35,7 +79,6 @@
 
 # citys = { i: list(r[i]['districtData']) for i in list_state}
 # # print(citys)
-
 
 
 # from system.models import BookAuthor, BookPublish, State, City
@@ -59,35 +102,36 @@
 # 		fname = faker.name()
 # 		publish = BookPublish.objects.get_or_create(name=fname)
 # def AddCountry():
-# 	for i in data: 
-# 		Country.objects.get_or_create(id=i['id'],name=i['name']) 
-# 		# print(f"id : {i['id']} name : {i['name']}") 
+# 	for i in data:
+# 		Country.objects.get_or_create(id=i['id'],name=i['name'])
+# 		# print(f"id : {i['id']} name : {i['name']}")
 
 # def AddState(stateList):
-# 	key = 0 
-# 	for i in data: 
-# 		try: 
-# 			for j in i['states']: 
-# 				#State.objects.get_or_create(id=i['id'],name=i['name'],country=Country.objects.get(id=i['id'])) 
-# 				print(f"id={i['id']},name={j},country={Country.objects.get(id=i['id']).name}") 
-# 		except KeyError: 
-# 			key+=1 
+# 	key = 0
+# 	for i in data:
+# 		try:
+# 			for j in i['states']:
+# 				#State.objects.get_or_create(id=i['id'],\
+# name=i['name'],country=Country.objects.get(id=i['id']))
+# 				print(f"id={i['id']},name={j},country={Country.objects.get(id=i['id']).name}")
+# 		except KeyError:
+# 			key+=1
 # 			print('sorry!!')
 # 	print('We are not abel to find some country state list = ',key)
 
 # def AddCity():
-# 	key = 0 
-# 	for i in data: 
-# 		try: 
+# 	key = 0
+# 	for i in data:
+# 		try:
 # 			for j in i['states']:
-# 				c_state = State.objects.filter(country__name=i['name']).filter(name=j)[0] 
-# 				print(f"\nCountry: {c_state.country}, name:{c_state.name} has City ") 
-# 				for c in i['states'][j]: 
-# 					City.objects.get_or_create(name=c,state=c_state) 
-# 					print(f"{c}\t",end="") 
-# 		except KeyError: 
-# 			key+=1 
-# 			print('sorry!!') 
+# 				c_state = State.objects.filter(country__name=i['name']).filter(name=j)[0]
+# 				print(f"\nCountry: {c_state.country}, name:{c_state.name} has City ")
+# 				for c in i['states'][j]:
+# 					City.objects.get_or_create(name=c,state=c_state)
+# 					print(f"{c}\t",end="")
+# 		except KeyError:
+# 			key+=1
+# 			print('sorry!!')
 
 
 # # AddState(list_state)

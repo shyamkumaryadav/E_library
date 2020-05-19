@@ -1,14 +1,22 @@
 from django.shortcuts import render, redirect
-from django.http import Http404, HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
+from django.views import generic
+from django.http import (
+    Http404,
+    HttpResponse,
+    HttpResponseNotFound,
+    HttpResponseRedirect,
+    JsonResponse
+)
 from django.urls import reverse
 from django.contrib.auth import login
 from crispy_forms.utils import render_crispy_form
 from account.forms import UserCreationForm, UserLoginForm
 from system import models
 from django.contrib.auth.decorators import login_required
-from account.models import User
 from django.contrib import messages
-from account.forms import AuthenticationForm
+
+from account.models import User
+from .models import Book
 
 
 def home(request):
@@ -37,58 +45,11 @@ def terms(request):
     return render(request, template_name, context)
 
 
-def viewbooks(request):
+class ViewBookView(generic.ListView):
+    model = Book
+    context_object_name = 'books'
+    paginate_by = 6
     template_name = 'system/viewbooks.html'
-    if request.method == 'POST':
-        form = UserLoginForm(request.POST)
-        if form.is_valid():
-            login(request, form.get_user())
-            return redirect('system:home')
-    else:
-        form = UserLoginForm(None)
-    context = {
-        'title': 'view books',
-        'form': form
-    }
-    return render(request, template_name, context)
-
-
-def userlogin(request):
-    template_name = 'system/userlogin.html'
-    forms = UserLoginForm(request.POST or None)
-    if forms.is_valid():
-        login(request, forms.get_user())
-        return redirect('system:home')
-    context = {
-        'title': 'user login',
-        'form': forms
-    }
-    return render(request, template_name, context)
-
-
-def adminlogin(request):
-    template_name = 'system/adminlogin.html'
-    context = {
-        'title': 'admin login'
-    }
-
-    return render(request, template_name, context)
-
-
-def signup(request):
-    template_name = 'system/signup.html'
-    form = UserCreationForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        print("hi from form sis valid")
-        return redirect('system:userlogin')
-    else:
-        print("hi from form is not valid")
-    context = {
-        'title': 'sign up',
-        'forms': form,
-    }
-    return render(request, template_name, context)
 
 
 def adminauthormanagement(request):

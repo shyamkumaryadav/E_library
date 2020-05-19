@@ -1,21 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views import generic
-from django.http import (
-    Http404,
-    HttpResponse,
-    HttpResponseNotFound,
-    HttpResponseRedirect,
-    JsonResponse
-)
-from django.urls import reverse
-from django.contrib.auth import login
-from crispy_forms.utils import render_crispy_form
-from account.forms import UserCreationForm, UserLoginForm
-from system import models
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-
-from account.models import User
+from django.db.models import Q
 from .models import Book
 
 
@@ -35,7 +20,6 @@ def about(request):
     return render(request, template_name, context)
 
 
-@login_required
 def terms(request):
     template_name = 'system/terms.html'
     messages.add_message(request, messages.INFO, 'Hello world.')
@@ -47,9 +31,19 @@ def terms(request):
 
 class ViewBookView(generic.ListView):
     model = Book
-    context_object_name = 'books'
+    search_kwarg = 'q'
     paginate_by = 6
     template_name = 'system/viewbooks.html'
+
+    def get_queryset(self):
+        search_kwarg = self.search_kwarg
+        name = self.kwargs.get(
+            search_kwarg) or self.request.GET.get(search_kwarg)
+        if name:
+            object_list = self.model.objects.filter(name__icontains=name)
+        else:
+            object_list = self.model.objects.all()
+        return object_list
 
 
 def adminauthormanagement(request):

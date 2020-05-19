@@ -3,8 +3,8 @@
 
 {% load crispy_forms_tags %}
 {% block head %}
-<link rel="icon" href="{%static 'system/images/imgs/adminuser.png'%}" sizes="144x144" >
-<title>{{ title }}</title>
+<link rel="icon" href="{%static 'system/images/imgs/generaluser.png'%}" sizes="144x144" >
+<title>{% if title %}{{ title }}{% else %}Sign In{% endif %}</title>
 
 {% endblock head %}
 

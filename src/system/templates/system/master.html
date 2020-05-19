@@ -27,7 +27,7 @@
 
 	<!-- jquery -->
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
+	<link rel="icon" href="{%static 'system/images/imgs/books.png'%}" sizes="144x144" >
 
 	{% block head %}
 	{% endblock head %}
@@ -36,7 +36,7 @@
 
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light">
+	<nav class="navbar navbar-expand-lg navbar-light " >
 		<a class="navbar-brand" href="{% url 'system:home' %}">
 			<img src="{% static 'system/images/imgs/books.png' %}" width="30" height="30">
 			E-Library
@@ -64,7 +64,7 @@
 				</li>
 				{% if user.is_authenticated is False %}
 				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'account:login' %}">Login</a>
+					<a class="nav-link" href="{% url 'account:signin' %}">Sign In</a>
 				</li>
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'account:signup' %}">Sign Up</a>
@@ -76,16 +76,18 @@
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'system:shyamkumaryadav' %}">
 						Hello, {% if user.is_admin %}
-									Admin
-								{% else %}
-									{{ user.get_first_name|default:"user"|capfirst }}
-								{% endif %}
+						Admin
+						{% else %}
+							{{ user.get_first_name|default:"user"|capfirst }}
+						{% endif %}
 					</a>
 				</li>
 				{% endif %}
 			</ul>
 		</div>
 	</nav>
+	<!-- main block  -->
+	<main id="mainblock">
 	{% if messages %}
 	    {% for message in messages %}
 			<div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-0" role="alert">
@@ -96,11 +98,9 @@
 			</div>
 	    {% endfor %}
 	{% endif %}
-	<!-- main block  -->
-	<div id="mainblock">
 		{% block main %}
 		{% endblock main %}
-	</div>
+	</main>
 	<!-- endmain block  -->
 
 	<!-- Footer -->

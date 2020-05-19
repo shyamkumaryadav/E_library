@@ -3,13 +3,13 @@
 {% load crispy_forms_tags %}
 {% block head %}
 <link rel="icon" href="{%static 'system/images/imgs/generaluser.png'%}" sizes="144x144" >
-<title>User Sign Up</title>
+<title>{% if title %}{{ title }}{% else %}Sign Up{% endif %}</title>
 {% endblock head %}
 
 {% block main %}
 <div class="container">
-   <div class="row pb-3">
-      <div class="col-md-6 mx-auto">
+   <div class="row py-2">
+      <div class="col-md-12 mx-auto">
          <div class="card">
             <div class="card-body">
                <div class="row">

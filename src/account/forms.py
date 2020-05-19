@@ -70,27 +70,39 @@ class UserCreationForm(forms.ModelForm):
         super(UserCreationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Field('username'),
-            Field('email'),
+            Row(
+                Column(Field('username')),
+                Column(Field('email')),
+            ),
             Row(
                 Column(Field('first_name')),
                 Column(Field('last_name')),
             ),
             Row(
-                Column(Field('date_of_birth', type="date")),
+                Column(Field('date_of_birth')),
                 Column(Field('contactNo')),
             ),
-            Field('state'),
             Row(
+                Column(Field('state')),
                 Column(Field('city')),
                 Column(Field('pincode')),
             ),
             Field('full_address', placeholder='Full Address',
-                  maxlength=100, rows=3),
-            Field('profile', ),
-            Field('password1'),
-            Field('password2'),
-            Div(Submit('submit', 'Sign Up'), css_class='text-center'),
+                  maxlength=100, rows=2),
+            Field('profile'),
+            Row(
+                Column(Field('password1')),
+                Column(Field('password2'))
+            ),
+            Div(Submit('submit', 'Sign Up', css_class='btn-lg',
+                       style="text-shadow: 3px 6px 6px black;"),
+                css_class='text-center'),
+            Div(HTML('''
+                    <p class="text-muted">Already have an account? 
+                        <a class="text-monospace text-uppercase text-decoration-none text-success" \
+                        href="{% url 'account:signin' %}">Sign in
+                        </a>
+                    </p>'''), css_class='text-center pt-2')
         )
         self.helper.form_id = 'userCreationForm'
         self.helper.form_class = 'blueForms'
@@ -149,9 +161,11 @@ class UserLoginForm(forms.Form):
                     <a href="" id="show_hide_password"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>\
                 </div>'
                                 )),
-            Div(Submit('submit', 'Login', css_class="btn-block btn-lg"),
+            Div(Submit('submit', 'Sign In', css_class="btn-block btn-lg", style="text-shadow: 3px 6px 6px black;"),
                 css_class='text-center m-4'),
-            Div(HTML('<input type="button" name="signup" value="signup" class="btn btn btn-info btn-block btn-lg" id="button-id-signup" onclick="location.href=\'{% url \'account:signup\'%}\'">'),
+            Div(HTML('''<p class="text-muted">New To E-library? 
+                <a class="text-monospace text-uppercase text-decoration-none text-success"\
+                    href="{% url 'account:signup' %}">Sign up</a></p>'''),
                 css_class='text-center m-4'),
             HTML('''<script>
                 $(document).ready(function() {

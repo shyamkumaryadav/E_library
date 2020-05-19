@@ -3,3 +3,4 @@ django-crispy-forms
 django-extensions
 pillow
 psycopg2
+faker

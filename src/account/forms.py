@@ -137,11 +137,7 @@ class UserChangeForm(forms.ModelForm):
 
 
 class UserLoginForm(forms.Form):
-    name = forms.CharField(
-        label="Username or Email",
-        # widget=forms.TextInput(
-        #     attrs={'placeholder': "Enter Username or Email"})
-    )
+    name = forms.CharField()
     password = forms.CharField(
         label="Password",
         strip=False,
@@ -157,7 +153,7 @@ class UserLoginForm(forms.Form):
         self.helper.layout = Layout(
             Column(Field('name', placeholder="Enter Username or Email")),
             Column(AppendedText('password',
-                                '<div class="input-group-addon">\
+                                '<div class="input-group-addon" style="background-color:transparent !important;">\
                     <a href="" id="show_hide_password"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>\
                 </div>'
                                 )),

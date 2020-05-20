@@ -72,9 +72,6 @@ class Book(models.Model):
         ],
     )
 
-    class Meta:
-        ordering = ["bookid"]
-
     def delete(self, *args, **kwargs):
         self.profile.delete()
         super(Book, self).delete(*args, **kwargs)

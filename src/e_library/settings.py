@@ -2,7 +2,8 @@ import os
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = os.environ.get('H_SECRET_KEY', 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u')
+SECRET_KEY = os.environ.get(
+    'H_SECRET_KEY', 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u')
 DEBUG = os.environ.get('H_DEBUG', True)
 ALLOWED_HOSTS = [os.environ.get('H_ALLOWED_HOST', '*')]
 
@@ -13,13 +14,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #Django Extensions
+    # Django Extensions
     'django_extensions',
-    #myApps
+    # myApps
     'system',
-    #App fro Account
+    # App fro Account
     'account',
-    #Crispy Form is Best idea
+    # Crispy Form is Best idea
     'crispy_forms',
 ]
 
@@ -57,9 +58,9 @@ WSGI_APPLICATION = 'e_library.wsgi.application'
 if os.environ.get('H_DEBUG', False):
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2', # pip install psycopg2 in case error $ sudo apt install libpq-dev python3-dev
-            'NAME': os.environ['H_DB_NAME']
-    ,        'USER': os.environ['H_DB_USER'],
+            # pip install psycopg2 in case error $ sudo apt install libpq-dev python3-dev
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ['H_DB_NAME'],        'USER': os.environ['H_DB_USER'],
             'PASSWORD': os.environ['H_DB_PASSWORD'],
             'HOST': os.environ['H_DB_HOST'],
         }
@@ -111,7 +112,7 @@ LOCALE_PATH = (
 )
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
@@ -128,8 +129,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 AUTH_USER_MODEL = 'account.User'
 
 LOGIN_URL = 'account:signin'
-LOGIN_REDIRECT_URL = 'system:home'
-LOGOUT_REDIRECT_URL = 'system:home'
+LOGIN_REDIRECT_URL = 'system:viewbooks'
+LOGOUT_REDIRECT_URL = 'account:signin'
 
 # crispy-form
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

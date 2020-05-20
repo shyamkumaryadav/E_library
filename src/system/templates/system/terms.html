@@ -1,4 +1,5 @@
 {% extends 'system/master.html' %}
+{% load crispy_forms_tags %}
 
 {% block head %}
 <link rel="icon" href="#" sizes="144x144" >
@@ -10,8 +11,36 @@
 
 
 <h1>Hi</h1>
-<form action="" method="POST">{% csrf_token %}
-{{ form.as_p }}
+<form action="" method="POST" id="example-form">
+{% crispy form %}
 <input type="submit">
 </form>
+<script type="text/javascript">
+	$(document).ready(function(){
+var example_form = '#example-form';
+$('input[type="submit"]').each(function(){
+	$(this).on( "click", function(e){
+	console.log('hasasa');
+	$.ajax({
+	    url: "{% url 'system:save_example_form' %}",
+	    type: "POST",
+	    data: $(example_form).serialize(),
+	    success: function(data) {
+	        if (!(data['success'])) {
+	            // Here we replace the form, for th
+	            $(example_form).replaceWith(data['form_html']);
+	        }
+	        else {
+	            // Here you can show the user a success message or do whatever you need
+	            $(example_form).find('.success-message').show();
+	        }
+	    },
+	    error: function () {
+	        $(example_form).find('.error-message').show()
+	    }
+	});
+});
+});
+});
+</script>
 {% endblock main %}

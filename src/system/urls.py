@@ -7,6 +7,7 @@ app_name = 'system'
 urlpatterns = [
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
+    path('save_example_form/', views.save_example_form, name='save_example_form'),
     path('terms/', views.terms, name='terms'),
     path('view_books/', views.ViewBookView.as_view(), name='viewbooks'),
     path('admin_author_management/', views.adminauthormanagement,

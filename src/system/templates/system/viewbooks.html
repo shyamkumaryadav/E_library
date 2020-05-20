@@ -19,11 +19,15 @@
 								</div>
 								<div action="" class="col-sm-12 col-md-6 col-lg-3" id="searchme">
 							    	<div class="input-group">
-									    <input type="text" name='q' class="form-control" value="{{ request.GET.q }}" placeholder="Name">
+									    <input type="text" name='q' class="form-control" value="{{ request.GET.q }}" placeholder="by Name"  data-toggle="tooltip" data-placement="left" title="Tooltip on left" aria-describedby="searchHelpBlock">
 									    <div class="input-group-append">
 										    <button class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
 										</div>
 									</div>
+								    <small id="searchHelpBlock" class="form-text text-muted">
+									  Your password must be?
+									</small>
+									
 								</div>
 							</div>
 						</div>
@@ -38,7 +42,7 @@
 							<h3>{{ page_obj.paginator.count }}</h3>
 							{% if object_list %}
 							{% for book in object_list %}
-							<div class="card m-1">
+							<div class="card m-1 btn-outline-secondary">
 								<div class="card-body">
 									<div class="row">
 										<img src="{{ book.profile.url }}">

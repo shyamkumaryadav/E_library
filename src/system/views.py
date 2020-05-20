@@ -1,7 +1,21 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from django.views import generic
 from django.db.models import Q
 from .models import Book
+from .forms import ExampleForm
+
+
+from django.template.context_processors import csrf
+from crispy_forms.utils import render_crispy_form
+
+
+def save_example_form(request):
+    form = ExampleForm(request.POST)
+    ctx = {}
+    ctx.update(csrf(request))
+    form_html = render_crispy_form(form, context=ctx)
+    return JsonResponse({'success': False, 'form_html': form_html})
 
 
 def home(request):
@@ -22,9 +36,10 @@ def about(request):
 
 def terms(request):
     template_name = 'system/terms.html'
-    messages.add_message(request, messages.INFO, 'Hello world.')
+    form = ExampleForm(request.POST or None)
     context = {
         'title': 'Terms',
+        'form': form
     }
     return render(request, template_name, context)
 
@@ -33,6 +48,7 @@ class ViewBookView(generic.ListView):
     model = Book
     search_kwarg = 'q'
     paginate_by = 6
+    ordering = 'name'
     template_name = 'system/viewbooks.html'
 
     def get_queryset(self):

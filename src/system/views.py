@@ -36,10 +36,8 @@ def about(request):
 
 def terms(request):
     template_name = 'system/terms.html'
-    form = ExampleForm(request.POST or None)
     context = {
         'title': 'Terms',
-        'form': form
     }
     return render(request, template_name, context)
 

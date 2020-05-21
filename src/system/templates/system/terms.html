@@ -8,38 +8,48 @@
 {% endblock head %}
 
 {% block main %}
+<div class="idofmain">
+	<!-- <h1>Hello sorry not load.</h1> -->
+</div>
 
-
-<h1>Hi</h1>
-<form action="" method="POST" id="example-form">
-{% crispy form %}
-<input type="submit">
-</form>
 <script type="text/javascript">
+	var url = "{% url 'system:viewbooks' %}";
+	let datashyam = '';
+	var da = [{ name: 'q', value : ''}, {name:'page', value: ''}];
 	$(document).ready(function(){
-var example_form = '#example-form';
-$('input[type="submit"]').each(function(){
-	$(this).on( "click", function(e){
-	console.log('hasasa');
 	$.ajax({
-	    url: "{% url 'system:save_example_form' %}",
-	    type: "POST",
-	    data: $(example_form).serialize(),
-	    success: function(data) {
-	        if (!(data['success'])) {
-	            // Here we replace the form, for th
-	            $(example_form).replaceWith(data['form_html']);
-	        }
-	        else {
-	            // Here you can show the user a success message or do whatever you need
-	            $(example_form).find('.success-message').show();
-	        }
-	    },
-	    error: function () {
-	        $(example_form).find('.error-message').show()
-	    }
+		    url: url,
+		    type: "GET",
+		    success: function(data) {
+		    	datashyam = data;
+	            $('.idofmain').fadeIn(1000, function(){$(this).html(datashyam)});
+		    },
+		    error: function () {
+		        $('.idofmain').html('<h1>error</h1>');
+		    }
 	});
-});
+
+	
+	$('button').on('click', function(e){
+		e.preventDefault();
+		$('[name="page"]').on('click',function(){da[1].value = $(this).val();alert()});
+		da[0].value = $('#id_for_search').val()
+		// $('.idofmain').html('');
+		$.ajax({
+			// url: url,
+		    url: url+"?"+da.map(function(e){return e.name+"="+e.value}).join('&'),
+		    type: "GET",
+		    success: function(data) {
+	            datashyam=data;
+	            da[1].value = '';
+	            console.log('data');
+	            $('.idofmain').fadeIn(1500).html(datashyam);
+		    },
+		    error: function () {
+		    	console.log('data error');
+		        $('.idofmain').append('<h1>error</h1>');
+		    }
+	});
 });
 });
 </script>

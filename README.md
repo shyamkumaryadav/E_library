@@ -10,6 +10,7 @@
 #####     ```PostgreSQL DATABASE (From Heroku)```  
 #####     ```HTML CSS JavaScript```  
 #####     ```BOOTSTRAP```  
+#####     ```REACT :-)```  
 #####     ```jQuery AJAX```  
 
 ### *Detail*   

@@ -3,10 +3,12 @@ from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.views.generic import TemplateView
+from frontend.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('react/', index),
 	path('', include('system.urls')),
     path('account/', include('account.urls')),
 ]

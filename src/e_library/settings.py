@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'account',
     # Crispy Form is Best idea
     'crispy_forms',
+    'frontend',
 ]
 
 MIDDLEWARE = [
@@ -40,7 +41,9 @@ ROOT_URLCONF = 'e_library.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'reactapp/build'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -112,10 +115,10 @@ LOCALE_PATH = (
 )
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'reactapp/build/static'),
 )
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",

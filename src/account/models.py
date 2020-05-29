@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 from django.core import validators
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser
+    BaseUserManager, AbstractBaseUser, PermissionsMixin
 )
 
 
@@ -60,7 +60,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(
         verbose_name="First Name",
         max_length=50,
@@ -121,7 +121,6 @@ class User(AbstractBaseUser):
                                     )
     profile = models.FileField(upload_to=upload_to_user,
                                default='User_Profile/default.png',
-                               blank=True,
                                validators=[validators.FileExtensionValidator(
                                    allowed_extensions=validators.get_available_image_extensions(),
                                    message="Select valid Profile Image.")
@@ -135,8 +134,8 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'contactNo',
-                       'date_of_birth', 'state', 'city', 'full_address', 'profile']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'contactNo',\
+        'date_of_birth', 'state', 'city', 'full_address', 'profile']
 
     class Meta:
         verbose_name = 'user'

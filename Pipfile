@@ -10,6 +10,7 @@ django-extensions = "*"
 Pillow = "*"
 psycopg2 = "*"
 Faker = "*"
+django-allauth = "*"
 
 [dev-packages]
 

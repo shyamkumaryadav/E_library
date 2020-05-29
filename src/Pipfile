@@ -10,8 +10,10 @@ django-extensions = "*"
 Pillow = "*"
 psycopg2 = "*"
 Faker = "*"
+ptpython = "*"
 
 [dev-packages]
+pylint = "*"
 
 [requires]
 python_version = "3.8"

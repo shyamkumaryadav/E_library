@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -21,31 +21,6 @@ class UserLogoutView(LogoutView):
     redirect_authenticated_user = False
 
 
-class AjaxableResponseMixin:
-
-    def form_invalid(self, form):
-        response = super().form_invalid(form)
-        if self.request.is_ajax():
-            print(form.errors)
-            return JsonResponse(form.errors, status=400)
-        else:
-            print(response)
-            return response
-
-    def form_valid(self, form):
-        # We make sure to call the parent's form_valid() method because
-        # it might do some processing (in the case of CreateView, it will
-        # call form.save() for example).
-        response = super().form_valid(form)
-        if self.request.is_ajax():
-            data = {
-                'pk': self.object.pk,
-            }
-            return JsonResponse(data)
-        else:
-            return response
-
-
 class UserCreateView(LogoutRequiredMixin, CreateView):
     form_class = UserCreationForm
     template_name = 'account/signup.html'
@@ -56,3 +31,8 @@ class UserCreateView(LogoutRequiredMixin, CreateView):
     #         return redirect('system:home')
     #     else:
     #         return super().get(request, *args, **kwargs)
+
+def test(request, token):
+    if token == 'ji-set':
+        return HttpResponse('hello '+ token)
+    return HttpResponseRedirect(request.path.replace(token, 'ji-set'))

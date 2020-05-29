@@ -1,51 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.urls import reverse_lazy
 from django.views import generic
+from . import mixins
 from django.db.models import Q
-from .models import Book
-from .forms import ExampleForm
+from . import models
+from . import forms
 
-
-from django.template.context_processors import csrf
-from crispy_forms.utils import render_crispy_form
-
-
-def save_example_form(request):
-    form = ExampleForm(request.POST)
-    ctx = {}
-    ctx.update(csrf(request))
-    form_html = render_crispy_form(form, context=ctx)
-    return JsonResponse({'success': False, 'form_html': form_html})
-
-
-def home(request):
+class HomeView(generic.TemplateView):
     template_name = 'system/home.html'
-    context = {
-        'title': 'Home'
-    }
-    return render(request, template_name, context)
+    extra_context = {'title': 'Home'}
 
 
-def about(request):
+class aboutView(generic.TemplateView):
     template_name = 'system/about.html'
-    context = {
-        'title': 'About'
-    }
-    return render(request, template_name, context)
+    extra_context = {'title': 'About'}
 
-
-def terms(request):
+class TermsView(generic.TemplateView):
     template_name = 'system/terms.html'
-    context = {
-        'title': 'Terms',
-    }
-    return render(request, template_name, context)
-
+    extra_context = {'title': 'Terms'}
 
 class ViewBookView(generic.ListView):
-    model = Book
+    model = models.Book
     search_kwarg = 'q'
-    paginate_by = 6
+    paginate_by = 5
     ordering = 'name'
     template_name = 'system/viewbooks.html'
 
@@ -59,51 +37,57 @@ class ViewBookView(generic.ListView):
             object_list = self.model.objects.all()
         return object_list
 
-
-def adminauthormanagement(request):
+class AuthorManagementView(mixins.AdminRequiredMixin, generic.CreateView, generic.ListView):
     template_name = 'system/adminauthormanagement.html'
-    context = {
-        'title': 'admin author management'
-    }
-    return render(request, template_name, context)
+    model = models.BookAuthor
+    search_kwarg = 'q'
+    paginate_by = 3
+    success_url = reverse_lazy('system:authormanagement')
+    ordering = 'first_name'
+    form_class = forms.BookAuthorForm
+    extra_context = {'title': 'Author management'}
+
+    def get_queryset(self):
+        search_kwarg = self.search_kwarg
+        name = self.kwargs.get(
+            search_kwarg) or self.request.GET.get(search_kwarg)
+        if name:
+            object_list = self.model.objects.filter(first_name__icontains=name)
+        else:
+            object_list = self.model.objects.all()
+        return object_list
 
 
-def adminmembermanagement(request):
+class AuthorManagementUpdateView(generic.UpdateView, generic.DeleteView):
+    template_name = 'system/adminauthormanagement.html'
+    model = models.BookAuthor
+    success_url = reverse_lazy('system:authormanagement')
+    form_class = forms.BookAuthorForm
+    extra_context = {'title': 'Author management'}
+
+    def post(self, request, *args, **kwargs):
+        if self.request.POST['Delete']:
+            self.model.objects.filter(pk=self.request.POST['Delete']).delete()
+            return redirect(self.success_url)
+        return super().post(request, *args, **kwargs)
+
+class MemberManagementView(generic.TemplateView):
     template_name = 'system/adminmembermanagement.html'
-    context = {
-        'title': 'admin member management'
-    }
+    extra_context = {'title': 'Member management'}
 
-    return render(request, template_name, context)
-
-
-def adminbookissuing(request):
+class BookIssuingView(generic.TemplateView):
     template_name = 'system/adminbookissuing.html'
-    context = {
-        'title': 'admin book issuing'
-    }
-    return render(request, template_name, context)
+    extra_context = {'title': 'admin book issuing'}
 
-
-def adminbookinventory(request):
+class BookInventoryView(generic.TemplateView):
     template_name = 'system/adminbookinventory.html'
-    context = {
-        'title': 'admin book inventory'
-    }
-    return render(request, template_name, context)
+    extra_context = {'title': 'admin book inventory'}
 
 
-def adminpublishermanagement(request):
+class PublisherManagementView(generic.TemplateView):
     template_name = 'system/adminpublishermanagement.html'
-    context = {
-        'title': 'admin publisher management'
-    }
-    return render(request, template_name, context)
+    extra_context = {'title': 'admin publisher management'}
 
-
-def shyamkumaryadav(request):
+class ShyamkumaryadavView(generic.TemplateView):
     template_name = 'system/shyamkumaryadav.html'
-    context = {
-        'title': 'shyamkumar yadav'
-    }
-    return render(request, template_name, context)
+    extra_context = {'title': 'shyamkumar yadav'}

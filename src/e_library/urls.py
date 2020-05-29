@@ -11,8 +11,8 @@ urlpatterns = [
     path('react/', index),
 	path('', include('system.urls')),
     path('account/', include('account.urls')),
-]
 
+]
 urlpatterns += i18n_patterns(
 )
 

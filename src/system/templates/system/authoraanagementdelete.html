@@ -11,50 +11,10 @@
 
 <div class="container-fluid">
         <div class="row">
-            <div class="col-md-5 my-2">
- 
-                <div class="card">
-                    <div class="card-body">
- 
-                        <div class="row">
-                            <div class="col">
-                                <center>
-                                        <h4>Author Details</h4>
-                                    </center>
-                            </div>
-                        </div>
- 
-                        <div class="row">
-                            <div class="col">
-                                <center>
-                                        <img width="100px" src="{% static 'system/images/imgs/writer.png' %}" />
-                                    </center>
-                            </div>
-                        </div>
- 
-                        <div class="row">
-                            <div class="col">
-                                <hr>
-                            </div>
-                        </div>
-                         {% crispy form %} 
-                    </div>
-                </div>
-            </div>
- 
-            <div class="col-md-7 my-2">
- <form method="GET">
-                <div class="card">
-                    <div class="card-body">
- 
- 
- 
-                        <div class="row">
-                            <div class="col">
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6">
                                 <h4>Author List</h4></div>
-                                {% if not object %}<div class="col-sm-12 col-md-6 col-lg-6">
+                                <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="input-group">
                                         <input type="text" name='q' class="form-control mr-1" value="{{ request.GET.q }}" placeholder="by Name"  data-toggle="tooltip" data-placement="left" title="Tooltip on left" aria-describedby="searchHelpBlock">
                                         <div class="input-group-append">
@@ -65,7 +25,6 @@
                                       Your can search by Name?
                                     </small>
                                 </div>
-                                {%endif%}
                                 </div>
                             </div>
                         </div>

@@ -204,7 +204,7 @@ class UserLoginForm(forms.Form):
                     " Note that both fields may be case-sensitive.")
             else:
                 if not self.user_cache.is_active:
-                    raise forms.ValidationError("This account is inactive.")
+                    raise forms.ValidationError("This account is inactive. Contact to Admin")
         return self.cleaned_data
 
     def get_user(self):

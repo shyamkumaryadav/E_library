@@ -2,6 +2,7 @@ import secrets
 from django.db import models
 from django.conf import settings
 from django.core import validators
+from django.urls import reverse_lazy
 from PIL import Image
 from account.models import User
 
@@ -16,12 +17,18 @@ def upload_to_book(instance, filename):
 class BookAuthor(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    date_of_birth = models.DateField(null=True, blank=True)
-    date_of_death = models.DateField(
-        verbose_name='Died', null=True, blank=True)
+    date_of_birth = models.DateField(null=True)
+    date_of_death = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    @property
+    def get_update_url(self):
+        return reverse_lazy('system:authormanagementupdate', kwargs = {
+            'pk':self.id
+            })
+    
 
 
 class BookPublish(models.Model):

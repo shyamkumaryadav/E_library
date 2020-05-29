@@ -2,10 +2,9 @@ import os
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = os.environ.get(
-    'H_SECRET_KEY', 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u')
-DEBUG = os.environ.get('H_DEBUG', True)
-ALLOWED_HOSTS = [os.environ.get('H_ALLOWED_HOST', '*')]
+SECRET_KEY = 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u'
+DEBUG = True
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -14,6 +13,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # 'django.contrib.sites',
+
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.google',
+
     # Django Extensions
     'django_extensions',
     # myApps
@@ -24,6 +31,21 @@ INSTALLED_APPS = [
     'crispy_forms',
     'frontend',
 ]
+# SITE_ID = 1
+
+# # Provider specific settings
+# SOCIALACCOUNT_PROVIDERS = {
+#     'google': {
+#         # For each OAuth based provider, either add a ``SocialApp``
+#         # (``socialaccount`` app) containing the required client
+#         # credentials, or list them here:
+#         'APP': {
+#             'client_id': '123',
+#             'secret': '456',
+#             'key': ''
+#         }
+#     }
+# }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,25 +78,28 @@ TEMPLATES = [
     },
 ]
 
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+#     'allauth.account.auth_backends.AuthenticationBackend',
+# ]
+
 WSGI_APPLICATION = 'e_library.wsgi.application'
 
-if os.environ.get('H_DEBUG', False):
-    DATABASES = {
-        'default': {
-            # pip install psycopg2 in case error $ sudo apt install libpq-dev python3-dev
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['H_DB_NAME'],        'USER': os.environ['H_DB_USER'],
-            'PASSWORD': os.environ['H_DB_PASSWORD'],
-            'HOST': os.environ['H_DB_HOST'],
-        }
+    # DATABASES = {
+    #     'default': {
+    #         # pip install psycopg2 in case error $ sudo apt install libpq-dev python3-dev
+    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #         'NAME': os.environ['H_DB_NAME'],        'USER': os.environ['H_DB_USER'],
+    #         'PASSWORD': os.environ['H_DB_PASSWORD'],
+    #         'HOST': os.environ['H_DB_HOST'],
+    #     }
+    # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -132,19 +157,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 AUTH_USER_MODEL = 'account.User'
 
 LOGIN_URL = 'account:signin'
-LOGIN_REDIRECT_URL = 'system:viewbooks'
+LOGIN_REDIRECT_URL = 'system:home'
 LOGOUT_REDIRECT_URL = 'account:signin'
 
 # crispy-form
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # password Email send
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 
 BOOK_GENRE = [

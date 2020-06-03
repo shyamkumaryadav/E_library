@@ -12,9 +12,10 @@ class BookAuthorForm(forms.ModelForm):
         model = models.BookAuthor
         fields = '__all__'
         widgets = {
-            'date_of_birth' : DateInput(),
-            'date_of_death' : DateInput(),
+            'date_of_birth': DateInput(),
+            'date_of_death': DateInput(),
         }
+
     def __init__(self, *args, **kwargs):
         super(BookAuthorForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -29,12 +30,44 @@ class BookAuthorForm(forms.ModelForm):
             ),
             Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}add{%endif%}"
                 value="{% if object %}Update{%else%}Add{%endif%}"
-                class="btn btn-primary btn-lg btn-block m-1" 
-                style="text-shadow: 3px 6px 6px black;">''')),
-                Column(HTML('''{% if object %}<button type="submit" name="Delete"
-                value="{{ object.id }}"
-                class="btn btn-danger btn-lg btn-block m-1" 
-                style="text-shadow: 3px 6px 6px black;">Delete</button>{%endif%}'''))
+                class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')),
+                Column(HTML('''{% if object %}<button type="button"
+                class="btn btn-danger btn-lg btn-block m-1"
+                data-toggle="modal"
+                data-target="#deletemodel">
+                Delete
+                </button>{%endif%}'''), style='display: none;', id='deletebtn')
+                ),
+        )
+        self.helper.form_id = 'bookAuthorForm'
+        self.helper.form_class = 'form-group'
+        self.helper.form_method = 'post'
+        self.helper.form_action = ''
+
+class BookPublishForm(forms.ModelForm):
+    class Meta:
+        model = models.BookPublish
+        fields = '__all__'
+
+
+    def __init__(self, *args, **kwargs):
+        super(BookPublishForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Field('name', placeholder="Enter Name"),
+            Field('address', placeholder="Enter Address", maxlength=80, rows=2),
+            Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}add{%endif%}"
+                value="{% if object %}Update{%else%}Add{%endif%}"
+                class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')
+                ),
+                Column(HTML('''{% if object %}<button type="button"
+                    class="btn btn-danger btn-lg btn-block m-1"
+                    data-toggle="modal"
+                    data-target="#deletemodel">
+                    Delete
+                    </button>{%endif%}'''), 
+                    style='display: none;', id='deletebtn'
+                ),
             ),
         )
         self.helper.form_id = 'bookAuthorForm'
@@ -43,5 +76,36 @@ class BookAuthorForm(forms.ModelForm):
         self.helper.form_action = ''
 
 
-class ExampleForm(forms.Form):
-    name = forms.CharField()
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = models.Book
+        fields = '__all__'
+
+
+    def __init__(self, *args, **kwargs):
+        super(BookForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(Field('name', placeholder="Enter First Name")),
+                Column(Field('genre'))
+            ),
+            Row(
+                Column(Field('author')),
+                Column(Field('rating')),
+            ),
+            Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}{%endif%}"
+                value="{% if object %}Update{%else%}Add{%endif%}"
+                class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')),
+                Column(HTML('''{% if object %}<button type="button"
+                class="btn btn-danger btn-lg btn-block m-1"
+                data-toggle="modal"
+                data-target="#deletemodel">
+                Delete
+                </button>{%endif%}'''), style='display: none;', id='deletebtn')
+                ),
+        )
+        self.helper.form_id = 'bookForm'
+        self.helper.form_class = 'form-group'
+        self.helper.form_method = 'post'
+        self.helper.form_action = ''

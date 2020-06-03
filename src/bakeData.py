@@ -2,13 +2,13 @@
 import os
 import django
 import faker
+from django.conf import settings
+from system.models import Book, BookAuthor, BookPublish, Genre
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'e_library.settings')
 django.setup()
 
 
-from django.conf import settings
-from system.models import Book, BookAuthor, BookPublish, Genre
 lg = [settings.LANGUAGES[i][0] for i in range(len(settings.LANGUAGES))]
 be = [settings.BOOK_EDITION[i][0] for i in range(len(settings.BOOK_EDITION))]
 bg = [settings.BOOK_GENRE[i][0] for i in range(len(settings.BOOK_GENRE))]

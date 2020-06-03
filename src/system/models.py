@@ -1,4 +1,5 @@
 import secrets
+import uuid
 from django.db import models
 from django.conf import settings
 from django.core import validators
@@ -9,46 +10,70 @@ from account.models import User
 
 def upload_to_book(instance, filename):
     name = instance.name.replace(' ', '_')
-    *filenames, ext = filename.split('.')
+    *_, ext = filename.split('.')
     a = secrets.token_urlsafe(32)
     return f"Book_cover/{name}_SKY_{a}.{ext}"
 
 
 class BookAuthor(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True)
     date_of_death = models.DateField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['first_name']
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
     @property
     def get_update_url(self):
-        return reverse_lazy('system:authormanagementupdate', kwargs = {
-            'pk':self.id
-            })
-    
+        return reverse_lazy('system:authormanagementupdate', kwargs={
+            'pk': self.pk
+        })
 
 
 class BookPublish(models.Model):
-    name = models.CharField(max_length=120)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50, unique=True,
+            error_messages ={ 
+                "unique":"The name is already exists."
+            }
+    )
+    address = models.TextField()
+
+    class Meta:
+        ordering = ['name']
+
 
     def __str__(self):
         return self.name
+
+
+    @property
+    def get_update_url(self):
+        return reverse_lazy('system:publishermanagementupdate', kwargs={
+            'pk': self.pk
+        })
+
+
 
 
 class Genre(models.Model):
     name = models.IntegerField(verbose_name="Genre Name", choices=[
                                (None, "Select Language")] + settings.BOOK_GENRE)
 
+    class Meta:
+        ordering = ['name']
+
     def __str__(self):
         return self.get_name_display()
 
 
 class Book(models.Model):
-    bookid = models.CharField(
-        max_length=120, primary_key=True, verbose_name="Book ID")
+    id = models.UUIDField(verbose_name="Book ID", primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=120, verbose_name="Book Name")
     genre = models.ManyToManyField(Genre, verbose_name="Genre")
     author = models.ForeignKey(
@@ -79,6 +104,9 @@ class Book(models.Model):
         ],
     )
 
+    class Meta:
+        ordering = ['-publish_Date']
+
     def delete(self, *args, **kwargs):
         self.profile.delete()
         super(Book, self).delete(*args, **kwargs)
@@ -105,8 +133,11 @@ class Issue(models.Model):
     date = models.DateField(auto_now_add=True)
     due_date = models.DateField()
 
+    class Meta:
+        unique_together = ('member', 'book',)
+
     def __str__(self):
-        return f"{self.book.get_book_name}@{self.member.get_short_name}"
+        return f"{self.book}, {self.member}"
 
     # def save(self, *args, **kwargs):
     #   print("my save")

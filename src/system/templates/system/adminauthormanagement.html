@@ -2,7 +2,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block head %}
-<link rel="icon" href="{%static 'system/images/imgs/writer.png'%}" sizes="144x144" >
+<link rel="icon" href="{%static 'system/images/imgs/writer.png'%}" sizes="144x144">
 <title>{{ title }}</title>
 
 {% endblock head %}
@@ -10,68 +10,101 @@
 {% block main %}
 
 <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-5 my-2">
- 
-                <div class="card">
-                    <div class="card-body">
- 
-                        <div class="row">
-                            <div class="col">
-                                <center>
-                                        <h4>Author Details</h4>
-                                    </center>
-                            </div>
+    <div class="row">
+        <div class="col-md-5 mb-3">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col">
+                            <center>
+                                <h4>Author Details</h4>
+                            </center>
                         </div>
- 
-                        <div class="row">
-                            <div class="col">
-                                <center>
-                                        <img width="100px" src="{% static 'system/images/imgs/writer.png' %}" />
-                                    </center>
-                            </div>
-                        </div>
- 
-                        <div class="row">
-                            <div class="col">
-                                <hr>
-                            </div>
-                        </div>
-                         {% crispy form %} 
                     </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <center>
+                                <img width="100px" src="{% static 'system/images/imgs/writer.png' %}" />
+                            </center>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <hr>
+                        </div>
+                    </div>
+                    {% crispy form %}
+
+                    {%if object %}
+                    <div class="modal fade" id="deletemodel" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Author <span class="badge badge-danger">{{ object.first_name|title }}</span></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    are you sure you want to delete this Author?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" name="delAuthor" class="btn btn-primary">Yes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $('#deletebtn').css('display', '');
+                        $("button[name='delAuthor']").on('click', function(e) {
+                            $('#bookAuthorForm').append('<input type="hidden" name="Delete" value="{{ object.id }}">');
+                            $("#bookAuthorForm").submit();
+                        });
+                    </script>
+                    {%endif%}
                 </div>
             </div>
- 
-            <div class="col-md-7 my-2">
- <form method="GET">
+        </div>
+
+        <div class="col-md-7 mb-3">
+            <form method="GET">
                 <div class="card">
                     <div class="card-body">
- 
- 
- 
+
                         <div class="row">
                             <div class="col">
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6">
-                                <h4>Author List</h4></div>
-                                {% if not object %}<div class="col-sm-12 col-md-6 col-lg-6">
-                                    <div class="input-group">
-                                        <input type="text" name='q' class="form-control mr-1" value="{{ request.GET.q }}" placeholder="by Name"  data-toggle="tooltip" data-placement="left" title="Tooltip on left" aria-describedby="searchHelpBlock">
-                                        <div class="input-group-append">
-                                            <button id='id_for_search' type='submit' value="" class="btn btn-outline-info"><i class="fas fa-search"></i></button>
-                                        </div>
+                                        <h4>Author List</h4>
                                     </div>
-                                    <small id="searchHelpBlock" class="form-text text-muted">
-                                      Your can search by Name?
-                                    </small>
-                                </div>
-                                {%endif%}
+                                    {% if not object %}<div class="col-sm-12 col-md-6 col-lg-6">
+                                        <div class="input-group">
+                                            <input type="text" name='q' class="form-control mr-1"
+                                                value="{{ request.GET.q }}" placeholder="by Name" data-toggle="tooltip"
+                                                data-placement="left" title="Tooltip on left"
+                                                aria-describedby="searchHelpBlock">
+                                            <div class="input-group-append">
+                                                <button id='id_for_search' type='submit' value=""
+                                                    class="btn btn-outline-info"><i class="fas fa-search"></i></button>
+                                            </div>
+                                        </div>
+                                        <small id="searchHelpBlock" class="form-text text-muted">
+                                            Your can search by Name?
+                                        </small>
+                                    </div>
+                                    {%endif%}
                                 </div>
                             </div>
                         </div>
- 
-                       
- 
+            </form>
+
+
                         <div class="row">
                             <div class="col">
                                 <hr>
@@ -81,53 +114,21 @@
                             <div class="col">
                                 {% if object_list %}
                                 {% for author in object_list %}
-                                    <h3>{{ author.id}}, {{ author.first_name}} --- {{ author.last_name}}</h3><br>
-                                    <a href="{{ author.get_update_url }}">{{ author.get_update_url}}</a>
+                                <a href="{{ author.get_update_url }}">{{ author.first_name|title }} --- {{ author.last_name|title }}</a>
                                 {% endfor %}
                                 {% elif object %}
-                                <h3>{{ object.first_name}}</h3>
-                                {% endif %} 
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col">
-                                <!-- More on https://docs.djangoproject.com/en/3.0/topics/pagination/ -->
-                                {% if is_paginated %}
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item {% if page_obj.has_previous is False %}disabled{% endif %}">
-                                            <button type="submit" class="page-link" name="page" value="{% if page_obj.has_previous %}1{% endif %}">First
-                                            </button>
-                                        </li>
-                                        <li class="page-item {% if page_obj.has_previous is False %}disabled{% endif %}">
-                                            <button type="submit" class="page-link" name="page" value="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% endif %}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></button>
-                                        </li>
-
-                                        {% for num in page_obj.paginator.page_range %}
-                                            {% if page_obj.number == num %}
-                                              <li class="page-item active"><span class="page-link">{{ num }}<span class="sr-only">(current)</span>
-                                              </span></li>
-                                            {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
-                                              <li class="page-item"><button type="submit" class="page-link" name="page" value="{{ num }}" >{{ num }}</button></li>
-                                            {% endif %}
-                                        {% endfor %}
-
-                                        <li class="page-item {% if page_obj.has_next is False %}disabled{% endif %}"><button type="submit" class="page-link" name="page" value="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{%endif%}" aria-label="Next"><span aria-hidden="true">&raquo;</span></button></li>
-                                        <li class="page-item {% if page_obj.has_next is False %}disabled{% endif %}"><button type="submit" class="page-link" name="page" value="{% if page_obj.has_next %}{{ page_obj.paginator.num_pages }}{%endif%}">Last</button></li>
-                                    </ul>
-                                </nav>
+                                <h3>{{ object.first_name|title }}</h3>
                                 {% endif %}
                             </div>
                         </div>
-                        </form>
-                    </div>
-                </div>
- 
- 
-            </div>
- 
+   {% include 'system/paginate.html' %} 
+            
         </div>
     </div>
 
+
+</div>
+
+</div>
+</div>
 {% endblock main %}

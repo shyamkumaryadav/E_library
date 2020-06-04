@@ -9,6 +9,9 @@ from account.models import User
 
 
 def upload_to_book(instance, filename):
+    print(dir(instance))
+    print(dir(filename))
+    # instance.profile.delete()
     name = instance.name.replace(' ', '_')
     *_, ext = filename.split('.')
     a = secrets.token_urlsafe(32)
@@ -122,22 +125,22 @@ class Book(models.Model):
         return ', '.join(genre.get_name_display() for genre in self.genre.all())
     display_genre.short_description = 'Genre'
 
-    # def get_absolute_url(self):
-    #     return f'/book/{str(self.bookid)}/{self.author.__str__()}/\
-    # {self.publish.__str__()}/'
+    def get_absolute_url(self):
+        # return f'/book/{str(self.bookid)}/'
+        pass
 
 
 class Issue(models.Model):
-    member = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'is_defaulter': False})
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     due_date = models.DateField()
 
     class Meta:
-        unique_together = ('member', 'book',)
+        unique_together = ('user', 'book',)
 
     def __str__(self):
-        return f"{self.book}, {self.member}"
+        return f"{self.book}, {self.user}"
 
     # def save(self, *args, **kwargs):
     #   print("my save")

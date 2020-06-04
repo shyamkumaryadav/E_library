@@ -6,7 +6,7 @@ class BookAdmin(admin.ModelAdmin):
     list_display = ('name', 'author', 'language',
                     'display_genre', 'stock', 'today_stock')
     search_fields = ('name',)
-    readonly_fields = ('today_stock',)
+    readonly_fields = ('today_stock','pk')
     ordering = ('name',)
     list_filter = ('genre', 'language',)
 

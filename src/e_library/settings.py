@@ -23,6 +23,7 @@ INSTALLED_APPS = [
 
     # Django Extensions
     'django_extensions',
+    'import_export',
     # myApps
     'system',
     # App fro Account

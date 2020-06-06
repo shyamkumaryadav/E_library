@@ -23,10 +23,12 @@ class BookAuthor(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True)
-    date_of_death = models.DateField(null=True, blank=True)
+    date_of_death = models.DateField(
+        verbose_name='Death Date', null=True, blank=True)
 
     class Meta:
         ordering = ['first_name']
+        unique_together = ('first_name', 'last_name',)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -41,27 +43,23 @@ class BookAuthor(models.Model):
 class BookPublish(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50, unique=True,
-            error_messages ={ 
-                "unique":"The name is already exists."
-            }
-    )
+                            error_messages={
+                                "unique": "The name is already exists."
+                            }
+                            )
     address = models.TextField()
 
     class Meta:
         ordering = ['name']
 
-
     def __str__(self):
         return self.name
-
 
     @property
     def get_update_url(self):
         return reverse_lazy('system:publishermanagementupdate', kwargs={
             'pk': self.pk
         })
-
-
 
 
 class Genre(models.Model):
@@ -72,11 +70,12 @@ class Genre(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return self.get_name_display()
+        return str(self.name)
 
 
 class Book(models.Model):
-    id = models.UUIDField(verbose_name="Book ID", primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(verbose_name="Book ID",
+                          primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=120, verbose_name="Book Name")
     genre = models.ManyToManyField(Genre, verbose_name="Genre")
     author = models.ForeignKey(
@@ -131,7 +130,8 @@ class Book(models.Model):
 
 
 class Issue(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'is_defaulter': False})
+    user = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={
+                             'is_defaulter': False})
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     due_date = models.DateField()
@@ -141,7 +141,3 @@ class Issue(models.Model):
 
     def __str__(self):
         return f"{self.book}, {self.user}"
-
-    # def save(self, *args, **kwargs):
-    #   print("my save")
-    #   super().save(*args, **kwargs)

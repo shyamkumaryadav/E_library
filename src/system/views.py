@@ -49,6 +49,19 @@ class AuthorManagementView(mixins.AdminRequiredMixin, generic.CreateView, generi
     form_class = forms.BookAuthorForm
     extra_context = {'title': 'Author management'}
 
+    def get_context_data(self, **kwargs):
+        self.object = None
+        self.object_list = self.get_queryset()
+
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        kwargs.update({'object_list': self.object_list, 'form': form})
+
+        context = super(AuthorManagementView,
+                        self).get_context_data(**kwargs)
+        return context
+
     def get_queryset(self):
         search_kwarg = self.search_kwarg
         name = self.request.GET.get(search_kwarg)
@@ -97,7 +110,7 @@ class BookInventoryView(generic.CreateView):
     extra_context = {'title': 'admin book inventory'}
 
 
-class PublisherManagementView(mixins.AdminRequiredMixin, generic.CreateView,  generic.ListView):
+class PublisherManagementView(mixins.AdminRequiredMixin, generic.ListView, generic.edit.BaseCreateView):
     form_class = forms.BookPublishForm
     paginate_by = 3
     search_kwarg = 'q'
@@ -105,6 +118,19 @@ class PublisherManagementView(mixins.AdminRequiredMixin, generic.CreateView,  ge
     success_url = reverse_lazy('system:publishermanagement')
     template_name = 'system/adminpublishermanagement.html'
     extra_context = {'title': 'admin publisher management'}
+
+    def get_context_data(self, **kwargs):
+        self.object = None
+        self.object_list = self.get_queryset()
+
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        kwargs.update({'object_list': self.object_list, 'form': form})
+
+        context = super(PublisherManagementView,
+                        self).get_context_data(**kwargs)
+        return context
 
     def get_queryset(self):
         search_kwarg = self.search_kwarg
@@ -124,7 +150,7 @@ class PublisherManagementUpdateView(generic.UpdateView):
     success_url = reverse_lazy('system:publishermanagement')
     form_class = forms.BookPublishForm
     extra_context = {'title': 'Author management'}
-    
+
     def post(self, request, *args, **kwargs):
         try:
             if self.request.POST.get('Delete'):
@@ -135,8 +161,6 @@ class PublisherManagementUpdateView(generic.UpdateView):
             raise Http404(
                 f"No {self.model._meta.verbose_name}s found matching the query")
         return super().post(request, *args, **kwargs)
-
-
 
 
 class ShyamkumaryadavView(generic.TemplateView):

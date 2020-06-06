@@ -7,7 +7,6 @@ __pycache__/
 src/db.sqlite3
 
 .ipynb_checkpoints/
-.vscode/
 *.py[cod]
 *$py.class
 .idea/

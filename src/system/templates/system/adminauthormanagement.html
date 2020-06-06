@@ -1,72 +1,66 @@
 {% extends 'system/master.html' %}
 {% load static %}
-{% load crispy_forms_tags %}
 {% block head %}
 <link rel="icon" href="{%static 'system/images/imgs/writer.png'%}" sizes="144x144">
 <title>{{ title }}</title>
-
 {% endblock head %}
 
 {% block main %}
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-5 mb-3">
 
+        <div class="col-md-5 mb-3">
             <div class="card">
                 <div class="card-body">
 
                     <div class="row">
-                        <div class="col">
-                            <center>
-                                <h4>Author Details</h4>
-                            </center>
+                        <div class="col text-center">
+                            <h4>Author Details</h4>
                         </div>
                     </div>
-
                     <div class="row">
-                        <div class="col">
-                            <center>
-                                <img width="100px" src="{% static 'system/images/imgs/writer.png' %}" />
-                            </center>
+                        <div class="col text-center">
+                            <img width="100px" src="{% static 'system/images/imgs/writer.png' %}" />
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col">
                             <hr>
                         </div>
                     </div>
-                    {% crispy form %}
 
+                    {% load crispy_forms_tags %}
+                    {% crispy form %}
                     {%if object %}
-                    <div class="modal fade" id="deletemodel" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Author <span class="badge badge-danger">{{ object.first_name|title }}</span></h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    are you sure you want to delete this Author?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" name="delAuthor" class="btn btn-primary">Yes</button>
+                        <div class="modal fade" id="deletemodel" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Author <span class="badge badge-danger">{{ object.first_name|title }}</span></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        are you sure you want to delete this Author?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" name="delAuthor" class="btn btn-primary">Yes</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <script>
-                        $('#deletebtn').css('display', '');
-                        $("button[name='delAuthor']").on('click', function(e) {
-                            $('#bookAuthorForm').append('<input type="hidden" name="Delete" value="{{ object.id }}">');
-                            $("#bookAuthorForm").submit();
-                        });
-                    </script>
+                        <script>
+                            $('#deletebtn').css('display', '');
+                            $('#goback').css('display', '');
+                            $("button[name='delAuthor']").on('click', function(e) {
+                                $('#bookAuthorForm').append('<input type="hidden" name="Delete" value="{{ object.id }}">');
+                                $("#bookAuthorForm").submit();
+                            });
+                        </script>
                     {%endif%}
                 </div>
             </div>
@@ -83,27 +77,29 @@
                                     <div class="col-md-6 col-lg-6">
                                         <h4>Author List</h4>
                                     </div>
-                                    {% if not object %}<div class="col-sm-12 col-md-6 col-lg-6">
-                                        <div class="input-group">
-                                            <input type="text" name='q' class="form-control mr-1"
-                                                value="{{ request.GET.q }}" placeholder="by Name" data-toggle="tooltip"
-                                                data-placement="left" title="Tooltip on left"
-                                                aria-describedby="searchHelpBlock">
-                                            <div class="input-group-append">
-                                                <button id='id_for_search' type='submit' value=""
-                                                    class="btn btn-outline-info"><i class="fas fa-search"></i></button>
+                                    {% if not object %}
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
+                                            <div class="input-group">
+                                                <input type="text" id="searchthis" name='q' class="form-control mr-1"
+                                                    value="{{ request.GET.q }}" placeholder="by Name" data-toggle="tooltip"
+                                                    data-placement="left" title="Tooltip on left"
+                                                    aria-describedby="searchHelpBlock">
+                                                <div class="input-group-append">
+                                                    <button id='id_for_search' type='submit' value=""
+                                                        class="btn btn-outline-info">
+                                                        <i class="fas fa-search">
+                                                        </i>
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
                                         <small id="searchHelpBlock" class="form-text text-muted">
                                             Your can search by Name?
                                         </small>
-                                    </div>
+                                        </div>
                                     {%endif%}
                                 </div>
                             </div>
                         </div>
-            </form>
-
 
                         <div class="row">
                             <div class="col">
@@ -112,23 +108,48 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                {% if object_list %}
-                                {% for author in object_list %}
-                                <a href="{{ author.get_update_url }}">{{ author.first_name|title }} --- {{ author.last_name|title }}</a>
-                                {% endfor %}
-                                {% elif object %}
-                                <h3>{{ object.first_name|title }}</h3>
-                                {% endif %}
+                                <tabel class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                          <th scope="col">#</th>
+                                          <th scope="col">First</th>
+                                          <th scope="col">Last</th>
+                                          <th scope="col">Handle</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody><br>
+                                    {% if object_list %}
+                                        {% for object in object_list %}
+                                        <a href='{{ object.get_update_url}}'>
+                                            <th scope="row">{{ object.pk }}</th>
+                                            <td>{{ object.first_name|title }}</td>
+                                            <td>{{ object.last_name|title }}</td>
+                                            <td>{{object.date_of_birth}}</td>
+                                        </a><br>
+                                        {% endfor %}
+                                    {% elif object %}
+                                    <a href='{{ object.get_update_url}}'>
+                                        <th scope="row">{{ object.pk }}</th>
+                                        <td>{{ object.first_name|title }}</td>
+                                        <td>{{ object.last_name|title }}</td>
+                                        <td>{{object.date_of_birth}}</td>
+                                    </a><br>
+                                    {% endif %}
+                                    </tbody>
+                                </tabel>
                             </div>
                         </div>
-   {% include 'system/paginate.html' %} 
-            
+                        <div class="row">
+                            <div class="col">
+                                {% include 'system/paginate.html' %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
+
     </div>
-
-
 </div>
 
-</div>
-</div>
 {% endblock main %}

@@ -11,6 +11,9 @@ Pillow = "*"
 psycopg2 = "*"
 Faker = "*"
 django-allauth = "*"
+django-otp = "*"
+qrcode = "*"
+django-otp-twilio = "*"
 
 [dev-packages]
 pylint = "*"

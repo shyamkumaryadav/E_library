@@ -22,7 +22,7 @@ src/system/migrations/
 #Jupyter Notebook
 Panda_Bake*
 #copy from Github https://github.com/dr5hn/countries-states-cities-database
-countries_states_cities.json
+countries_states_cities.json3.0.6
 
 # C extensions
 *.so

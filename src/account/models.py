@@ -1,6 +1,7 @@
 import secrets
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 from django.core.mail import send_mail
 from django.core import validators
 from django.contrib.auth.validators import UnicodeUsernameValidator
@@ -10,7 +11,7 @@ from django.contrib.auth.models import (
 
 
 def upload_to_user(instance, filename):
-    name = instance.full_name.replace(' ', '_')
+    name = instance.get_full_name.replace(' ', '_')
     *filenames, ext = filename.split('.')
     a = secrets.token_urlsafe(32)
     return f"User_Profile/{name}_SKY_{a}.{ext}"
@@ -129,6 +130,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_defaulter = models.BooleanField(default=False)
+
+    date_joined = models.DateTimeField('date joined', default=timezone.now)
 
     objects = UserManager()
 

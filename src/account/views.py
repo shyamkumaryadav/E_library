@@ -7,12 +7,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from .forms import UserLoginForm, UserCreationForm
 from .mixins import LogoutRequiredMixin
+from django_otp.forms import OTPAuthenticationForm
+
 
 
 class UserLoginView(LoginView):
     form_class = UserLoginForm
     template_name = 'account/login.html'
     redirect_authenticated_user = False
+    # authentication_form=OTPAuthenticationForm
 
 
 class UserLogoutView(LogoutView):

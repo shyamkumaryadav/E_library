@@ -24,6 +24,11 @@ INSTALLED_APPS = [
     # Django Extensions
     'django_extensions',
     'import_export',
+
+    # otp django
+    'django_otp',
+    # 'django_otp.plugins.otp_totp',
+    'otp_twilio',
     # myApps
     'system',
     # App fro Account
@@ -57,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_otp.middleware.OTPMiddleware',  # Django-otp
 ]
 
 ROOT_URLCONF = 'e_library.urls'
@@ -65,8 +71,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'reactapp/build'),
-        ],
+                 os.path.join(BASE_DIR, 'reactapp/build'),
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,15 +92,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'e_library.wsgi.application'
 
-    # DATABASES = {
-    #     'default': {
-    #         # pip install psycopg2 in case error $ sudo apt install libpq-dev python3-dev
-    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #         'NAME': os.environ['H_DB_NAME'],        'USER': os.environ['H_DB_USER'],
-    #         'PASSWORD': os.environ['H_DB_PASSWORD'],
-    #         'HOST': os.environ['H_DB_HOST'],
-    #     }
-    # }
+# DATABASES = {
+#     'default': {
+#         # pip install psycopg2 in case error $ sudo apt install libpq-dev python3-dev
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': os.environ['H_DB_NAME'],        'USER': os.environ['H_DB_USER'],
+#         'PASSWORD': os.environ['H_DB_PASSWORD'],
+#         'HOST': os.environ['H_DB_HOST'],
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -172,6 +178,17 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_USE_TLS = True
 # EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 # EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+
+
+OTP_TWILIO_ACCOUNT=os.getenv('OTP_TWILIO_ACCOUNT')
+OTP_TWILIO_AUTH=os.getenv('OTP_TWILIO_AUTH')
+OTP_TWILIO_CHALLENGE_MESSAGE='send to your number...'
+OTP_TWILIO_TOKEN_TEMPLATE='''
+\nFrom E_library:please don't share your
+otp: {token}
+'''
+OTP_TWILIO_FROM=os.getenv('OTP_TWILIO_FROM')
+OTP_TWILIO_TOKEN_VALIDITY=360 #otp valid for 5Min
 
 
 BOOK_GENRE = [

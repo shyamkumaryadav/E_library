@@ -20,18 +20,23 @@ class DateInput(forms.DateInput):
 
 
 class UserCreationForm(forms.ModelForm):
+
+    error_messages = {
+        'password_mismatch': 'The two password fields didn’t match.',
+    }
     password1 = forms.CharField(
         label="Password",
         strip=False,
         validators=[password_validation.validate_password],
         widget=forms.PasswordInput(
             attrs={'class': 'form-control', 'placeholder': 'Enter Password', 'autocomplete': 'new-password'}),
-        help_text='''
-            Your password can’t be too similar to your other personal information.<br>
-            Your password must contain at least 8 characters.<br>
-            Your password can’t be a commonly used password.<br>
-            Your password can’t be entirely numeric.<br>
-        '''
+        help_text=password_validation.password_validators_help_text_html()
+        # '''
+        #     Your password can’t be too similar to your other personal information.<br>
+        #     Your password must contain at least %(max_length) characters.<br>
+        #     Your password can’t be a commonly used password.<br>
+        #     Your password can’t be entirely numeric.<br>
+        # '''
     )
     password2 = forms.CharField(
         label="Password confirmation",
@@ -56,7 +61,10 @@ class UserCreationForm(forms.ModelForm):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
-            raise forms.ValidationError("Passwords don't match")
+            raise forms.ValidationError(
+                self.error_messages['password_mismatch'],
+                code='password_mismatch',
+            )
         return password2
 
     def save(self, commit=True):
@@ -68,6 +76,7 @@ class UserCreationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
+        self.auto_id = '%s'        
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
@@ -145,18 +154,19 @@ class UserLoginForm(forms.Form):
             attrs={'autocomplete': "current-password", 'placeholder': "Enter Password"}),
     )
 
+    class Media:
+        js = ()
+
     def __init__(self, request=None, *args, **kwargs):
         self.request = request
         self.user_cache = None
-        super().__init__(*args, **kwargs)
+        super().__init__(auto_id='%s', *args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Column(Field('name', placeholder="Enter Username or Email")),
-            Column(AppendedText('password',
-                                '<div class="input-group-addon" style="background-color:transparent !important;">\
-                    <a href="" id="show_hide_password"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>\
-                </div>'
-                                )),
+            Column(AppendedText('password', '<i id="show_hide_passwordi" class="fa fa-eye-slash" aria-hidden="true"></i>', active=True)),
+                                # '<div  class="input-group-addon" style="background-color:transparent !important;">\
+                                # ),
             Div(Submit('submit', 'Sign In', css_class="btn-block btn-lg", style="text-shadow: 3px 6px 6px black;"),
                 css_class='text-center m-4'),
             Div(HTML('''<p class="text-muted">New To E-library? 
@@ -167,14 +177,14 @@ class UserLoginForm(forms.Form):
                 $(document).ready(function() {
                     $("#show_hide_password").on('click', function(event) {
                     event.preventDefault();
-                    if($('#id_password').attr("type") == "text"){
-                        $('#id_password').attr('type', 'password');
-                        $('#show_hide_password i').addClass( "fa-eye-slash" );
-                        $('#show_hide_password i').removeClass( "fa-eye" );
-                    }else if($('#id_password').attr("type") == "password"){
-                        $('#id_password').attr('type', 'text');
-                        $('#show_hide_password i').removeClass( "fa-eye-slash" );
-                        $('#show_hide_password i').addClass( "fa-eye" );
+                    if($('#password').attr("type") == "text"){
+                        $('#password').attr('type', 'password');
+                        $('#show_hide_passwordi').addClass( "fa-eye-slash" );
+                        $('#show_hide_passwordi').removeClass( "fa-eye" );
+                    }else if($('#password').attr("type") == "password"){
+                        $('#password').attr('type', 'text');
+                        $('#show_hide_passwordi').removeClass( "fa-eye-slash" );
+                        $('#show_hide_passwordi').addClass( "fa-eye" );
                     }
                 });
             });

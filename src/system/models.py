@@ -47,7 +47,7 @@ class BookPublish(models.Model):
                                 "unique": "The name is already exists."
                             }
                             )
-    address = models.TextField()
+    address = models.TextField(unique=True,)
 
     class Meta:
         ordering = ['name']
@@ -70,7 +70,7 @@ class Genre(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return str(self.name)
+        return str(self.get_name_display())
 
 
 class Book(models.Model):
@@ -80,10 +80,13 @@ class Book(models.Model):
     genre = models.ManyToManyField(Genre, verbose_name="Genre")
     author = models.ForeignKey(
         BookAuthor, on_delete=models.CASCADE, verbose_name="Author Name")
-    publish = models.ForeignKey(BookPublish, on_delete=models.CASCADE,
+    publish = models.ForeignKey('BookPublish', on_delete=models.CASCADE, to_field='address',
                                 verbose_name="Publisher Name")
-    publish_Date = models.DateField(
-        auto_now=False, auto_now_add=True, verbose_name="Publish Date")
+    # publish.empty_values = ['adres']
+    # print('*'*13)
+    # print(publish.get_choices.__dir__()
+    publish_date = models.DateField(verbose_name="Publish Date")
+    date = models.DateTimeField(auto_now=True, verbose_name="Date")
     language = models.CharField(max_length=12, verbose_name="Language", choices=[
                                 (None, "Select Language")] + settings.LANGUAGES)
     edition = models.IntegerField(verbose_name="Edition", choices=[
@@ -107,7 +110,7 @@ class Book(models.Model):
     )
 
     class Meta:
-        ordering = ['-publish_Date']
+        ordering = ['-publish_date']
 
     def delete(self, *args, **kwargs):
         self.profile.delete()

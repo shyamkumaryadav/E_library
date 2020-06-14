@@ -8,8 +8,11 @@
 
 
 {% block main %}
-<section>
-   <img src="{% static 'system/images/imgs/home-bg.jpg' %}" class="img-fluid"/>
+<section 
+style='
+background-image: url({%static '/system/images/imgs/home-bg.jpg'%});' 
+class="card p-5">
+   <!-- <img src="{% static 'system/images/imgs/home-bg.jpg' %}" class="img-fluid"/> -->
 </section>
 <section>
 	<div class="container">

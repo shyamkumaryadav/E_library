@@ -13,8 +13,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
-    # 'django.contrib.sites',
+    'django.contrib.sites',
+    'django.contrib.redirects',
+    'django.contrib.flatpages',
+
 
     # 'allauth',
     # 'allauth.account',
@@ -37,7 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'frontend',
 ]
-# SITE_ID = 1
+SITE_ID = 1
 
 # # Provider specific settings
 # SOCIALACCOUNT_PROVIDERS = {
@@ -111,9 +115,16 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'OPTIONS': {
+            'user_attributes': ('first_name', 'last_name', 'username', 'email', 'date_of_birth', 'contactNo',
+                  'state', 'city', 'pincode', 'full_address',)
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 9,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',

@@ -16,8 +16,6 @@ urlpatterns = [
     path('account/', include('account.urls')),
 
 ]
-urlpatterns += i18n_patterns(
-)
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

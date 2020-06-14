@@ -1,6 +1,6 @@
 {% extends 'system/master.html' %}
 {% load static %}
-
+{% load humanize %}
 
 {% block head %}
 <title>{{ title }}</title>
@@ -46,9 +46,17 @@
 							{% for book in object_list %}
 							<div class="card m-1 btn-outline-secondary">
 								<div class="card-body">
-									<div class="row">
+									<div class="col">
+										{% if book.profile %}
 										<img src="{{ book.profile.url }}">
-										<h3>{{ book.name}}</h3>
+										{% endif%}
+										<h3>{{ book.name}}</h3><br>
+										<h3>{{ book.cost|intcomma}}</h3><br>
+										<h3>{{ book.edition|ordinal}}</h3><br>
+										<h3>{{ book.rating}}</h3><br>
+										<p>{{ book.date|naturaltime|naturalday}}</p><br>
+										<p>{{ book.publish_date|naturalday}}</p><br>
+										<p>stock: {{ book.stock }} Today: {{ book.today_stock }}</p>
 									</div>
 								</div>
 							</div>

@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from django.core import validators
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser, PermissionsMixin
+    BaseUserManager, AbstractBaseUser, PermissionsMixin, UserManager
 )
 
 
@@ -17,12 +17,10 @@ def upload_to_user(instance, filename):
     return f"User_Profile/{name}_SKY_{a}.{ext}"
 
 
-class UserManager(BaseUserManager):
-    def create_user(self, first_name, last_name, username, email, contactNo, date_of_birth, state, city, pincode, full_address, profile, is_defaulter=False, password=None):
-        if not email:
-            raise ValueError('User must have an email address.')
+class UserManager123(BaseUserManager):
+    def _create_user(self, first_name, last_name, username, email, contactNo, date_of_birth, state, city, pincode, full_address, profile, is_defaulter=False, password=None):
         if not username:
-            raise ValueError('User must have an Username.')
+            raise ValueError('The given username must be set')
         user = self.model(
             first_name=first_name,
             last_name=last_name,
@@ -40,9 +38,11 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
+    def create_user(self, first_name, last_name, username, email, contactNo, date_of_birth, state, city, pincode, full_address, profile, is_defaulter=False, password=None):
+        pass
 
-    def create_superuser(self, username, email=None, first_name=None, last_name=None, contactNo=None, date_of_birth=None, state=None, city=None, pincode=None, full_address=None, profile=None, password=None):
-        user = self.create_user(
+    def create_superuser(self, username, email, first_name=None, last_name=None, contactNo=None, date_of_birth=None, state=None, city=None, pincode=None, full_address=None, profile=None, password=None):
+        user = self._create_user(
             first_name=first_name,
             last_name=last_name,
             username=username,
@@ -56,7 +56,12 @@ class UserManager(BaseUserManager):
             profile=profile,
             password=password,
         )
-        user.is_admin = True
+        user.is_staff = True
+        user.is_superuser = True
+        if user.is_staff is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if user.is_superuser is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
         user.save(using=self._db)
         return user
 
@@ -126,9 +131,11 @@ class User(AbstractBaseUser, PermissionsMixin):
                                    allowed_extensions=validators.get_available_image_extensions(),
                                    message="Select valid Profile Image.")
                                ],)
-
-    is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField('staff status', default=False,help_text='Designates whether the user can log into this admin site.')
+    is_active = models.BooleanField(default=True,
+        help_text='Designates whether this user should be treated as active. '
+            'Unselect this instead of deleting accounts.',
+        )
     is_defaulter = models.BooleanField(default=False)
 
     date_joined = models.DateTimeField('date joined', default=timezone.now)
@@ -137,33 +144,18 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'contactNo',\
-        'date_of_birth', 'state', 'city', 'full_address', 'profile']
-
-    class Meta:
-        verbose_name = 'user'
-        verbose_name_plural = 'users'
+    REQUIRED_FIELDS = ['email']
 
     def __str__(self):
         return self.username
 
-    def has_perm(self, perm, obj=None):
-        return True
-
-    def has_module_perms(self, app_label):
-        return True
-
-    def send_email(self, subject, message, from_email=None, **kwargs):
+    def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
-    @property
     def get_full_name(self):
-        return f"{self.first_name} {self.last_name}"
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip()
 
     @property
     def get_first_name(self):
         return self.first_name
-
-    @property
-    def is_staff(self):
-        return self.is_admin

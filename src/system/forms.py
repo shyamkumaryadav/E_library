@@ -38,8 +38,8 @@ class BookAuthorForm(forms.ModelForm):
                 Delete
                 </button>{%endif%}'''), style='display: none;', id='deletebtn')
                 ),
-            Row(Column(HTML('''{% if object %}<a href={% url 'system:authormanagement' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>{%endif%}'''),
-                       style='display: none;text-decoration: none;', css_class='btn btn-link', id='goback')),
+            Row(Column(HTML('''{% if object %}<a style='text-decoration:none;' href={% url 'system:authormanagement' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>{%endif%}'''),
+                       style='display: none;', css_class='btn btn-link', id='goback')),
         )
         self.helper.form_id = 'bookAuthorForm'
         self.helper.form_class = 'form-group'
@@ -81,12 +81,21 @@ class BookPublishForm(forms.ModelForm):
 
 
 class BookForm(forms.ModelForm):
+
     class Meta:
         model = models.Book
         fields = '__all__'
+        # fields_attrs = {
+        # 'publish': {'name': 'Select Publisher'}
+        # },
+        widgets = {
+        # 'edition': forms.SelectMultiple(),
+        }
 
     def __init__(self, *args, **kwargs):
         super(BookForm, self).__init__(*args, **kwargs)
+        self.fields['publish'].empty_label = 'select Publisher'
+        self.fields['author'].empty_label = 'select author'
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
@@ -95,8 +104,10 @@ class BookForm(forms.ModelForm):
             ),
             Row(
                 Column(Field('author')),
-                Column(Field('rating')),
+                Column(Field('publish')),
             ),
+            Row(
+                Field('edition')),
             Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}{%endif%}"
                 value="{% if object %}Update{%else%}Add{%endif%}"
                 class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')),

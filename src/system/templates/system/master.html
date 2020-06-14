@@ -62,6 +62,21 @@
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'system:viewbooks'%}">View Books</a>
 				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="{% url 'account:password_change'%}">View Books</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="{% url 'account:password_change_done'%}">View Books</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="{% url 'account:password_reset'%}">View Books</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="{% url 'account:password_reset_done'%}">View Books</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="{% url 'account:password_reset_complete'%}">View Books</a>
+				</li>
 				{% if user.is_authenticated is False %}
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'account:signin' %}">Sign In</a>

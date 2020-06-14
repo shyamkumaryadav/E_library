@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import (
+    LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView,
+    PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView,
+    PasswordResetView)
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -22,6 +25,42 @@ class UserLogoutView(LogoutView):
     next_page = reverse_lazy('account:signin')
     template_name = 'account/logout.html'
     redirect_authenticated_user = False
+
+class UserPasswordResetView(PasswordResetView):
+    email_template_name = ''
+    extra_email_context = None
+    # form_class = PasswordResetForm
+    from_email = None
+    html_email_template_name = None
+    # subject_template_name = 'account/password_reset_subject.txt'
+    success_url = reverse_lazy('account:password_reset_done')
+    template_name = 'account/password_reset_form.html'
+    title = 'Password reset'
+    # token_generator = default_token_generator
+
+class UserPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'account/password_reset_done.html'
+
+
+class UserPasswordResetConfirmView(PasswordResetConfirmView):
+    # form_class = SetPasswordForm
+    post_reset_login = False
+    post_reset_login_backend = None
+    reset_url_token = 'set-password'
+    success_url = reverse_lazy('account:password_reset_complete')
+    template_name = 'account/password_reset_confirm.html'
+    # title = _('Enter new password')
+    # token_generator = default_token_generator
+
+class UserPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'account/password_reset_complete.html'
+
+class UserPasswordChangeView(PasswordChangeView):
+    success_url = reverse_lazy('account:password_change_done')
+    template_name = 'account/password_change_form.html'
+
+class UserPasswordChangeDoneView(PasswordChangeDoneView):
+    template_name = 'account/password_change_done.html'
 
 
 class UserCreateView(LogoutRequiredMixin, CreateView):

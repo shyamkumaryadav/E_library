@@ -1,6 +1,6 @@
 {% extends 'system/master.html' %}
 {% load crispy_forms_tags %}
-
+{% load flatpages %}
 {% block head %}
 <link rel="icon" href="#" sizes="144x144" >
 <title>{{ title }}</title>
@@ -8,8 +8,17 @@
 {% endblock head %}
 
 {% block main %}
+<div class="" id="menu">
+  {% get_flatpages as flatpages %}
+  <ul class="nav navbar-nav">
+    {% for page in flatpages %}
+      <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
 <div class="idofmain">
-	<h1>Hello sorry not load.</h1>
+	<h1>{{ flatpage.title }}</h1>
+	<p>{{ flatpage.content }}</p>
 </div>
 <!-- 
 <script type="text/javascript">

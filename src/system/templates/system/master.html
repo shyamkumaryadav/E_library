@@ -120,7 +120,7 @@
 
 	<!-- Footer -->
 	<footer>
-		{% if user.is_admin %}
+		{% if user.is_superuser %}
 		<div id="footer1" class="container-fluid">
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-sm-12 text-center">
@@ -144,4 +144,6 @@
 		</div>
 	</footer>
 </body>
+{% block body %}
+{% endblock body %}
 </html>

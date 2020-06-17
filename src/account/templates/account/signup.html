@@ -31,7 +31,18 @@
                      <hr>
                   </div>
                </div>
-               {% crispy form %}
+               <div class="row">
+                  <div class="col">
+                     {% crispy form %}
+                     <div class="text-center pt-2">
+                        <p class="text-muted">Already have an account? 
+                        <a class="text-monospace text-uppercase text-decoration-none text-success" \
+                        href="{% url 'account:signin' %}">Sign in
+                        </a>
+                    </p>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
       </div>

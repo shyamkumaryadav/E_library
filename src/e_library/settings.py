@@ -4,7 +4,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -15,47 +15,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-    'django.contrib.sites',
-    'django.contrib.redirects',
-    'django.contrib.flatpages',
-
-
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.google',
-
     # Django Extensions
     'django_extensions',
     'import_export',
+    # Crispy Form is Best idea
+    'crispy_forms',
 
     # otp django
     'django_otp',
-    # 'django_otp.plugins.otp_totp',
     'otp_twilio',
     # myApps
-    'system',
-    # App fro Account
     'account',
-    # Crispy Form is Best idea
-    'crispy_forms',
-    'frontend',
+    'system',
 ]
-SITE_ID = 1
-
-# # Provider specific settings
-# SOCIALACCOUNT_PROVIDERS = {
-#     'google': {
-#         # For each OAuth based provider, either add a ``SocialApp``
-#         # (``socialaccount`` app) containing the required client
-#         # credentials, or list them here:
-#         'APP': {
-#             'client_id': '123',
-#             'secret': '456',
-#             'key': ''
-#         }
-#     }
-# }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -89,22 +61,9 @@ TEMPLATES = [
     },
 ]
 
-# AUTHENTICATION_BACKENDS = [
-#     'django.contrib.auth.backends.ModelBackend',
-#     'allauth.account.auth_backends.AuthenticationBackend',
-# ]
-
 WSGI_APPLICATION = 'e_library.wsgi.application'
 
-# DATABASES = {
-#     'default': {
-#         # pip install psycopg2 in case error $ sudo apt install libpq-dev python3-dev
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.environ['H_DB_NAME'],        'USER': os.environ['H_DB_USER'],
-#         'PASSWORD': os.environ['H_DB_PASSWORD'],
-#         'HOST': os.environ['H_DB_HOST'],
-#     }
-# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -115,16 +74,9 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-        'OPTIONS': {
-            'user_attributes': ('first_name', 'last_name', 'username', 'email', 'date_of_birth', 'contactNo',
-                  'state', 'city', 'pincode', 'full_address',)
-        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {
-            'min_length': 9,
-        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -191,15 +143,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 
-OTP_TWILIO_ACCOUNT=os.getenv('OTP_TWILIO_ACCOUNT')
-OTP_TWILIO_AUTH=os.getenv('OTP_TWILIO_AUTH')
-OTP_TWILIO_CHALLENGE_MESSAGE='send to your number...'
-OTP_TWILIO_TOKEN_TEMPLATE='''
+OTP_TWILIO_ACCOUNT = os.getenv('OTP_TWILIO_ACCOUNT')
+OTP_TWILIO_AUTH = os.getenv('OTP_TWILIO_AUTH')
+OTP_TWILIO_CHALLENGE_MESSAGE = 'send to your number...'
+OTP_TWILIO_TOKEN_TEMPLATE = '''
 \nFrom E_library:please don't share your
 otp: {token}
 '''
-OTP_TWILIO_FROM=os.getenv('OTP_TWILIO_FROM')
-OTP_TWILIO_TOKEN_VALIDITY=360 #otp valid for 5Min
+OTP_TWILIO_FROM = os.getenv('OTP_TWILIO_FROM')
+OTP_TWILIO_TOKEN_VALIDITY = 360  # otp valid for 5Min
 
 
 BOOK_GENRE = [

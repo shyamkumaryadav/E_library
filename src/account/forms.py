@@ -12,6 +12,7 @@ from django.contrib.auth.forms import (
     AuthenticationForm,
     UsernameField
 )
+from django_otp.forms import OTPAuthenticationFormMixin
 from .models import User
 
 
@@ -40,6 +41,7 @@ class UserCreationForm(forms.ModelForm):
     )
     password2 = forms.CharField(
         label="Password confirmation",
+        validators=[password_validation.validate_password],
         widget=forms.PasswordInput(
             attrs={'class': 'form-control', 'placeholder': 'Enter Same Password', 'autocomplete': 'new-password'}),
         strip=False,
@@ -80,21 +82,21 @@ class UserCreationForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
-                Column(Field('username')),
-                Column(Field('email')),
+                Column(Field('username', placeholder='Enter Username')),
+                Column(Field('email', placeholder='Enter Email')),
             ),
             Row(
-                Column(Field('first_name')),
-                Column(Field('last_name')),
+                Column(Field('first_name', placeholder='Enter First Name')),
+                Column(Field('last_name', placeholder='Enter Last Name')),
             ),
             Row(
                 Column(Field('date_of_birth')),
-                Column(Field('contactNo')),
+                Column(Field('contactNo', placeholder='Enter Phone Number')),
             ),
             Row(
                 Column(Field('state')),
                 Column(Field('city')),
-                Column(Field('pincode')),
+                Column(Field('pincode', placeholder='6 Digit pincode')),
             ),
             Field('full_address', placeholder='Full Address',
                   maxlength=100, rows=2),
@@ -103,15 +105,8 @@ class UserCreationForm(forms.ModelForm):
                 Column(Field('password1')),
                 Column(Field('password2'))
             ),
-            Div(Submit('submit', 'Sign Up', css_class='btn-lg',
-                       style="text-shadow: 3px 6px 6px black;"),
+            Div(Submit('submit', 'Sign Up', css_class='btn-lg',),
                 css_class='text-center'),
-            Div(HTML('''
-                    <p class="text-muted">Already have an account? 
-                        <a class="text-monospace text-uppercase text-decoration-none text-success" \
-                        href="{% url 'account:signin' %}">Sign in
-                        </a>
-                    </p>'''), css_class='text-center pt-2')
         )
         self.helper.form_id = 'userCreationForm'
         self.helper.form_class = 'blueForms'
@@ -145,7 +140,7 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-class UserLoginForm(forms.Form):
+class UserLoginForm(forms.Form, OTPAuthenticationFormMixin):
     name = forms.CharField()
     password = forms.CharField(
         label="Password",
@@ -153,10 +148,7 @@ class UserLoginForm(forms.Form):
         widget=forms.PasswordInput(
             attrs={'autocomplete': "current-password", 'placeholder': "Enter Password"}),
     )
-
-    class Media:
-        js = ()
-
+    
     def __init__(self, request=None, *args, **kwargs):
         self.request = request
         self.user_cache = None
@@ -164,31 +156,12 @@ class UserLoginForm(forms.Form):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Column(Field('name', placeholder="Enter Username or Email")),
-            Column(AppendedText('password', '<i id="show_hide_passwordi" class="fa fa-eye-slash" aria-hidden="true"></i>', active=True)),
+            Column(AppendedText('password', '<i id="eye" class="fa fa-eye-slash" aria-hidden="true"></i>')),
                                 # '<div  class="input-group-addon" style="background-color:transparent !important;">\
                                 # ),
-            Div(Submit('submit', 'Sign In', css_class="btn-block btn-lg", style="text-shadow: 3px 6px 6px black;"),
+
+            Div(Submit('submit', 'Sign In', css_class="btn-block btn-lg"),
                 css_class='text-center m-4'),
-            Div(HTML('''<p class="text-muted">New To E-library? 
-                <a class="text-monospace text-uppercase text-decoration-none text-success"\
-                    href="{% url 'account:signup' %}">Sign up</a></p>'''),
-                css_class='text-center m-4'),
-            HTML('''<script>
-                $(document).ready(function() {
-                    $("#show_hide_password").on('click', function(event) {
-                    event.preventDefault();
-                    if($('#password').attr("type") == "text"){
-                        $('#password').attr('type', 'password');
-                        $('#show_hide_passwordi').addClass( "fa-eye-slash" );
-                        $('#show_hide_passwordi').removeClass( "fa-eye" );
-                    }else if($('#password').attr("type") == "password"){
-                        $('#password').attr('type', 'text');
-                        $('#show_hide_passwordi').removeClass( "fa-eye-slash" );
-                        $('#show_hide_passwordi').addClass( "fa-eye" );
-                    }
-                });
-            });
-            </script>''')
         )
         self.helper.form_id = 'LoginForm'
         self.helper.form_class = 'blueForms'
@@ -215,6 +188,7 @@ class UserLoginForm(forms.Form):
             else:
                 if not self.user_cache.is_active:
                     raise forms.ValidationError("This account is inactive. Contact to Admin")
+        # self.cleaned_data = super().clean()
         return self.cleaned_data
 
     def get_user(self):

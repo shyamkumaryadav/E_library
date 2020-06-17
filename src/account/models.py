@@ -8,7 +8,7 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, PermissionsMixin, UserManager
 )
-
+from otp_twilio.models import TwilioSMSDevice
 
 def upload_to_user(instance, filename):
     name = instance.get_full_name.replace(' ', '_')
@@ -17,53 +17,53 @@ def upload_to_user(instance, filename):
     return f"User_Profile/{name}_SKY_{a}.{ext}"
 
 
-class UserManager123(BaseUserManager):
-    def _create_user(self, first_name, last_name, username, email, contactNo, date_of_birth, state, city, pincode, full_address, profile, is_defaulter=False, password=None):
-        if not username:
-            raise ValueError('The given username must be set')
-        user = self.model(
-            first_name=first_name,
-            last_name=last_name,
-            username=self.model.normalize_username(username),
-            email=self.normalize_email(email),
-            date_of_birth=date_of_birth,
-            contactNo=contactNo,
-            state=state,
-            city=city,
-            pincode=pincode,
-            full_address=full_address,
-            profile=profile,
-            is_defaulter=is_defaulter,
-        )
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-    def create_user(self, first_name, last_name, username, email, contactNo, date_of_birth, state, city, pincode, full_address, profile, is_defaulter=False, password=None):
-        pass
+# class UserManager123(BaseUserManager):
+#     def _create_user(self, first_name, last_name, username, email, contactNo, date_of_birth, state, city, pincode, full_address, profile, is_defaulter=False, password=None):
+#         if not username:
+#             raise ValueError('The given username must be set')
+#         user = self.model(
+#             first_name=first_name,
+#             last_name=last_name,
+#             username=self.model.normalize_username(username),
+#             email=self.normalize_email(email),
+#             date_of_birth=date_of_birth,
+#             contactNo=contactNo,
+#             state=state,
+#             city=city,
+#             pincode=pincode,
+#             full_address=full_address,
+#             profile=profile,
+#             is_defaulter=is_defaulter,
+#         )
+#         user.set_password(password)
+#         user.save(using=self._db)
+#         return user
+#     def create_user(self, first_name, last_name, username, email, contactNo, date_of_birth, state, city, pincode, full_address, profile, is_defaulter=False, password=None):
+#         pass
 
-    def create_superuser(self, username, email, first_name=None, last_name=None, contactNo=None, date_of_birth=None, state=None, city=None, pincode=None, full_address=None, profile=None, password=None):
-        user = self._create_user(
-            first_name=first_name,
-            last_name=last_name,
-            username=username,
-            email=email,
-            contactNo=contactNo,
-            date_of_birth=date_of_birth,
-            state=state,
-            city=city,
-            pincode=pincode,
-            full_address=full_address,
-            profile=profile,
-            password=password,
-        )
-        user.is_staff = True
-        user.is_superuser = True
-        if user.is_staff is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if user.is_superuser is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
-        user.save(using=self._db)
-        return user
+#     def create_superuser(self, username, email, first_name=None, last_name=None, contactNo=None, date_of_birth=None, state=None, city=None, pincode=None, full_address=None, profile=None, password=None):
+#         user = self._create_user(
+#             first_name=first_name,
+#             last_name=last_name,
+#             username=username,
+#             email=email,
+#             contactNo=contactNo,
+#             date_of_birth=date_of_birth,
+#             state=state,
+#             city=city,
+#             pincode=pincode,
+#             full_address=full_address,
+#             profile=profile,
+#             password=password,
+#         )
+#         user.is_staff = True
+#         user.is_superuser = True
+#         if user.is_staff is not True:
+#             raise ValueError('Superuser must have is_staff=True.')
+#         if user.is_superuser is not True:
+#             raise ValueError('Superuser must have is_superuser=True.')
+#         user.save(using=self._db)
+#         return user
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -127,9 +127,11 @@ class User(AbstractBaseUser, PermissionsMixin):
                                     )
     profile = models.FileField(upload_to=upload_to_user,
                                default='User_Profile/default.png',
+                               help_text= 'Only Image',
                                validators=[validators.FileExtensionValidator(
                                    allowed_extensions=validators.get_available_image_extensions(),
-                                   message="Select valid Profile Image.")
+                                   message="'%(extension)s' not valid Profile Image. [png, jpe, jpg, jpeg]"
+                                   )
                                ],)
     is_staff = models.BooleanField('staff status', default=False,help_text='Designates whether the user can log into this admin site.')
     is_active = models.BooleanField(default=True,

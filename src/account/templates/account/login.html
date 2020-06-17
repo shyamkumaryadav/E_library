@@ -32,10 +32,36 @@
                      <hr>
                   </div>
                </div>
-               {% crispy form %}
+               <div class="row">
+                  <div class="col">
+                     {% crispy form %}
+                     <div class="text-center m-4">
+                     <p class="text-muted">New To E-library? 
+                <a class="text-monospace text-uppercase text-decoration-none text-success"\
+                    href="{% url 'account:signup' %}">Sign up</a></p></div>
+                  </div>
+               </div>
             </div>
          </div>
       </div>
    </div>
 </div>
 {% endblock main %}
+{% block body %}
+<script>
+$(document).ready(function() {
+   $(".input-group-append").on('click', function(event) {
+      event.preventDefault();
+      $(this).toggleClass('active');
+      const password = $('#password');
+      password.toggleClass('bg-danger text-white');
+      $('#eye').toggleClass('fa-eye-slash fa-eye ');
+      if(password.attr("type") == "text"){
+         password.attr('type', 'password');
+      }else if(password.attr("type") == "password"){
+         password.attr('type', 'text');
+      }
+   });
+});
+</script>
+{% endblock body %}

@@ -89,7 +89,8 @@ class BookForm(forms.ModelForm):
         # 'publish': {'name': 'Select Publisher'}
         # },
         widgets = {
-        # 'edition': forms.SelectMultiple(),
+            'publish_date': DateInput()
+            # 'rating': forms.SelectMultiple(),
         }
 
     def __init__(self, *args, **kwargs):
@@ -99,15 +100,29 @@ class BookForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
-                Column(Field('name', placeholder="Enter First Name")),
-                Column(Field('genre'))
+                Column(Field('name', placeholder="Enter Book Name")),
+                Column(Field('publish_date'))
             ),
             Row(
                 Column(Field('author')),
                 Column(Field('publish')),
             ),
             Row(
-                Field('edition')),
+                Column(Field('language')),
+                Column(Field('edition')),
+            ),
+            Row(
+                Column(PrependedAppendedText(
+                    'cost', '$', '.00', min=0, step=1),),
+                Column(Field('page')),
+            ),
+            Row(
+                Column(Field('description', placeholder='Description',
+                             maxlength=100, rows=2))
+            ),
+            Row(Column(Field('profile'))),
+            Row(Column(Field('rating',
+                             css_class="custom-range", max=10.0, min=0, attrs={'type': 'range'}))),
             Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}{%endif%}"
                 value="{% if object %}Update{%else%}Add{%endif%}"
                 class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')),

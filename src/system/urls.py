@@ -6,10 +6,10 @@ app_name = 'system'
 
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
-    path('about1/', views.aboutView.as_view(), name='about'),
+    path('about/', views.aboutView.as_view(), name='about'),
     path('terms/', views.TermsView.as_view(), name='terms'),
     path('view_books/', views.ViewBookView.as_view(),
-        name='viewbooks'),
+         name='viewbooks'),
     path('author_management/', views.AuthorManagementView.as_view(),
          name='authormanagement'),
     path('author_management/<uuid:pk>/', views.AuthorManagementUpdateView.as_view(),
@@ -19,11 +19,11 @@ urlpatterns = [
     path('member_management/', views.MemberManagementView.as_view(),
          name='membermanagement'),
     path('book_issuing/', views.BookIssuingView.as_view(),
-        name='bookissuing'),
+         name='bookissuing'),
     path('book_inventory/', views.BookInventoryView.as_view(),
          name='bookinventory'),
     path('publisher_management/', views.PublisherManagementView.as_view(),
          name='publishermanagement'),
     path('shyamkumaryadav/', views.ShyamkumaryadavView.as_view(),
-        name='shyamkumaryadav'),
+         name='shyamkumaryadav'),
 ]

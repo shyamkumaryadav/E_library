@@ -44,7 +44,7 @@ class BookPublish(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50, unique=True,
                             error_messages={
-                                "unique": "The name is already exists."
+                                "unique": "This name is already exists."
                             }
                             )
     address = models.TextField(unique=True,)
@@ -80,11 +80,8 @@ class Book(models.Model):
     genre = models.ManyToManyField(Genre, verbose_name="Genre")
     author = models.ForeignKey(
         BookAuthor, on_delete=models.CASCADE, verbose_name="Author Name")
-    publish = models.ForeignKey('BookPublish', on_delete=models.CASCADE, to_field='address',
+    publish = models.ForeignKey('BookPublish', on_delete=models.CASCADE,
                                 verbose_name="Publisher Name")
-    # publish.empty_values = ['adres']
-    # print('*'*13)
-    # print(publish.get_choices.__dir__()
     publish_date = models.DateField(verbose_name="Publish Date")
     date = models.DateTimeField(auto_now=True, verbose_name="Date")
     language = models.CharField(max_length=12, verbose_name="Language", choices=[

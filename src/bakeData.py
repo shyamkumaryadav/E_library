@@ -17,36 +17,38 @@ f = faker.Faker()
 
 
 def AddBook():
-    publish = BookPublish.objects.get_or_create(name=f.company())[0]
-    author = BookAuthor.objects.get_or_create(
+    publish, _ = BookPublish.objects.get_or_create(
+        name=f.company(), address=f.address())
+    author, _ = BookAuthor.objects.get_or_create(
         first_name=f.first_name(),
         last_name=f.last_name(),
         date_of_birth=f.date_of_birth(),
         date_of_death=f.date_this_year()
-    )[0]
+    )
     genre = Genre.objects.filter(
         name__in=f.random_elements(
             bg, length=f.random_int(
                 min=1, max=6),
             unique=True)
     )
-    book = Book.objects.get_or_create(
-        bookid=f.uuid4(),
+    book, _ = Book.objects.get_or_create(
         name=f.name(),
         author=author,
         publish=publish,
-        publish_Date=f.date(),
+        publish_date=f.date(),
         language=f.random_element(lg),
         edition=f.random_element(be),
         cost=f.pydecimal(
             right_digits=2, positive=True, min_value=100, max_value=9999
-        ), page=f.pyint(),
+        ),
+        page=f.pyint(),
         description=f.catch_phrase(),
         stock=f.pyint(),
         rating=f.pydecimal(right_digits=1, positive=True,
                            min_value=0, max_value=10),
-    )[0]
+    )
     book.genre.set([*genre])
+    book.save()
 
 
 ##################################################

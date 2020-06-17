@@ -66,7 +66,7 @@ class UserPasswordChangeDoneView(PasswordChangeDoneView):
 class UserCreateView(LogoutRequiredMixin, CreateView):
     form_class = UserCreationForm
     template_name = 'account/signup.html'
-    success_url = reverse_lazy('account:login')
+    success_url = reverse_lazy('account:signin')
 
     # def get(self, request, *args, **kwargs):
     #     if request.user.is_authenticated:

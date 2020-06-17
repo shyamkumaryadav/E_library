@@ -1,6 +1,4 @@
 {% extends 'system/master.html' %}
-{% load crispy_forms_tags %}
-{% load flatpages %}
 {% block head %}
 <link rel="icon" href="#" sizes="144x144" >
 <title>{{ title }}</title>
@@ -8,58 +6,5 @@
 {% endblock head %}
 
 {% block main %}
-<div class="" id="menu">
-  {% get_flatpages as flatpages %}
-  <ul class="nav navbar-nav">
-    {% for page in flatpages %}
-      <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-    {% endfor %}
-  </ul>
-</div>
-<div class="idofmain">
-	<h1>{{ flatpage.title }}</h1>
-	<p>{{ flatpage.content }}</p>
-</div>
-<!-- 
-<script type="text/javascript">
-	var url = "{% url 'system:viewbooks' %}";
-	let datashyam = '';
-	var da = [{ name: 'q', value : ''}, {name:'page', value: ''}];
-	$(document).ready(function(){
-	$.ajax({
-		    url: url,
-		    type: "GET",
-		    success: function(data) {
-		    	datashyam = data;
-	            $('.idofmain').fadeIn(1000, function(){$(this).html(datashyam)});
-		    },
-		    error: function () {
-		        $('.idofmain').html('<h1>error</h1>');
-		    }
-	});
-
-	
-	$('button').on('click', function(e){
-		e.preventDefault();
-		$('[name="page"]').on('click',function(){da[1].value = $(this).val();alert()});
-		da[0].value = $('#id_for_search').val()
-		// $('.idofmain').html('');
-		$.ajax({
-			// url: url,
-		    url: url+"?"+da.map(function(e){return e.name+"="+e.value}).join('&'),
-		    type: "GET",
-		    success: function(data) {
-	            datashyam=data;
-	            da[1].value = '';
-	            console.log('data');
-	            $('.idofmain').fadeIn(1500).html(datashyam);
-		    },
-		    error: function () {
-		    	console.log('data error');
-		        $('.idofmain').append('<h1>error</h1>');
-		    }
-	});
-});
-});
-</script> -->
+{% load crispy_forms_tags %}
 {% endblock main %}

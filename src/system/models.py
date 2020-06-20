@@ -76,8 +76,9 @@ class Genre(models.Model):
 class Book(models.Model):
     id = models.UUIDField(verbose_name="Book ID",
                           primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=120, verbose_name="Book Name")
-    genre = models.ManyToManyField(Genre, verbose_name="Genre")
+    name = models.CharField(max_length=120, verbose_name="Name", unique=True)
+    genre = models.ManyToManyField(
+        Genre, verbose_name="Genre", help_text='Hold down “Control”, or “Command” on a Mac, to select more than one.')
     author = models.ForeignKey(
         BookAuthor, on_delete=models.CASCADE, verbose_name="Author Name")
     publish = models.ForeignKey('BookPublish', on_delete=models.CASCADE,
@@ -96,7 +97,7 @@ class Book(models.Model):
     today_stock = models.PositiveIntegerField(
         verbose_name="Current stock", null=True, blank=True)
     rating = models.DecimalField(
-        max_digits=3, decimal_places=1, verbose_name="Rating")
+        max_digits=2, decimal_places=1, verbose_name="Rating")
     profile = models.FileField(
         upload_to=upload_to_book, verbose_name="Book cover",
         default="Book_cover/default.png", blank=True,
@@ -124,9 +125,11 @@ class Book(models.Model):
         return ', '.join(genre.get_name_display() for genre in self.genre.all())
     display_genre.short_description = 'Genre'
 
-    def get_absolute_url(self):
-        # return f'/book/{str(self.bookid)}/'
-        pass
+    @property
+    def get_update_url(self):
+        return reverse_lazy('system:bookinventoryupdate', kwargs={
+            'pk': self.pk
+        })
 
 
 class Issue(models.Model):

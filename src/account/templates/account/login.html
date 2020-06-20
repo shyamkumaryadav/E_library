@@ -34,7 +34,13 @@
                </div>
                <div class="row">
                   <div class="col">
-                     {% crispy form %}
+                  {% crispy form %}
+                     {% comment %} <form action="" method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <input type="submit" value="Submit" class='btn btn-info btn-lg'>
+                        {% if form.get_user %}<input type="submit" name="otp_challenge" class='btn btn-info' value="Get Challenge" />{% endif %}
+                     </form> {% endcomment %}
                      <div class="text-center m-4">
                      <p class="text-muted">New To E-library? 
                 <a class="text-monospace text-uppercase text-decoration-none text-success"\

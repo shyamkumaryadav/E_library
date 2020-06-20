@@ -7,11 +7,13 @@ from django_otp.admin import OTPAdminSite
 
 admin_site = OTPAdminSite(name='OTP Site')
 
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin, ImportExportModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_defaulter')
+    list_display = ('username', 'email', 'first_name',
+                    'last_name', 'is_defaulter', 'is_staff')
     list_filter = ('is_superuser', 'is_active', 'groups')
     fieldsets = (
         (None, {'fields': ('email', 'username', 'password')}),
@@ -19,9 +21,9 @@ class UserAdmin(BaseUserAdmin, ImportExportModelAdmin):
             'classes': ('collapse',),
             'fields': ('first_name', 'last_name', 'date_of_birth',
                        'contactNo', 'state', 'city', 'pincode', 'full_address', 'profile')}),
-        ('Permissions', {'fields': ('groups', 'user_permissions','is_superuser',
-                                    'is_active','is_staff', 'is_defaulter')}),
-        ('Important dates', {'fields': ('last_login','date_joined')}),
+        ('Permissions', {'fields': ('groups', 'user_permissions', 'is_superuser',
+                                    'is_active', 'is_staff', 'is_defaulter')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
         (None, {

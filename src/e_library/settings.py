@@ -18,12 +18,16 @@ INSTALLED_APPS = [
     # Django Extensions
     'django_extensions',
     'import_export',
+    'sorl.thumbnail',
     # Crispy Form is Best idea
     'crispy_forms',
 
     # otp django
     'django_otp',
     'otp_twilio',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_hotp',
+    'django_otp.plugins.otp_static',
     # myApps
     'account',
     'system',
@@ -145,7 +149,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 OTP_TWILIO_ACCOUNT = os.getenv('OTP_TWILIO_ACCOUNT')
 OTP_TWILIO_AUTH = os.getenv('OTP_TWILIO_AUTH')
-OTP_TWILIO_CHALLENGE_MESSAGE = 'send to your number...'
+OTP_TWILIO_CHALLENGE_MESSAGE = 'OTP send to your number...'
 OTP_TWILIO_TOKEN_TEMPLATE = '''
 \nFrom E_library:please don't share your
 otp: {token}

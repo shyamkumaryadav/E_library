@@ -85,12 +85,9 @@ class BookForm(forms.ModelForm):
     class Meta:
         model = models.Book
         fields = '__all__'
-        # fields_attrs = {
-        # 'publish': {'name': 'Select Publisher'}
-        # },
         widgets = {
-            'publish_date': DateInput()
-            # 'rating': forms.SelectMultiple(),
+            'publish_date': DateInput(),
+            'rating': forms.NumberInput(attrs={'type': 'range', 'class': 'custom-range'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -120,9 +117,10 @@ class BookForm(forms.ModelForm):
                 Column(Field('description', placeholder='Description',
                              maxlength=100, rows=2))
             ),
+            Row(Column(Field('stock'))),
+            Row(Column(Field('genre'))),
+            Row(Column(Field('rating', min="0", max="5", step="0.5"))),
             Row(Column(Field('profile'))),
-            Row(Column(Field('rating',
-                             css_class="custom-range", max=10.0, min=0, attrs={'type': 'range'}))),
             Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}{%endif%}"
                 value="{% if object %}Update{%else%}Add{%endif%}"
                 class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')),

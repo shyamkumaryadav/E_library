@@ -22,6 +22,8 @@ urlpatterns = [
          name='bookissuing'),
     path('book_inventory/', views.BookInventoryView.as_view(),
          name='bookinventory'),
+    path('book_inventory/<uuid:pk>/', views.BookInventoryUpdateView.as_view(),
+         name='bookinventoryupdate'),
     path('publisher_management/', views.PublisherManagementView.as_view(),
          name='publishermanagement'),
     path('shyamkumaryadav/', views.ShyamkumaryadavView.as_view(),

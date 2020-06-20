@@ -14,7 +14,7 @@ class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     readonly_fields = ('today_stock', 'pk', 'date')
     ordering = ('name',)
     actions = ['apply_discount', ]
-    list_filter = ('edition', 'language',)
+    list_filter = ('edition', 'language', 'date')
 
     def apply_discount(self, request, queryset):
         updated = queryset.update(cost=F('cost') * decimal.Decimal('0.9'))

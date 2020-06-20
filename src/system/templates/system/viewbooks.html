@@ -42,13 +42,17 @@
 				    <div class="row">
 						<div class="col">
 							<h3>{{ page_obj.paginator.count }}</h3>
+							
+							<img id="bookimg" src='#' alt="{{ book.name}}"></img>
 							{% if object_list %}
 							{% for book in object_list %}
 							<div class="card m-1 btn-outline-secondary">
 								<div class="card-body">
 									<div class="col">
 										{% if book.profile %}
-										<img src="{{ book.profile.url }}">
+										{% load thumbnail %}
+										
+										<!-- <img src="{{ .url }}"> -->
 										{% endif%}
 										<h3>{{ book.name}}</h3><br>
 										<h3>{{ book.cost|intcomma}}</h3><br>
@@ -98,4 +102,14 @@
 </nav>
 {% endif %}
 </form>
+
+<script type="text/javascript">
+	$.ajax({
+		url: 'https://picsum.photos/v2/list',
+		success: (data) => {
+			data.forEach(elem => $('#bookimg').append('<img id="'+elem.id+'" src="'+elem.url+'" alt="'+elem.author+'"></img>'))
+		}
+
+	});
+</script>
 {% endblock main %}

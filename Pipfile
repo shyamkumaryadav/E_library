@@ -16,6 +16,7 @@ qrcode = "*"
 django-otp-twilio = "*"
 freezegun = "*"
 django-two-factor-auth = "*"
+sorl-thumbnail = "*"
 
 [dev-packages]
 pylint = "*"

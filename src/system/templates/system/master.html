@@ -25,6 +25,9 @@
 	<script type="text/javascript" src="{% static 'system/bootstrap/javascript/bootstrap.min.js'%}"></script>
 	<!-- end bootstrap -->
 
+	<!-- AOS CSS -->
+	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
 	<!-- jquery -->
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<link rel="icon" href="{%static 'system/images/imgs/books.png'%}" sizes="144x144" >
@@ -36,7 +39,7 @@
 
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light " >
+	<nav class="navbar navbar-expand-lg navbar-light ">
 		<a class="navbar-brand" href="{% url 'system:home' %}">
 			<img src="{% static 'system/images/imgs/books.png' %}" width="30" height="30">
 			E-Library
@@ -167,7 +170,11 @@
 		</div>
 	</footer>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
 {% block body %}
 {% endblock body %}
 </html>

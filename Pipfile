@@ -17,6 +17,16 @@ django-otp-twilio = "*"
 freezegun = "*"
 django-two-factor-auth = "*"
 sorl-thumbnail = "*"
+gunicorn = "*"
+asgiref = "*"
+cffi = "*"
+cryptography = "*"
+pycparser = "*"
+pytz = "*"
+six = "*"
+sqlparse = "*"
+whitenoise = "*"
+django-heroku = "*"
 
 [dev-packages]
 pylint = "*"
@@ -24,3 +34,6 @@ autopep8 = "*"
 
 [requires]
 python_version = "3.8"
+
+[packages.django-storages]
+extras = [ "dropbox",]

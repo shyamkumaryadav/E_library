@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.utils.translation import ngettext
+from django.utils.translation import ngettext, gettext as _
 from django.contrib import messages
 from django.db.models import F
 from import_export.admin import ImportExportModelAdmin
@@ -23,7 +23,7 @@ class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
             '%d books were successfully apply 10%% discount.',
             updated,
         ) % updated, messages.SUCCESS)
-    apply_discount.short_description = 'Apply 10%% discount'
+    apply_discount.short_description = _('Apply 10%% discount')
 
 
 @admin.register(BookAuthor)

@@ -6,12 +6,12 @@ from django.views import generic
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, Http404
 from django.urls import reverse_lazy
+from django.utils.translation import activate
 
 
 class HomeView(generic.TemplateView):
     template_name = 'system/home.html'
     extra_context = {'title': 'Home'}
-
 
 class aboutView(generic.TemplateView):
     template_name = 'system/about.html'

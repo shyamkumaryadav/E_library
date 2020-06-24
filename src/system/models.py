@@ -1,7 +1,7 @@
 import secrets
 import uuid
 from django.db import models
-from django.conf import settings
+from django.conf import settings, global_settings
 from django.core import validators
 from django.urls import reverse_lazy
 from PIL import Image
@@ -86,7 +86,7 @@ class Book(models.Model):
     publish_date = models.DateField(verbose_name="Publish Date")
     date = models.DateTimeField(auto_now=True, verbose_name="Date")
     language = models.CharField(max_length=12, verbose_name="Language", choices=[
-                                (None, "Select Language")] + settings.LANGUAGES)
+                                (None, "Select Language")] + global_settings.LANGUAGES)
     edition = models.IntegerField(verbose_name="Edition", choices=[
                                   (None, "Select Edition")] + settings.BOOK_EDITION)
     cost = models.DecimalField(

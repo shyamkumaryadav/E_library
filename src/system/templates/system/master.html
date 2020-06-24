@@ -1,5 +1,5 @@
 {% load static %}
-{% load crispy_forms_tags %}
+{% load i18n %}
 <html>
 <head>
 
@@ -48,10 +48,10 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'system:home' %}">Home</a>
+					<a class="nav-link" href="{% url 'system:home' %}">{% trans 'Home' %}</a>
 				</li>
 				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'system:about'%}">about</a>
+					<a class="nav-link" href="{% url 'system:about'%}">{% trans 'About' %}</a>
 				</li>
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'system:terms'%}">Terms</a>
@@ -60,7 +60,7 @@
 
 			<ul class="navbar-nav">
 				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'system:viewbooks'%}">{{ user.is_verified}}</a>
+					<a class="nav-link" href="{% url 'system:viewbooks'%}">{{ user.is_verified}}{% get_current_language as LANGUAGE_CODE %} {{LANGUAGE_CODE}}</a>
 				</li>
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'account:password_change'%}">View Books</a>
@@ -98,10 +98,32 @@
 					</a>
 				</li>
 				{% endif %}
+				<li class="nav-item active">
+					<form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+						<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+				    <input name="next" type="hidden" value="{{ redirect_to }}">
+				    <select name="language" onchange="this.form.submit()" class="select form-control">
+				        {% get_current_language as LANGUAGE_CODE %}
+				        {% get_available_languages as LANGUAGES %}
+				        {% get_language_info_list for LANGUAGES as languages %}
+				        {% for language in languages %}
+				            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+				                {{ language.name_local }}
+				            </option>
+				        {% endfor %}
+				    </select>
+					</form>
+				</li>
 			</ul>
 		</div>
 	</nav>
-	<!-- main block  -->
+	<div>
+	</div>
+
+<div>
+	
+</div>	
+<!-- main block  -->
 	<main id="mainblock">
 	{% if messages %}
 	    {% for message in messages %}
@@ -113,6 +135,7 @@
 			</div>
 	    {% endfor %}
 	{% endif %}
+
 		{% block main %}
 		{% endblock main %}
 	</main>

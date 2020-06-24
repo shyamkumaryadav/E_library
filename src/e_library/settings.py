@@ -90,24 +90,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
 LANGUAGES = [
     ('en', 'English'),
     ('hi', 'Hindi'),
-    ('ta', 'Tamil'),
-    ('te', 'Telugu'),
-    ('ur', 'Urdu'),
-    ('pa', 'Punjabi'),
-    ('mr', 'Marathi'),
-    ('bn', 'Bengali'),
 ]
-LANGUAGES_BIDI = ['ur', ]
-
 
 LOCALE_PATH = (
     os.path.join(BASE_DIR, 'locale'),
@@ -127,6 +117,9 @@ STATICFILES_FINDERS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
 # Custome User Model
 AUTH_USER_MODEL = 'account.User'
 

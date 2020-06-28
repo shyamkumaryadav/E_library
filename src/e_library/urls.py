@@ -8,7 +8,7 @@ from django_otp.admin import OTPAdminSite
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('system.urls')),
-    path('account/', include('account.urls')),
+    path('', include('account.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
 ]
 

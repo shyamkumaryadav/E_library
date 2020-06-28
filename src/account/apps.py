@@ -1,4 +1,6 @@
 from django.apps import AppConfig
+from django.db.models.signals import post_migrate
+from account.signals import create_user
 
 
 class AccountConfig(AppConfig):
@@ -6,4 +8,7 @@ class AccountConfig(AppConfig):
     verbose_name = 'Account'
 
     def ready(self):
-        import account.signals
+        post_migrate.connect(
+            create_user,
+            sender=self
+        )

@@ -1,4 +1,3 @@
-import secrets
 import uuid
 from django.db import models
 from django.conf import settings, global_settings
@@ -14,8 +13,8 @@ def upload_to_book(instance, filename):
     # instance.profile.delete()
     name = instance.name.replace(' ', '_')
     *_, ext = filename.split('.')
-    a = secrets.token_urlsafe(32)
-    return f"Book_cover/{name}_SKY_{a}.{ext}"
+    _ = uuid.uuid4
+    return f"Book_cover/{name}_SKY_{_}.{ext}"
 
 
 class BookAuthor(models.Model):
@@ -108,11 +107,11 @@ class Book(models.Model):
     )
 
     class Meta:
-        ordering = ['-publish_date']
+        ordering = ['name']
 
     def delete(self, *args, **kwargs):
         self.profile.delete()
-        super(Book, self).delete(*args, **kwargs)
+        super().delete(*args, **kwargs)
 
     def __str__(self):
         return self.name

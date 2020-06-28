@@ -1,7 +1,9 @@
-{% extends 'system/master.html' %}
-
-{% block head %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
 <title>{{ title }}</title>
+<link rel="stylesheet" type="text/css" href="{% static 'system/fontawesome/css/all.css'%}">
 <style type="text/css">
 	.slinks{
 		margin: 0;
@@ -65,27 +67,33 @@
 
 
 </style>
-{% endblock head %}
+</head>
+<body>
 
-
-{% block main %}
 <div class="slinks container-fluid">
 	<ul class="slinks-center row">
 		<li class="col-md-4">
-			<a href="#"><i class="fab fa-facebook-f"></i></a>
+			<a href="https://www.facebook.com/ishyamkumaryadav/"><i class="fab fa-facebook-f"></i></a>
 		</li>
 		<li class="col-md-4">
-			<a href=""><i class="fab fa-instagram"></i></a>
+			<a href="https://www.instagram.com/ishyamkumaryadav/"><i class="fab fa-instagram"></i></a>
 		</li>
 		<li class="col-md-4">
-			<a href=""><i class="fab fa-twitter"></i></a>
+			<a href="https://twitter.com/shyamkumaryada"><i class="fab fa-twitter"></i></a>
 		</li>
 		<li class="col-md-4">
-			<a href=""><i class="fab fa-linkedin"></i></a>
+			<a href="https://www.twitch.tv/shyamkumaryadav"><i class="fab fa-twitch"></i></a>
 		</li>
 		<li class="col-md-4">
-			<a href=""><i class="fab fa-reddit-alien"></i></a>
+			<a href="http://linkedin.com/in/shyamkumaryadav"><i class="fab fa-linkedin"></i></a>
+		</li>
+		<li class="col-md-4">
+			<a href="https://www.reddit.com/r/shyamkumaryadav"><i class="fab fa-reddit-alien"></i></a>
 		</li>
 	</ul>
 </div>
-{% endblock main %}
+
+
+
+</body>
+</html>

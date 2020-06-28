@@ -2,6 +2,7 @@ from system import forms
 from system import models
 from django.db.models import Q
 from system import mixins
+from django.contrib import messages
 from django.views import generic
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, Http404
@@ -21,6 +22,15 @@ class aboutView(generic.TemplateView):
 class TermsView(generic.TemplateView):
     template_name = 'system/terms.html'
     extra_context = {'title': 'Terms'}
+
+    def get(self, request, *args, **kwargs):
+        messages.success(request, 'this is success')
+        messages.debug(request, 'this is debug')
+        messages.info(request, 'this is info')
+        messages.warning(request, 'this is warning')
+        messages.error(request, 'this is error')
+        messages.add_message(request, 23, 'Over danger!', extra_tags='danger')
+        return super().get(request, *args, **kwargs)
 
 
 class ViewBookView(generic.ListView):

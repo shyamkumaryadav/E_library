@@ -10,8 +10,6 @@ admin_site = OTPAdminSite(name='OTP Site')
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin, ImportExportModelAdmin):
-    form = UserChangeForm
-    add_form = UserCreationForm
     list_display = ('username', 'email', 'first_name',
                     'last_name', 'is_defaulter', 'is_staff')
     list_filter = ('is_superuser', 'is_active', 'groups')

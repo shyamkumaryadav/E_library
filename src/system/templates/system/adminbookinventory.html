@@ -61,12 +61,14 @@
                         </div>
 
                         <script>
+                          $(document).ready(function(){
                             $('#deletebtn').css('display', '');
                             $('#goback').css('display', '');
                             $("button[name='delAuthor']").on('click', function(e) {
                                 $('#bookForm').append('<input type="hidden" name="Delete" value="{{ object.id }}">');
                                 $("#bookForm").submit();
                             });
+                          });
                         </script>
                     {%endif%}
                      </div>

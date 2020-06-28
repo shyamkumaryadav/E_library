@@ -93,7 +93,7 @@ class BookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(BookForm, self).__init__(*args, **kwargs)
         self.fields['publish'].empty_label = 'select Publisher'
-        self.fields['author'].empty_label = 'select author'
+        self.fields['author'].empty_label = 'select Author'
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
@@ -111,13 +111,13 @@ class BookForm(forms.ModelForm):
             Row(
                 Column(PrependedAppendedText(
                     'cost', '$', '.00', min=0, step=1),),
-                Column(Field('page')),
+                Column(Field('page', min=0, step=1, placeholder="Enter Total Pages")),
             ),
             Row(
-                Column(Field('description', placeholder='Description',
+                Column(Field('description', placeholder='Book Description',
                              maxlength=100, rows=2))
             ),
-            Row(Column(Field('stock'))),
+            Row(Column(Field('stock', placeholder="Total Stock"))),
             Row(Column(Field('genre'))),
             Row(Column(Field('rating', min="0", max="5", step="0.5"))),
             Row(Column(Field('profile'))),
@@ -135,4 +135,4 @@ class BookForm(forms.ModelForm):
         self.helper.form_id = 'bookForm'
         self.helper.form_class = 'form-group'
         self.helper.form_method = 'post'
-        self.helper.form_action = ''
+        # self.helper.form_action = ''

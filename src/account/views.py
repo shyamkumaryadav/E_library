@@ -5,13 +5,14 @@ from django.contrib.auth.views import (
     LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView,
     PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView,
     PasswordResetView)
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from .forms import UserLoginForm, UserCreationForm
-from .mixins import LogoutRequiredMixin
+from .forms import UserLoginForm, UserCreationForm, UserChangeForm
+from system.mixins import AdminRequiredMixin
+from .mixins import LogoutRequiredMixin, AdminSameRequiredMixin
 from django_otp.forms import OTPAuthenticationForm
-
+from .models import User
 
 
 class UserLoginView(LoginView):
@@ -25,6 +26,18 @@ class UserLogoutView(LogoutView):
     next_page = reverse_lazy('account:signin')
     template_name = 'account/logout.html'
     redirect_authenticated_user = False
+
+
+class UserUpdateView(AdminSameRequiredMixin, UpdateView):
+    next_page = reverse_lazy('account:signin')
+    model = User
+    form_class = UserChangeForm
+    template_name = 'account/signup.html'
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+
+    def get_success_url(self):
+        return reverse_lazy('account:update', kwargs = {'username':self.object.username})
 
 class UserPasswordResetView(PasswordResetView):
     email_template_name = ''
@@ -56,8 +69,12 @@ class UserPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'account/password_reset_complete.html'
 
 class UserPasswordChangeView(PasswordChangeView):
-    success_url = reverse_lazy('account:password_change_done')
+    success_url = reverse_lazy('system:home')
     template_name = 'account/password_change_form.html'
+
+    def get_success_url(self):
+        messages.success(self.request, 'Your Password Change success.')
+        return '/'
 
 class UserPasswordChangeDoneView(PasswordChangeDoneView):
     template_name = 'account/password_change_done.html'
@@ -68,11 +85,6 @@ class UserCreateView(LogoutRequiredMixin, CreateView):
     template_name = 'account/signup.html'
     success_url = reverse_lazy('account:signin')
 
-    # def get(self, request, *args, **kwargs):
-    #     if request.user.is_authenticated:
-    #         return redirect('system:home')
-    #     else:
-    #         return super().get(request, *args, **kwargs)
 
 def test(request, token):
     if token == 'ji-set':

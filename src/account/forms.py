@@ -12,6 +12,7 @@ from django.contrib.auth.forms import (
     AuthenticationForm,
     UsernameField
 )
+from django.urls import reverse_lazy
 from django_otp.forms import OTPAuthenticationFormMixin
 from .models import User
 
@@ -50,14 +51,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email', 'date_of_birth', 'contactNo',
-                  'state', 'city', 'pincode', 'full_address', 'profile')
-        widgets = {
-            'contactNo': forms.NumberInput(),
-            'pincode': forms.NumberInput(),
-            'date_of_birth': DateInput(),
-            'profile': forms.FileInput(),
-        }
+        fields = ('username', 'email', )
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -86,22 +80,6 @@ class UserCreationForm(forms.ModelForm):
                 Column(Field('email', placeholder='Enter Email')),
             ),
             Row(
-                Column(Field('first_name', placeholder='Enter First Name')),
-                Column(Field('last_name', placeholder='Enter Last Name')),
-            ),
-            Row(
-                Column(Field('date_of_birth')),
-                Column(Field('contactNo', placeholder='Enter Phone Number')),
-            ),
-            Row(
-                Column(Field('state')),
-                Column(Field('city')),
-                Column(Field('pincode', placeholder='6 Digit pincode')),
-            ),
-            Field('full_address', placeholder='Full Address',
-                  maxlength=100, rows=2),
-            Field('profile'),
-            Row(
                 Column(Field('password1')),
                 Column(Field('password2'))
             ),
@@ -124,18 +102,61 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = "__all__"
+        fields = ['first_name', 'last_name', 'username', 'email', 'date_of_birth', 'contactNo',
+                  'state', 'city', 'pincode', 'full_address', 'profile', 'password']
+        widgets = {
+            'contactNo': forms.NumberInput(),
+            'pincode': forms.NumberInput(),
+            'date_of_birth': DateInput(),
+            'profile': forms.FileInput(),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         password = self.fields.get('password')
         if password:
-            password.help_text = password.help_text.format('../password/')
+            # password.initial = kwargs['instance'].password
+            password.help_text = password.help_text.format('../../password')
         user_permissions = self.fields.get('user_permissions')
         if user_permissions:
             user_permissions.queryset = user_permissions.queryset.select_related(
                 'content_type')
+        self.auto_id = '%s'
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(Field('username', placeholder='Enter Username')),
+                Column(Field('email', placeholder='Enter Email')),
+            ),
+            Row(
+                Column(Field('first_name', placeholder='Enter First Name')),
+                Column(Field('last_name', placeholder='Enter Last Name')),
+            ),
+            Row(
+                Column(Field('date_of_birth')),
+                Column(PrependedText('contactNo', '+91', placeholder='Enter Phone Number')),
+            ),
+            Row(
+                Column(Field('state')),
+                Column(Field('city')),
+                Column(Field('pincode', placeholder='6 Digit pincode')),
+            ),
+            Field('full_address', placeholder='Full Address',
+                  maxlength=100, rows=2),
+            Field('profile'),
+            Row(
+                Column(Field('password')),
+            ),
+            Div(Submit('submit', 'Update', css_class='btn-lg',),
+                css_class='text-center'),
+        )
+        self.helper.form_id = 'userChangeForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
 
+    def clean_date_of_birth(self):
+        print(self.cleaned_data.get('date_of_birth'))
+        return self.cleaned_data.get('date_of_birth')
     def clean_password(self):
         return self.initial["password"]
 
@@ -167,29 +188,29 @@ class UserLoginForm(OTPAuthenticationFormMixin, AuthenticationForm):
         # try:
         self.cleaned_data = super().clean()
 
-        if super().get_user():
-            self.helper[0:2].wrap(Field, type='hidden')
-            # if self.cleaned_data['otp_token'] != '':
-            print(self.device_choices(super().get_user()))
-            # try:
-            #     self.cleaned_data['otp_device'] = self.device_choices(
-            #         super().get_user())[0][0]
-            # except:
-            #     pass
-            self.cleaned_data['otp_challenge'] = 'otp' if self.cleaned_data['otp_token'] == '' else ''
-            if len(self.device_choices(super().get_user())) > 1:
-                self.helper.layout.append(Field('otp_device'))
-            else:
-                self.cleaned_data['otp_device'] = self.device_choices(
-                    super().get_user())[0][0]
-            self.helper.layout.append(
-                Field('otp_token', placeholder='Enter Your OTP...'))
-            # self.helper.layout.append(Field('otp_device'))
-            # self.helper.layout.append(Field('otp_challenge'))
-            # print(self.cleaned_data)
-            # self.helper.add_input(Submit('otp_challenge', 'Get OTP'))
-        print(self.cleaned_data)
-        self.clean_otp(self.get_user())
+        # if super().get_user():
+        #     self.helper[0:2].wrap(Field, type='hidden')
+        #     # if self.cleaned_data['otp_token'] != '':
+        #     print(self.device_choices(super().get_user()))
+        #     # try:
+        #     #     self.cleaned_data['otp_device'] = self.device_choices(
+        #     #         super().get_user())[0][0]
+        #     # except:
+        #     #     pass
+        #     self.cleaned_data['otp_challenge'] = 'otp' if self.cleaned_data['otp_token'] == '' else ''
+        #     if len(self.device_choices(super().get_user())) > 1:
+        #         self.helper.layout.append(Field('otp_device'))
+        #     else:
+        #         self.cleaned_data['otp_device'] = self.device_choices(
+        #             super().get_user())[0][0]
+        #     self.helper.layout.append(
+        #         Field('otp_token', placeholder='Enter Your OTP...'))
+        #     # self.helper.layout.append(Field('otp_device'))
+        #     # self.helper.layout.append(Field('otp_challenge'))
+        #     # print(self.cleaned_data)
+        #     # self.helper.add_input(Submit('otp_challenge', 'Get OTP'))
+        # print(self.cleaned_data)
+        # self.clean_otp(self.get_user())
 
         return self.cleaned_data
 

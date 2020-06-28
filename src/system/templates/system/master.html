@@ -26,7 +26,7 @@
 	<!-- end bootstrap -->
 
 	<!-- AOS CSS -->
-	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+	<!-- <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> -->
 
 	<!-- jquery -->
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -63,22 +63,7 @@
 
 			<ul class="navbar-nav">
 				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'system:viewbooks'%}">{{ user.is_verified}}{% get_current_language as LANGUAGE_CODE %} {{LANGUAGE_CODE}}</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'account:password_change'%}">View Books</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'account:password_change_done'%}">View Books</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'account:password_reset'%}">View Books</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'account:password_reset_done'%}">View Books</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'account:password_reset_complete'%}">View Books</a>
+					<a class="nav-link" href="{% url 'system:viewbooks'%}">View Books {% load tz %}{% get_current_timezone as TIME_ZONE %} {{TIME_ZONE}}</a>
 				</li>
 				{% if user.is_authenticated is False %}
 				<li class="nav-item active">
@@ -92,11 +77,11 @@
 					<a class="nav-link" href="{% url 'account:logout' %}">Logout</a>
 				</li>
 				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'system:shyamkumaryadav' %}">
+					<a class="nav-link" href="{% url 'account:update' username=user.username %}">
 						Hello, {% if user.is_admin %}
 						Admin
 						{% else %}
-							{{ user.get_first_name|default:"user"|capfirst }}
+							{{ user.get_short_name|default:"user"|capfirst }}
 						{% endif %}
 					</a>
 				</li>
@@ -171,10 +156,10 @@
 	</footer>
 </body>
 <!-- AOS JS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
+<!-- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> -->
+<!-- <script>
   AOS.init();
 </script>
-{% block body %}
+ -->{% block body %}
 {% endblock body %}
 </html>

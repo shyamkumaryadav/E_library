@@ -9,7 +9,7 @@ import decimal
 
 @admin.register(Book)
 class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('name', 'author', 'date', 'stock', 'today_stock')
+    list_display = ('__str__', 'author', 'date', 'stock', 'today_stock')
     search_fields = ('name',)
     readonly_fields = ('today_stock', 'pk', 'date')
     ordering = ('name',)

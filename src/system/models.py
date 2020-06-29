@@ -19,8 +19,8 @@ def upload_to_book(instance, filename):
 
 class BookAuthor(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(verbose_name="First Name", max_length=100)
+    last_name = models.CharField(verbose_name="Last Name", max_length=100)
     date_of_birth = models.DateField(null=True)
     date_of_death = models.DateField(
         verbose_name='Death Date', null=True, blank=True)
@@ -60,11 +60,20 @@ class BookPublish(models.Model):
             'pk': self.pk
         })
 
+class GenreManager(models.Manager):
+    def test0001(self):
+        n = 0
+        for i in settings.BOOK_GENRE:
+            obj, _ = self.get_or_create(name=i[0])
+            if _:
+                n+=1
+        return n
+        
 
 class Genre(models.Model):
     name = models.IntegerField(verbose_name="Genre Name", choices=[
                                (None, "Select Language")] + settings.BOOK_GENRE)
-
+    objects = GenreManager()
     class Meta:
         ordering = ['name']
 

@@ -14,7 +14,7 @@ def upload_to_user(instance, filename):
     name = instance.get_full_name.replace(' ', '_')
     *_, ext = filename.split('.')
     _ = uuid.uuid4
-    return f"User_Profile/{name}_SKY_{_}.{ext}"
+    return f"User_Profile/{name}-SKY-{_}.{ext}"
 
 
 
@@ -24,7 +24,7 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
         verbose_name="First Name",
         max_length=50,
         validators=[
-            validators.RegexValidator(regex=r"^[A-Za-z ]+$", message="Enter Valid First Name.")],
+            validators.RegexValidator(regex=r"^[A-Za-z ]+$", message="Enter Valid Name.")],
         null=True,
     )
     last_name = models.CharField(
@@ -78,10 +78,10 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
                                     )
     profile = models.FileField(upload_to=upload_to_user,
                                default='User_Profile/default.png',
-                               help_text= 'Only Image',
+                               help_text= 'Only Image [png, jpe, jpg, jpeg]',
                                validators=[validators.FileExtensionValidator(
                                    allowed_extensions=validators.get_available_image_extensions(),
-                                   message="'%(extension)s' not valid Profile Image. [png, jpe, jpg, jpeg]"
+                                   message="'%(extension)s' not valid Profile Image."
                                    )
                                ],)
     is_staff = models.BooleanField('staff status', default=False,help_text='Designates whether the user can log into this admin site.')

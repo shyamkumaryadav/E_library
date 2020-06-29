@@ -1,5 +1,10 @@
 
-def create_user(sender, **kwargs):
-    print('*'*32)
-    print(f"app_config.label: {sender.label}\nkwargs: {kwargs}\nsender: {sender}")
-    print('*'*32)
+def create_user(sender, *args, **kwargs):
+	# print(dir(sender), end='\n'*2)
+	# print(sender.get_models)
+	# print(args)
+	# print(kwargs)
+	# print(dir(args), end='\n'*2)
+	# print(dir(kwargs))
+	# print(str(kwargs['plan'][0][0]))
+	pass

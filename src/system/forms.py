@@ -1,10 +1,15 @@
 from django import forms
 from . import models
 from account.forms import DateInput
+from django.utils import timezone
 from django.contrib import messages
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import *
 from crispy_forms.bootstrap import *
+
+def get_today(now = timezone.now()):
+    date = timezone.datetime(now.year - 15, now.month, now.day).date().__str__()
+    return date
 
 
 class BookAuthorForm(forms.ModelForm):
@@ -12,7 +17,7 @@ class BookAuthorForm(forms.ModelForm):
         model = models.BookAuthor
         fields = '__all__'
         widgets = {
-            'date_of_birth': DateInput(),
+            'date_of_birth': DateInput(attrs = {'max':get_today()}),
             'date_of_death': DateInput(),
         }
 
@@ -46,6 +51,13 @@ class BookAuthorForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_action = ''
 
+    def clean(self):
+        cleaned_data = super().clean()
+        dob = cleaned_data['date_of_birth']
+        dod = cleaned_data['date_of_death']
+        if dob:
+            self.fields['date_of_death'].widget.attrs['min'] = timezone.datetime(dob.year + 15, dob.month, dob.day).date().__str__()
+        return cleaned_data
 
 class BookPublishForm(forms.ModelForm):
     class Meta:

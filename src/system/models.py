@@ -1,7 +1,10 @@
 import uuid
 from django.db import models
+from django.utils import timezone
 from django.conf import settings, global_settings
 from django.core import validators
+from django.core.exceptions import ValidationError
+from django.utils.deconstruct import deconstructible
 from django.urls import reverse_lazy
 from PIL import Image
 from account.models import User
@@ -16,12 +19,35 @@ def upload_to_book(instance, filename):
     _ = uuid.uuid4
     return f"Book_cover/{name}_SKY_{_}.{ext}"
 
+@deconstructible
+class On_date:
+    year = 1
+    sign = ''
+    def __init__(self, year=None, sign=None):
+        if year is not None:
+            self.year = year
+        if sign is not None:
+            self.sign = sign
+            
+
+    def __call__(self, value):
+        print('how the valide..')
+        if int(value.year) > int(timezone.now().year - self.year):
+            raise ValidationError(f'You must be {self.year}{self.sign}')
+
+    def __eq__(self, other):
+        return (
+            isinstance(other, On_date) and
+            (self.year == other.year) and
+            (self.sign == other.sign)
+        )
+
 
 class BookAuthor(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(verbose_name="First Name", max_length=100)
     last_name = models.CharField(verbose_name="Last Name", max_length=100)
-    date_of_birth = models.DateField(null=True)
+    date_of_birth = models.DateField(null=True, validators=[On_date(year=15, sign='+'), ])
     date_of_death = models.DateField(
         verbose_name='Death Date', null=True, blank=True)
 
@@ -31,6 +57,14 @@ class BookAuthor(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    def clean_fields(self, exclude=None):
+        if self.date_of_death:
+            if self.date_of_birth.year > self.date_of_death.year - 5:
+                raise ValidationError({'date_of_death':'it"s not valid'})
+
+    # def clean(self):
+    #     raise ValidationError('this is error')
 
     @property
     def get_update_url(self):
@@ -91,7 +125,7 @@ class Book(models.Model):
         BookAuthor, on_delete=models.CASCADE, verbose_name="Author Name")
     publish = models.ForeignKey('BookPublish', on_delete=models.CASCADE,
                                 verbose_name="Publisher Name")
-    publish_date = models.DateField(verbose_name="Publish Date")
+    publish_date = models.DateField(validators=[On_date,], verbose_name="Publish Date")
     date = models.DateTimeField(auto_now=True, verbose_name="Date")
     language = models.CharField(max_length=12, verbose_name="Language", choices=[
                                 (None, "Select Language")] + global_settings.LANGUAGES)

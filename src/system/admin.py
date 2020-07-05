@@ -14,7 +14,7 @@ class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         (None, {'fields': ('pk', 'name', 'author')}),
         ('Information', {
             'classes': ('collapse',),
-            'fields': ('genre', 'publish','language', 'edition', 'cost', 'page', 'description', 'stock', 'rating', 'profile')}),
+            'fields': ('genre', 'publish', 'language', 'edition', 'cost', 'page', 'description', 'stock', 'rating', 'profile')}),
     )
     search_fields = ('name',)
     readonly_fields = ('today_stock', 'pk', 'date')
@@ -50,6 +50,10 @@ class BookPublishAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 class IssueAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('__str__', 'date', 'due_date', 'defaulter')
     list_filter = ('date',)
+
+    def defaulter(self, obj):
+        return obj.user.is_defaulter
+    defaulter.boolean = True
 
 
 @admin.register(Genre)

@@ -168,8 +168,5 @@ class Issue(models.Model):
     class Meta:
         unique_together = ('user', 'book',)
 
-    def defaulter(self):
-        return self.user.is_defaulter
-
     def __str__(self):
         return f"{self.book}, {self.user}"

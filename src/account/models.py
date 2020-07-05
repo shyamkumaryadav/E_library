@@ -14,8 +14,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 def upload_to(instance, filename):
-    ext = filename.split('.')[-1]
-    return f"elibrary{secrets.token_hex(50)}.{ext}"
+    return f"elibrary{secrets.token_hex()}.{filename.split('.')[-1]}"
 
 
 class AbstractUser(AbstractBaseUser, PermissionsMixin):
@@ -81,20 +80,24 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
                                     )
     profile = models.FileField(upload_to=upload_to,
                                default='default.jpg',
-                               help_text= _('Only Image (png, jpe, jpg, jpeg) extensions'),
+                               help_text=_(
+                                   'Only Image (png, jpe, jpg, jpeg) extensions'),
                                validators=[validators.FileExtensionValidator(
                                    allowed_extensions=validators.get_available_image_extensions(),
-                                   message=_("'%(extension)s' not valid Profile Image.")
-                                   )
+                                   message=_(
+                                       "'%(extension)s' not valid Profile Image.")
+                               )
                                ],)
-    is_staff = models.BooleanField(verbose_name=_('staff status'), default=False,help_text=_('Designates whether the user can log into this admin site.'))
+    is_staff = models.BooleanField(verbose_name=_('staff status'), default=False, help_text=_(
+        'Designates whether the user can log into this admin site.'))
     is_active = models.BooleanField(default=True,
-        help_text=_('Designates whether this user should be treated as active. '
-                    'Unselect this instead of deleting accounts.'),
-        )
+                                    help_text=_('Designates whether this user should be treated as active. '
+                                                'Unselect this instead of deleting accounts.'),
+                                    )
     is_defaulter = models.BooleanField(default=False)
 
-    date_joined = models.DateTimeField(verbose_name=_('date joined'), default=timezone.now)
+    date_joined = models.DateTimeField(
+        verbose_name=_('date joined'), default=timezone.now)
 
     objects = UserManager()
 

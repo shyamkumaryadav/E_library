@@ -1,8 +1,11 @@
 from django.core.management.base import BaseCommand, CommandError
 import faker
 import tqdm
+import requests
+import uuid
 from django.conf import settings
 from system.models import Book, BookAuthor, BookPublish, Genre
+from django.core.files.base import ContentFile
 
 
 lg = [settings.LANGUAGES[i][0] for i in range(len(settings.LANGUAGES))]
@@ -54,6 +57,9 @@ class Command(BaseCommand):
                     )
                     book.genre.set([*genre])
                     book.save()
+                    book.profile.save(f'{uuid.uuid4()}.jpg', ContentFile(
+                        requests.get('https://picsum.photos/200/300').content))
+
                 except Exception as e:
                     kwargs['n'] -= 1
                     continue

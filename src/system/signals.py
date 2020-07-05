@@ -19,11 +19,15 @@ def issue_delete_update_book_today_stock(sender, instance, **kwargs):
     instance.book.today_stock = instance.book.stock - instance.book.issue_set.count()
     instance.book.save(update_fields=['today_stock'])
 
+
 @receiver(models.signals.post_delete, sender=Genre)
 def on_del_genre(sender, instance, **kwargs):
     sender.objects.test0001()
 
+
 def create_genre(sender, *args, **kwargs):
-    n=sender.models['genre'].objects.test0001()
-    if n > 0:print('Y '*n)
-    else: pass
+    n = sender.models['genre'].objects.test0001()
+    if n > 0:
+        print('Y '*n)
+    else:
+        pass

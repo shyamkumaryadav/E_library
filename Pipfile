@@ -27,6 +27,7 @@ six = "*"
 sqlparse = "*"
 whitenoise = "*"
 django-heroku = "*"
+django-cleanup = "*"
 
 [dev-packages]
 pylint = "*"

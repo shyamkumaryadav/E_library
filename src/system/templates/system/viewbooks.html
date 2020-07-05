@@ -49,10 +49,8 @@
 							<div class="card m-1 btn-outline-secondary">
 								<div class="card-body">
 									<div class="col">
-										{% if book.profile %}
-										{% load thumbnail %}
-										
-										<!-- <img src="{{ .url }}"> -->
+										{% if book.profile.url %}
+										<img src="{{book.profile.url }}" alt="{{book.name}}">
 										{% endif%}
 										<h3>{{ book.name}}</h3><br>
 										<h3>{{ book.cost|intcomma}}</h3><br>

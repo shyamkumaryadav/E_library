@@ -19,9 +19,13 @@ class UserAdmin(BaseUserAdmin, ImportExportModelAdmin):
             'classes': ('collapse',),
             'fields': ('first_name', 'last_name', 'date_of_birth',
                        'contactNo', 'state', 'city', 'pincode', 'full_address', 'profile')}),
-        ('Permissions', {'fields': ('groups', 'user_permissions', 'is_superuser',
+        ('Permissions', {
+            'classes': ('collapse',),
+            'fields': ('groups', 'user_permissions', 'is_superuser',
                                     'is_active', 'is_staff', 'is_defaulter')}),
-        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+        ('Important dates', {
+            'classes': ('collapse',),
+            'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
         (None, {

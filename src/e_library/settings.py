@@ -5,6 +5,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u'
 DEBUG = True
 ALLOWED_HOSTS = ['*']
+ADMINS = [
+    ('Shyamkumar Yadav', os.environ.get('EMAIL_USER')),
+
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -18,7 +22,7 @@ INSTALLED_APPS = [
     # Django Extensions
     'django_extensions',
     'import_export',
-    'sorl.thumbnail',
+    'django_cleanup',
     # Crispy Form is Best idea
     'crispy_forms',
 
@@ -99,6 +103,7 @@ LANGUAGES = [
     ('hi', 'Hindi'),
 ]
 
+LANGUAGE_COOKIE_NAME = 'library_lang'
 LOCALE_PATH = (
     os.path.join(BASE_DIR, 'locale'),
 )
@@ -131,14 +136,14 @@ LOGOUT_REDIRECT_URL = 'account:signin'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # password Email send
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
-
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 OTP_TWILIO_ACCOUNT = os.getenv('OTP_TWILIO_ACCOUNT')
 OTP_TWILIO_AUTH = os.getenv('OTP_TWILIO_AUTH')

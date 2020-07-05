@@ -10,6 +10,12 @@ import decimal
 @admin.register(Book)
 class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('__str__', 'author', 'date', 'stock', 'today_stock')
+    fieldsets = (
+        (None, {'fields': ('pk', 'name', 'author')}),
+        ('Information', {
+            'classes': ('collapse',),
+            'fields': ('genre', 'publish','language', 'edition', 'cost', 'page', 'description', 'stock', 'rating', 'profile')}),
+    )
     search_fields = ('name',)
     readonly_fields = ('today_stock', 'pk', 'date')
     ordering = ('name',)
@@ -36,17 +42,17 @@ class BookAuthorAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(BookPublish)
 class BookPublishAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('name', 'address')
+    list_display = ('__str__', 'address')
     readonly_fields = ('pk',)
 
 
 @admin.register(Issue)
 class IssueAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('user', 'book', 'date')
+    list_display = ('__str__', 'date', 'due_date', 'defaulter')
     list_filter = ('date',)
 
 
 @admin.register(Genre)
 class GenreAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('__str__',)
     search_fields = ('name',)

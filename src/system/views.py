@@ -8,11 +8,13 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, Http404
 from django.urls import reverse_lazy
 from django.utils.translation import activate
+from account.models import User
 
 
 class HomeView(generic.TemplateView):
     template_name = 'system/home.html'
     extra_context = {'title': 'Home'}
+
 
 class aboutView(generic.TemplateView):
     template_name = 'system/about.html'
@@ -31,6 +33,11 @@ class TermsView(generic.TemplateView):
         messages.error(request, 'this is error')
         messages.add_message(request, 23, 'Over danger!', extra_tags='danger')
         return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['luser'] = User.objects.all()
+        return context
 
 
 class ViewBookView(generic.ListView):

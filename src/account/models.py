@@ -1,4 +1,5 @@
 import uuid
+import secrets
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -9,89 +10,91 @@ from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, PermissionsMixin, UserManager
 )
 from otp_twilio.models import TwilioSMSDevice
+from django.utils.translation import gettext_lazy as _
 
-def upload_to_user(instance, filename):
-    name = instance.get_full_name.replace(' ', '_')
-    *_, ext = filename.split('.')
-    _ = uuid.uuid4
-    return f"User_Profile/{name}-SKY-{_}.{ext}"
 
+def upload_to(instance, filename):
+    ext = filename.split('.')[-1]
+    return f"elibrary{secrets.token_hex(50)}.{ext}"
 
 
 class AbstractUser(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(
-        verbose_name="First Name",
+        verbose_name=_("First Name"),
         max_length=50,
         validators=[
-            validators.RegexValidator(regex=r"^[A-Za-z ]+$", message="Enter Valid Name.")],
+            validators.RegexValidator(regex=r"^[A-Za-z ]+$", message=_("Enter Valid Name."))],
         null=True,
     )
     last_name = models.CharField(
-        verbose_name="Last Name",
+        verbose_name=_("Last Name"),
         max_length=20,
         validators=[
-            validators.RegexValidator(regex=r"^[A-Za-z]+$", message="Enter Valid Last Name.")],
+            validators.RegexValidator(regex=r"^[A-Za-z]+$", message=_("Enter Valid Last Name."))],
         null=True,
     )
     username = models.CharField(
         verbose_name='Username',
         max_length=16,
         unique=True,
-        help_text='16 characters or fewer. Letters, digits and @ or _ only.',
+        help_text=_('16 characters or fewer. Letters, digits and @ or _ only.'),
         validators=[UnicodeUsernameValidator()],
+        error_messages={
+            'unique': _("A user with that username already exists."),
+        },
     )
     email = models.EmailField(
-        verbose_name='email',
+        verbose_name=_('email'),
         max_length=30,
         unique=True,
     )
     date_of_birth = models.DateField(
-        verbose_name="Data of Birth",
+        verbose_name=_("Data of Birth"),
         null=True,
     )
-    contactNo = models.CharField(verbose_name="Phone Number",
+    contactNo = models.CharField(verbose_name=_("Phone Number"),
                                  max_length=13,
                                  null=True,
                                  validators=[validators.RegexValidator(
-                                     regex=r"^[4-9]\d{9}$", message="Enter Valid Phone Number."), ]
+                                     regex=r"^[4-9]\d{9}$", message=_("Enter Valid Phone Number.")), ]
                                  )
-    state = models.CharField(verbose_name="State",
+    state = models.CharField(verbose_name=_("State"),
                              max_length=2,
                              null=True,
-                             choices=[(None, "Select State")] +
+                             choices=[(None, _("Select State"))] +
                              settings.LIST_STATE,
                              )
-    city = models.CharField(verbose_name="City", max_length=20,
+    city = models.CharField(verbose_name=_("City"), max_length=20,
                             null=True,
                             validators=[validators.RegexValidator(
-                                regex=r"^\w[A-Za-z ]+$", message="Enter Valid city.")]
+                                regex=r"^\w[A-Za-z ]+$", message=_("Enter Valid city."))]
                             )
-    pincode = models.CharField(verbose_name="Pincode", max_length=6,
+    pincode = models.CharField(verbose_name=_("Pincode"), max_length=6,
                                null=True,
                                validators=[
-                                   validators.RegexValidator(regex=r"^\d{6}$", message="Enter Valid pincode.")]
+                                   validators.RegexValidator(regex=r"^\d{6}$", message=_("Enter Valid pincode."))]
                                )
-    full_address = models.TextField(verbose_name="Full Address",
+    full_address = models.TextField(verbose_name=_("Full Address"),
                                     null=True,
                                     max_length=50,
                                     )
-    profile = models.FileField(upload_to=upload_to_user,
-                               default='User_Profile/default.png',
-                               help_text= 'Only Image [png, jpe, jpg, jpeg]',
+    profile = models.FileField(upload_to=upload_to,
+                               default='default.jpg',
+                               help_text= _('Only Image (png, jpe, jpg, jpeg) extensions'),
                                validators=[validators.FileExtensionValidator(
                                    allowed_extensions=validators.get_available_image_extensions(),
-                                   message="'%(extension)s' not valid Profile Image."
+                                   message=_("'%(extension)s' not valid Profile Image.")
                                    )
                                ],)
-    is_staff = models.BooleanField('staff status', default=False,help_text='Designates whether the user can log into this admin site.')
+    is_staff = models.BooleanField(verbose_name=_('staff status'), default=False,help_text=_('Designates whether the user can log into this admin site.'))
     is_active = models.BooleanField(default=True,
-        help_text='Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.',
+        help_text=_('Designates whether this user should be treated as active. '
+                    'Unselect this instead of deleting accounts.'),
         )
     is_defaulter = models.BooleanField(default=False)
 
-    date_joined = models.DateTimeField('date joined', default=timezone.now)
+    date_joined = models.DateTimeField(verbose_name=_('date joined'), default=timezone.now)
 
     objects = UserManager()
 

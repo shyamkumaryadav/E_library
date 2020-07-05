@@ -3,50 +3,53 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import (
     authenticate, get_user_model, password_validation
 )
+from django.contrib.auth.hashers import (
+    UNUSABLE_PASSWORD_PREFIX, identify_hasher,
+)
 from django.contrib import messages
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import *
 from crispy_forms.bootstrap import *
 from django.contrib.auth.forms import (
-    ReadOnlyPasswordHashField,
     AuthenticationForm,
+    ReadOnlyPasswordHashField,
+    ReadOnlyPasswordHashWidget,
     UsernameField
 )
 from django.urls import reverse_lazy
 from django_otp.forms import OTPAuthenticationFormMixin
 from .models import User
+from django.utils.translation import gettext_lazy as _
 
 
 class DateInput(forms.DateInput):
     input_type = 'date'
 
 
+class HD(ReadOnlyPasswordHashWidget):
+    template_name = 'account/widgets/read_only_password_hash.html'
+
+
 class UserCreationForm(forms.ModelForm):
 
     error_messages = {
-        'password_mismatch': 'The two password fields didn’t match.',
+        'password_mismatch': _('The two password fields didn’t match.'),
     }
     password1 = forms.CharField(
-        label="Password",
+        label=_("Password"),
         strip=False,
         validators=[password_validation.validate_password],
         widget=forms.PasswordInput(
             attrs={'class': 'form-control', 'placeholder': 'Enter Password', 'autocomplete': 'new-password'}),
         help_text=password_validation.password_validators_help_text_html()
-        # '''
-        #     Your password can’t be too similar to your other personal information.<br>
-        #     Your password must contain at least %(max_length) characters.<br>
-        #     Your password can’t be a commonly used password.<br>
-        #     Your password can’t be entirely numeric.<br>
-        # '''
     )
     password2 = forms.CharField(
-        label="Password confirmation",
+        label=_("Password confirmation"),
         validators=[password_validation.validate_password],
         widget=forms.PasswordInput(
-            attrs={'class': 'form-control', 'placeholder': 'Enter Same Password', 'autocomplete': 'new-password'}),
+            attrs={'class': 'form-control', 'placeholder': _('Enter Same Password'), 'autocomplete': 'new-password'}),
         strip=False,
-        help_text="Enter the same password as before, for verification.",
+        help_text=_("Enter the same password as before, for verification."),
     )
 
     class Meta:
@@ -76,8 +79,8 @@ class UserCreationForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
-                Column(Field('username', placeholder='Enter Username')),
-                Column(Field('email', placeholder='Enter Email')),
+                Column(Field('username', placeholder=_('Enter Username'))),
+                Column(Field('email', placeholder=_('Enter Email'))),
             ),
             Row(
                 Column(Field('password1')),
@@ -87,17 +90,17 @@ class UserCreationForm(forms.ModelForm):
                 css_class='text-center'),
         )
         self.helper.form_id = 'userCreationForm'
-        self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.form_action = ''
 
 
 class UserChangeForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField(
-        label="Password",
-        help_text='Raw passwords are not stored, so there is no way to see this '
-        'user’s password, but you can change the password using '
-        '<a href="{}">this form</a>.',
+        label=_("Password"),
+        help_text=_('Raw passwords are not stored, so there is no way to see your '
+                'password, but you can change the password using '
+                '<a href="{}">this form</a>.'),
+        widget=HD(),
     )
 
     class Meta:
@@ -115,8 +118,8 @@ class UserChangeForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         password = self.fields.get('password')
         if password:
-            # password.initial = kwargs['instance'].password
-            password.help_text = password.help_text.format('../../password')
+            password.help_text = password.help_text.format(
+                reverse_lazy('account:password'))
         user_permissions = self.fields.get('user_permissions')
         if user_permissions:
             user_permissions.queryset = user_permissions.queryset.select_related(
@@ -125,38 +128,33 @@ class UserChangeForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
-                Column(Field('username', placeholder='Enter Username')),
-                Column(Field('email', placeholder='Enter Email')),
+                Column(Field('username', placeholder=_('Enter Username'))),
+                Column(Field('email', placeholder=_('Enter Email'))),
             ),
             Row(
-                Column(Field('first_name', placeholder='Enter First Name')),
-                Column(Field('last_name', placeholder='Enter Last Name')),
+                Column(Field('first_name', placeholder=_('Enter First Name'))),
+                Column(Field('last_name', placeholder=_('Enter Last Name'))),
             ),
             Row(
                 Column(Field('date_of_birth')),
-                Column(PrependedText('contactNo', '+91', placeholder='Enter Phone Number')),
+                Column(PrependedText('contactNo', '+91',
+                                     placeholder=_('Enter Phone Number'))),
             ),
             Row(
                 Column(Field('state')),
                 Column(Field('city')),
-                Column(Field('pincode', placeholder='6 Digit pincode')),
+                Column(Field('pincode', placeholder=_('6 Digit pincode'))),
             ),
-            Field('full_address', placeholder='Full Address',
+            Field('full_address', placeholder=_('Full Address'),
                   maxlength=100, rows=2),
             Field('profile'),
-            Row(
-                Column(Field('password')),
-            ),
-            Div(Submit('submit', 'Update', css_class='btn-lg',),
+            Div(Field('password')),
+            Div(Submit('submit', _('Update'), css_class='btn-lg',),
                 css_class='text-center'),
         )
         self.helper.form_id = 'userChangeForm'
-        self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
 
-    def clean_date_of_birth(self):
-        print(self.cleaned_data.get('date_of_birth'))
-        return self.cleaned_data.get('date_of_birth')
     def clean_password(self):
         return self.initial["password"]
 
@@ -164,7 +162,7 @@ class UserChangeForm(forms.ModelForm):
 class UserLoginForm(OTPAuthenticationFormMixin, AuthenticationForm):
     otp_error_messages = dict(OTPAuthenticationFormMixin.otp_error_messages,
                               challenge_message='{0}',
-                              challenge_exception='Error generating challenge. Please try again.',
+                              challenge_exception=_('Error Please try again.'),
                               )
 
     otp_device = forms.CharField(

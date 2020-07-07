@@ -12,16 +12,12 @@
 {% for row in luser %}
 <div class="col">
 <div class="card m-3" style="width: 19rem;">
-{% if row.profile.url %}
-	<img src="{{ row.profile.url }}" class="card-img-top" alt="{{row.username}}">
+	<img src="{{ row.prourl }}" class="card-img-top" alt="{{row.username}}" >
 	<div class="card-body">
     <h5 class="card-title">{{row.username}}</h5>
     <p class="card-text">{{ row.first_name}} {{row.last_name}} {{ row.email}}</p>
-    <a href="{{row.profile.url}}" class="btn btn-primary" download>Download Profile</a>
+    <a href="{{row.prourl }}" class="btn btn-primary" download>Download Profile</a>
   </div>
-  {% else %}
-  <h4>{{row.username}}</h4>
-  {%endif%}
 </div>
 </div>
 {%endfor%}

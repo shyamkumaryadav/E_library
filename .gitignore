@@ -12,6 +12,7 @@ src/db.sqlite3
 .idea/
 .vscode/
 src/media/
+src/.env
 !src/media/default.png
 src/account/migrations/
 src/system/migrations/

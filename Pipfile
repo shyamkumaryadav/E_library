@@ -28,6 +28,8 @@ sqlparse = "*"
 whitenoise = "*"
 django-heroku = "*"
 django-cleanup = "*"
+django-environ = "*"
+python-decouple = "*"
 
 [dev-packages]
 pylint = "*"

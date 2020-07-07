@@ -120,6 +120,13 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
         """Return the short name for the user."""
         return self.first_name
 
+    @property
+    def prourl(self):
+        if self.profile and hasattr(self.profile, 'url'):
+            return self.profile.url
+        else:
+            return "https://picsum.photos/300"
+
 
 class User(AbstractUser):
     """

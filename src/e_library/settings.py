@@ -1,12 +1,10 @@
 import os
-
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u'
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 ADMINS = [
-    ('Shyamkumar Yadav', os.environ.get('EMAIL_USER')),
+    ('Shyamkumar Yadav', os.getenv('EMAIL')),
 
 ]
 
@@ -112,7 +110,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'reactapp/build/static'),
 )
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -141,8 +138,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 OTP_TWILIO_ACCOUNT = os.getenv('OTP_TWILIO_ACCOUNT')

@@ -95,35 +95,38 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserChangeForm(forms.ModelForm):
-    password = ReadOnlyPasswordHashField(
+    password = forms.CharField(
         label=_("Password"),
+        disabled=True,
+        required=False,
+        initial='*'*16,
         help_text=_('Raw passwords are not stored, so there is no way to see your '
                 'password, but you can change the password using '
-                '<a href="{}">this form</a>.'),
-        widget=HD(),
+                '<a href="{}">this link</a>.')
+        # widget=HD(),
     )
+    username = forms.CharField(disabled=True)
 
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'date_of_birth', 'contactNo',
-                  'state', 'city', 'pincode', 'full_address', 'profile', 'password']
+                  'state', 'city', 'pincode', 'full_address', 'profile']
         widgets = {
             'contactNo': forms.NumberInput(),
             'pincode': forms.NumberInput(),
             'date_of_birth': DateInput(),
-            'profile': forms.FileInput(),
+            # 'profile': forms.FileInput(),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         password = self.fields.get('password')
         if password:
-            password.help_text = password.help_text.format(
-                reverse_lazy('account:password'))
-        user_permissions = self.fields.get('user_permissions')
-        if user_permissions:
-            user_permissions.queryset = user_permissions.queryset.select_related(
-                'content_type')
+            password.help_text = password.help_text.format(reverse_lazy('account:password'))
+        # user_permissions = self.fields.get('user_permissions')
+        # if user_permissions:
+        #     user_permissions.queryset = user_permissions.queryset.select_related(
+        #         'content_type')
         self.auto_id = '%s'
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -147,16 +150,13 @@ class UserChangeForm(forms.ModelForm):
             ),
             Field('full_address', placeholder=_('Full Address'),
                   maxlength=100, rows=2),
-            Field('profile'),
+            Field('profile', accept='image/*'),
             Div(Field('password')),
-            Div(Submit('submit', _('Update'), css_class='btn-lg',),
+            Div(Submit('value', _('Update'), css_class='btn-lg',),
                 css_class='text-center'),
         )
         self.helper.form_id = 'userChangeForm'
         self.helper.form_method = 'post'
-
-    def clean_password(self):
-        return self.initial["password"]
 
 
 class UserLoginForm(OTPAuthenticationFormMixin, AuthenticationForm):

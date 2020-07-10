@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.core import validators
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser, PermissionsMixin, UserManager
+    BaseUserManager, AbstractBaseUser, PermissionsMixin, UserManager, AbstractUser as BaseAbstractUser
 )
 from otp_twilio.models import TwilioSMSDevice
 from django.utils.translation import gettext_lazy as _
@@ -17,7 +17,7 @@ def upload_to(instance, filename):
     return f"elibrary{secrets.token_hex()}.{filename.split('.')[-1]}"
 
 
-class AbstractUser(AbstractBaseUser, PermissionsMixin):
+class AbstractUser(BaseAbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(
         verbose_name=_("First Name"),
@@ -33,16 +33,16 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
             validators.RegexValidator(regex=r"^[A-Za-z]+$", message=_("Enter Valid Last Name."))],
         null=True,
     )
-    username = models.CharField(
-        verbose_name='Username',
-        max_length=16,
-        unique=True,
-        help_text=_('16 characters or fewer. Letters, digits and @ or _ only.'),
-        validators=[UnicodeUsernameValidator()],
-        error_messages={
-            'unique': _("A user with that username already exists."),
-        },
-    )
+    # username = models.CharField(
+    #     verbose_name='Username',
+    #     max_length=16,
+    #     unique=True,
+    #     help_text=_('16 characters or fewer. Letters, digits and @ or _ only.'),
+    #     validators=[UnicodeUsernameValidator()],
+    #     error_messages={
+    #         'unique': _("A user with that username already exists."),
+    #     },
+    # )
     email = models.EmailField(
         verbose_name=_('email'),
         max_length=30,
@@ -71,15 +71,13 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
                             )
     pincode = models.CharField(verbose_name=_("Pincode"), max_length=6,
                                null=True,
-                               validators=[
-                                   validators.RegexValidator(regex=r"^\d{6}$", message=_("Enter Valid pincode."))]
                                )
     full_address = models.TextField(verbose_name=_("Full Address"),
                                     null=True,
                                     max_length=50,
                                     )
     profile = models.FileField(upload_to=upload_to,
-                               default='default.jpg',
+                               default='default.jpg', blank=True,
                                help_text=_(
                                    'Only Image (png, jpe, jpg, jpeg) extensions'),
                                validators=[validators.FileExtensionValidator(
@@ -88,37 +86,46 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
                                        "'%(extension)s' not valid Profile Image.")
                                )
                                ],)
-    is_staff = models.BooleanField(verbose_name=_('staff status'), default=False, help_text=_(
-        'Designates whether the user can log into this admin site.'))
-    is_active = models.BooleanField(default=True,
-                                    help_text=_('Designates whether this user should be treated as active. '
-                                                'Unselect this instead of deleting accounts.'),
-                                    )
-    is_defaulter = models.BooleanField(default=False)
+    # is_staff = models.BooleanField(verbose_name=_('staff status'), default=False, help_text=_(
+    #     'Designates whether the user can log into this admin site.'))
+    # is_active = models.BooleanField(default=True,
+    #                                 help_text=_('Designates whether this user should be treated as active. '
+    #                                             'Unselect this instead of deleting accounts.'),
+    #                                 )
+    # is_defaulter = False
 
-    date_joined = models.DateTimeField(
-        verbose_name=_('date joined'), default=timezone.now)
+    # date_joined = models.DateTimeField(
+    #     verbose_name=_('date joined'), default=timezone.now)
 
-    objects = UserManager()
+    # objects = UserManager()
 
-    USERNAME_FIELD = 'username'
-    EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['email']
+    # USERNAME_FIELD = 'username'
+    # EMAIL_FIELD = 'email'
+    # REQUIRED_FIELDS = ['email']
 
-    def __str__(self):
-        return self.username
+    class Meta(BaseAbstractUser.Meta):
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
+        abstract = True
 
-    def email_user(self, subject, message, from_email=None, **kwargs):
-        """Send an email to this user."""
-        send_mail(subject, message, from_email, [self.email], **kwargs)
+    # def clean(self):
+    #     super().clean()
+    #     self.email = self.__class__.objects.normalize_email(self.email)
 
-    def get_full_name(self):
-        full_name = '%s %s' % (self.first_name, self.last_name)
-        return full_name.strip()
+    # def __str__(self):
+    #     return self.username
 
-    def get_short_name(self):
-        """Return the short name for the user."""
-        return self.first_name
+    # def email_user(self, subject, message, from_email=None, **kwargs):
+    #     """Send an email to this user."""
+    #     send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    # def get_full_name(self):
+    #     full_name = '%s %s' % (self.first_name, self.last_name)
+    #     return full_name.strip()
+
+    # def get_short_name(self):
+    #     """Return the short name for the user."""
+    #     return self.first_name
 
     @property
     def prourl(self):

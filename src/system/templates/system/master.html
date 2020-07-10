@@ -14,22 +14,13 @@
 	<!-- css -->
 	<link rel="stylesheet" type="text/css" href="{% static 'system/css/master.css' %}">
 
-	<!-- bootstrap -->
-	<!-- bootstrap jquery -->
-	<!-- <script type="text/javascript" src="{% static 'system/bootstrap/javascript/jquery-3.4.1.slim.min.js'%}"></script> -->
-	<!-- production ajax from google CDN -->
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<!-- bootstrap popper -->
-	<script type="text/javascript" src="{% static 'system/bootstrap/javascript/popper.min.js'%}"></script>
-	<!-- bootstrap  -->
-	<script type="text/javascript" src="{% static 'system/bootstrap/javascript/bootstrap.min.js'%}"></script>
-	<!-- end bootstrap -->
+	
 
 	<!-- AOS CSS -->
 	<!-- <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> -->
 
 	<!-- jquery -->
-	<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<link rel="icon" href="{%static 'system/images/imgs/books.png'%}" sizes="144x144" >
 
 	{% block head %}
@@ -102,6 +93,22 @@
 				    </select>
 					</form>
 				</li>
+				{% comment %} 
+				<li class="nav-item active">
+					{% load tz %}
+					{% get_current_timezone as TIME_ZONE %}
+					<form action="{% url 'set_timezone' %}" method="POST">
+						{% csrf_token %}
+						<label for="timezone">Time zone:</label>
+						<select name="timezone">
+							{% for tz in timezones %}
+							<option value="{{ tz }}"{% if tz == TIME_ZONE %} selected{% endif %}>{{ tz }}</option>
+							{% endfor %}
+						</select>
+						<input type="submit" value="Set">
+					</form>
+				</li> 
+				{% endcomment %}
 			</ul>
 		</div>
 	</nav>
@@ -155,6 +162,18 @@
 		</div>
 	</footer>
 </body>
+<!-- bootstrap -->
+	<!-- bootstrap jquery -->
+	<!-- <script type="text/javascript" src="{% static 'system/bootstrap/javascript/jquery-3.4.1.slim.min.js'%}"></script> -->
+	<!-- production ajax from google CDN -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<!-- bootstrap popper -->
+	<script type="text/javascript" src="{% static 'system/bootstrap/javascript/popper.min.js'%}"></script>
+	<!-- bootstrap  -->
+	<script type="text/javascript" src="{% static 'system/bootstrap/javascript/bootstrap.min.js'%}"></script>
+	<!-- end bootstrap -->
+	<!-- master -->
+	<script type="text/javascript" src="{% static 'system/javascript/main.js'%}"></script>
 <!-- AOS JS -->
 <!-- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> -->
 <!-- <script>

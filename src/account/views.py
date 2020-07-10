@@ -22,6 +22,7 @@ class UserLoginView(LoginView):
     # authentication_form=OTPAuthenticationForm
 
 
+
 class UserLogoutView(LogoutView):
     next_page = reverse_lazy('account:signin')
     template_name = 'account/logout.html'
@@ -37,7 +38,9 @@ class UserUpdateView(AdminSameRequiredMixin, UpdateView):
     slug_url_kwarg = 'username'
 
     def get_success_url(self):
-        return reverse_lazy('account:update', kwargs = {'username':self.object.username})
+        messages.success(self.request, 'Your Profile Update success.')
+        return reverse_lazy('account:update', kwargs={'username': self.request.user.username})
+
 
 class UserPasswordResetView(PasswordResetView):
     email_template_name = ''
@@ -50,6 +53,7 @@ class UserPasswordResetView(PasswordResetView):
     template_name = 'account/password_reset_form.html'
     title = 'Password reset'
     # token_generator = default_token_generator
+
 
 class UserPasswordResetDoneView(PasswordResetDoneView):
     template_name = 'account/password_reset_done.html'
@@ -65,8 +69,10 @@ class UserPasswordResetConfirmView(PasswordResetConfirmView):
     # title = _('Enter new password')
     # token_generator = default_token_generator
 
+
 class UserPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'account/password_reset_complete.html'
+
 
 class UserPasswordChangeView(PasswordChangeView):
     success_url = reverse_lazy('system:home')
@@ -75,6 +81,7 @@ class UserPasswordChangeView(PasswordChangeView):
     def get_success_url(self):
         messages.success(self.request, 'Your Password Change success.')
         return '/'
+
 
 class UserPasswordChangeDoneView(PasswordChangeDoneView):
     template_name = 'account/password_change_done.html'
@@ -88,5 +95,5 @@ class UserCreateView(LogoutRequiredMixin, CreateView):
 
 def test(request, token):
     if token == 'ji-set':
-        return HttpResponse('hello '+ token)
+        return HttpResponse('hello ' + token)
     return HttpResponseRedirect(request.path.replace(token, 'ji-set'))

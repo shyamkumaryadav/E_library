@@ -17,22 +17,32 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         if kwargs['n']:
             for _ in tqdm.tqdm(range(kwargs['n']), desc='Users Created', unit='loop'):
+                users = []
+                passwd = []
                 try:
-                    f = faker.Faker()
+                    f = faker.Faker(['en_US', 'hi_IN'])
                     username = f.user_name()
                     password = f.password()
                     u = User(username=username, email=f.email(),
                              first_name=f.first_name(),
                              last_name=f.last_name(),
-                             password=password
+                             date_of_birth=f.date_of_birth(),
+                             state=f.random_element([i[0] for i in User.state.field.choices[1:]]),
+                             city=f.city(),
+                             pincode=f.postcode(),
+                            full_address=f.address(),
                              )
+                    u.set_password(password)
                     u.save()
-                    print(f"Username: {username}    Password: {password}")
                     u.profile.save(f'{uuid.uuid4()}.jpg', ContentFile(
                         requests.get('https://picsum.photos/300').content))
+                    users.append(username)
+                    passwd.append(password)
 
                 except Exception as e:
                     kwargs['n'] -= 1
-                    continue
+        Users = {str(i):{'username':users[i], 'password':passwd[i]} for i in range(len(users))}
         self.stdout.write(self.style.SUCCESS(
             f'{kwargs["n"]} Fake Users is Created...'))
+        for key in Users:
+            self.stdout.write(self.style.SUCCESS(f'{Users[key]}'))

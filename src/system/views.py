@@ -5,7 +5,7 @@ from system import mixins
 from django.contrib import messages
 from django.views import generic
 from django.shortcuts import render, redirect
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, HttpResponse
 from django.urls import reverse_lazy
 from django.utils.translation import activate
 from account.models import User
@@ -90,7 +90,7 @@ class AuthorManagementView(mixins.AdminRequiredMixin, generic.CreateView, generi
         return object_list
 
 
-class AuthorManagementUpdateView(generic.UpdateView):
+class AuthorManagementUpdateView(mixins.AdminRequiredMixin, generic.UpdateView):
     template_name = 'system/adminauthormanagement.html'
     model = models.BookAuthor
     success_url = reverse_lazy('system:authormanagement')
@@ -98,10 +98,19 @@ class AuthorManagementUpdateView(generic.UpdateView):
     extra_context = {'title': 'Author management'}
 
     def post(self, request, *args, **kwargs):
+        # return super().delete(request, *args, **kwargs)
+        # print(request)
+        # object = self.get_object()
+        # object.delete()
+        # return HttpResponse("Deleted!")                                                                           
+
+        # return redirect(self.success_url)
+        # success_url = self.get_success_url()
+        # self.object.delete()
+        # return HttpResponseRedirect(success_url)
         try:
             if self.request.POST.get('Delete'):
-                self.model._default_manager.get(
-                    pk=self.request.POST.get('Delete')).delete()
+                self.get_object().delete()
                 return redirect(self.success_url)
         except self.model.DoesNotExist:
             raise Http404(
@@ -163,8 +172,7 @@ class BookInventoryUpdateView(mixins.AdminRequiredMixin, generic.UpdateView):
     def post(self, request, *args, **kwargs):
         try:
             if self.request.POST.get('Delete'):
-                self.model._default_manager.get(
-                    pk=self.request.POST.get('Delete')).delete()
+                self.get_object().delete()
                 return redirect(self.success_url)
         except self.model.DoesNotExist:
             raise Http404(
@@ -202,7 +210,9 @@ class PublisherManagementView(mixins.AdminRequiredMixin, generic.ListView, gener
                 name__icontains=name)
         else:
             object_list = self.model._default_manager.all()
-        print(object_list)
+            from account.views import get_client_ip
+            print(get_client_ip(self.request))
+        # print(object_list)
         return object_list
 
 

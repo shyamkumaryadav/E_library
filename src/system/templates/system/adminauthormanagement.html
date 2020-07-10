@@ -48,7 +48,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" name="delAuthor" class="btn btn-primary">Yes</button>
+                                        <button type="submit" name="delete" class="btn btn-primary">Yes</button>
                                     </div>
                                 </div>
                             </div>
@@ -56,9 +56,21 @@
                         <script>
                             $('#deletebtn').css('display', '');
                             $('#goback').css('display', '');
-                            $("button[name='delAuthor']").on('click', function(e) {
-                                $('#bookAuthorForm').append('<input type="hidden" name="Delete" value="{{ object.id }}">');
-                                $("#bookAuthorForm").submit();
+                            $("button[name='delete']").on('click', function(e) {
+                                e.preventDefault();
+                                $(this).attr('value', true);
+                                // $("#bookAuthorForm").attr('method', 'delete');
+                                $('#bookAuthorForm').append('<input type="hidden" name="Delete" value="true">').submit();
+                                // $.ajax({
+                                //     url: '{{ object.get_update_url}}',
+                                //     data: 'pk:{{object.pk}}',
+                                //     // processData: false,
+                                //     // contentType: false,
+                                //     type: 'DELETE',
+                                //     success: function(data){
+                                //       alert(data);
+                                //     }
+                                // })
                             });
                         </script>
                     {%endif%}

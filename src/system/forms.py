@@ -6,9 +6,12 @@ from django.contrib import messages
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import *
 from crispy_forms.bootstrap import *
+from django.contrib.admin.widgets import AdminDateWidget
 
-def get_today(now = timezone.now()):
-    date = timezone.datetime(now.year - 15, now.month, now.day).date().__str__()
+
+def get_today(now=timezone.now()):
+    date = timezone.datetime(now.year - 15, now.month,
+                             now.day).date().__str__()
     return date
 
 
@@ -17,32 +20,37 @@ class BookAuthorForm(forms.ModelForm):
         model = models.BookAuthor
         fields = '__all__'
         widgets = {
-            'date_of_birth': DateInput(attrs = {'max':get_today()}),
-            'date_of_death': DateInput(),
+            'date_of_birth': DateInput(attrs={'max': get_today(), 'oninvalid':'setCustomValidity("flow this rule")'}),
+            'date_of_death': DateInput()
         }
 
     def __init__(self, *args, **kwargs):
         super(BookAuthorForm, self).__init__(*args, **kwargs)
+        self.auto_id = "%s"
+        print(self.instance.id)
+        print(self.instance.id is None)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
                 Column(Field('first_name', placeholder="Enter First Name")),
-                Column(Field('last_name', placeholder="Enter Last Name")),
+                Column(Field('last_name', placeholder="Enter Last Name" if self.instance else 'No objext')),
             ),
             Row(
                 Column(Field('date_of_birth')),
                 Column(Field('date_of_death')),
             ),
-            Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}add{%endif%}"
-                value="{% if object %}Update{%else%}Add{%endif%}"
-                class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')),
-                Column(HTML('''{% if object %}<button type="button"
-                class="btn btn-danger btn-lg btn-block m-1"
-                data-toggle="modal"
-                data-target="#deletemodel">
-                Delete
-                </button>{%endif%}'''), style='display: none;', id='deletebtn')
-                ),
+            # Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}add{%endif%}"
+            #     value=true
+            #     class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')),
+            #     Column(HTML('''{% if object %}<button type="button"
+            #     class="btn btn-danger btn-lg btn-block m-1"
+            #     data-toggle="modal"
+            #     data-target="#deletemodel">
+            #     Delete
+            #     </button>{%endif%}'''), style='display: none;', id='deletebtn')
+            #     ),
+            Row(Column(Submit('submit', str('Update' if self.instance is not None else 'Add'), css_class=f'btn btn-{"success" if self.instance else "primary"} btn-lg btn-block m-1')),
+            ),
             Row(Column(HTML('''{% if object %}<a style='text-decoration:none;' href={% url 'system:authormanagement' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>{%endif%}'''),
                        style='display: none;', css_class='btn btn-link', id='goback')),
         )
@@ -56,8 +64,10 @@ class BookAuthorForm(forms.ModelForm):
         dob = cleaned_data['date_of_birth']
         dod = cleaned_data['date_of_death']
         if dob:
-            self.fields['date_of_death'].widget.attrs['min'] = timezone.datetime(dob.year + 15, dob.month, dob.day).date().__str__()
+            self.fields['date_of_death'].widget.attrs['min'] = timezone.datetime(
+                dob.year + 15, dob.month, dob.day).date().__str__()
         return cleaned_data
+
 
 class BookPublishForm(forms.ModelForm):
     class Meta:
@@ -123,7 +133,8 @@ class BookForm(forms.ModelForm):
             Row(
                 Column(PrependedAppendedText(
                     'cost', '$', '.00', min=0, step=1),),
-                Column(Field('page', min=0, step=1, placeholder="Enter Total Pages")),
+                Column(Field('page', min=0, step=1,
+                             placeholder="Enter Total Pages")),
             ),
             Row(
                 Column(Field('description', placeholder='Book Description',
@@ -131,8 +142,10 @@ class BookForm(forms.ModelForm):
             ),
             Row(Column(Field('stock', placeholder="Total Stock"))),
             Row(Column(Field('genre'))),
-            Row(Column(Field('rating', min="0", max="5", step="0.5"))),
-            Row(Column(Field('profile'))),
+            Row(Column(Field('rating', min="0", max="5",
+                             step="0.5", css_class='Rangesform', data_toggle="tooltip", data_placement="top", title=self.instance.rating
+                             ))),
+            Row(Column(Field('profile', accept='image/*'))),
             Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}{%endif%}"
                 value="{% if object %}Update{%else%}Add{%endif%}"
                 class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')),
@@ -148,3 +161,11 @@ class BookForm(forms.ModelForm):
         self.helper.form_class = 'form-group'
         self.helper.form_method = 'post'
         # self.helper.form_action = ''
+
+    def clean_profile(self):
+        data = self.cleaned_data.get("profile")
+        print(data)
+        if data.size > 1024*1024*1:
+            raise forms.ValidationError("Image file too large ( > 1mb )")
+        else:
+            return data

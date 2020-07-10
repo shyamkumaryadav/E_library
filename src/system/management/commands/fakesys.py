@@ -3,14 +3,13 @@ import faker
 import tqdm
 import requests
 import uuid
-from django.conf import settings
 from system.models import Book, BookAuthor, BookPublish, Genre
 from django.core.files.base import ContentFile
 
 
-lg = [settings.LANGUAGES[i][0] for i in range(len(settings.LANGUAGES))]
-be = [settings.BOOK_EDITION[i][0] for i in range(len(settings.BOOK_EDITION))]
-bg = [settings.BOOK_GENRE[i][0] for i in range(len(settings.BOOK_GENRE))]
+lg = [i[0] for i in Book.language.field.choices[1:]]
+be = [i[0] for i in Book.edition.field.choices[1:]]
+bg = [i[0] for i in Genre.name.field.choices[1:]]
 
 
 class Command(BaseCommand):
@@ -64,4 +63,4 @@ class Command(BaseCommand):
                     kwargs['n'] -= 1
                     continue
         self.stdout.write(self.style.SUCCESS(
-            f'{kwargs["n"]} Fake Data is Created...'))
+            f'{kwargs["n"]} Fake Books is Created...'))

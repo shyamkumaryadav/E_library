@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-04 16:56+0530\n"
+"POT-Creation-Date: 2020-07-08 00:28+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,7 +50,9 @@ msgstr ""
 msgid ""
 "Raw passwords are not stored, so there is no way to see your password, but "
 "you can change the password using <a href=\"{}\">this form</a>."
-msgstr "कच्चे पासवर्ड संग्रहीत नहीं होते हैं, इसलिए आपके पासवर्ड को देखने का कोई तरीका नहीं है, लेकिन आप <a href=\"{}\"> इस फ़ॉर्म </a> का उपयोग करके पासवर्ड बदल सकते हैं।"
+msgstr ""
+"कच्चे पासवर्ड संग्रहीत नहीं होते हैं, इसलिए आपके पासवर्ड को देखने का कोई तरीका नहीं है, "
+"लेकिन आप <a href=\"{}\"> इस फ़ॉर्म </a> का उपयोग करके पासवर्ड बदल सकते हैं।"
 
 #: src/account/forms.py:135
 msgid "Enter First Name"
@@ -68,7 +70,7 @@ msgstr ""
 msgid "6 Digit pincode"
 msgstr ""
 
-#: src/account/forms.py:148 src/account/models.py:80
+#: src/account/forms.py:148 src/account/models.py:77
 msgid "Full Address"
 msgstr ""
 
@@ -80,80 +82,82 @@ msgstr "अपडेट करें"
 msgid "Error Please try again."
 msgstr ""
 
-#: src/account/models.py:26
+#: src/account/models.py:23
 msgid "First Name"
 msgstr ""
 
-#: src/account/models.py:29
+#: src/account/models.py:26
 msgid "Enter Valid Name."
 msgstr ""
 
-#: src/account/models.py:33
+#: src/account/models.py:30
 msgid "Last Name"
 msgstr ""
 
-#: src/account/models.py:36
+#: src/account/models.py:33
 msgid "Enter Valid Last Name."
 msgstr ""
 
-#: src/account/models.py:43
+#: src/account/models.py:40
 msgid "16 characters or fewer. Letters, digits and @ or _ only."
 msgstr ""
 
-#: src/account/models.py:46
+#: src/account/models.py:43
 msgid "A user with that username already exists."
 msgstr ""
 
-#: src/account/models.py:50
+#: src/account/models.py:47
 msgid "email"
 msgstr ""
 
-#: src/account/models.py:55
+#: src/account/models.py:52
 msgid "Data of Birth"
 msgstr ""
 
-#: src/account/models.py:58
+#: src/account/models.py:55
 msgid "Phone Number"
 msgstr ""
 
-#: src/account/models.py:62
+#: src/account/models.py:59
 msgid "Enter Valid Phone Number."
 msgstr ""
 
-#: src/account/models.py:64
+#: src/account/models.py:61
 msgid "State"
 msgstr ""
 
-#: src/account/models.py:67
+#: src/account/models.py:64
 msgid "Select State"
 msgstr ""
 
-#: src/account/models.py:70
+#: src/account/models.py:67
 msgid "City"
 msgstr ""
 
-#: src/account/models.py:73
+#: src/account/models.py:70
 msgid "Enter Valid city."
 msgstr ""
 
-#: src/account/models.py:75
+#: src/account/models.py:72
 msgid "Pincode"
 msgstr ""
 
-#: src/account/models.py:78
+#: src/account/models.py:75
 msgid "Enter Valid pincode."
 msgstr ""
 
-#: src/account/models.py:86
-msgid "Only Image [png, jpe, jpg, jpeg] extensions"
+#: src/account/models.py:84
+#, fuzzy
+#| msgid "Only Image [png, jpe, jpg, jpeg] extensions"
+msgid "Only Image (png, jpe, jpg, jpeg) extensions"
 msgstr "केवल छवि [png, jpe, jpg, jpeg] एक्सटेंशन"
 
-#: src/account/models.py:89
+#: src/account/models.py:88
 #, python-format
 msgid "'%(extension)s' not valid Profile Image."
 msgstr "'%(extension)s' एक वैध प्रोफ़ाइल छवि नहीं है।"
 
-#: src/account/models.py:92
+#: src/account/models.py:91
 msgid "staff status"
 msgstr ""
 
@@ -167,18 +171,22 @@ msgid ""
 "instead of deleting accounts."
 msgstr ""
 
-#: src/account/models.py:99
+#: src/account/models.py:100
 msgid "date joined"
 msgstr ""
 
-#: src/system/admin.py:22
+#: src/account/urls.py:7
+msgid "logout/"
+msgstr "छूट/"
+
+#: src/system/admin.py:28
 #, python-format
 msgid "%d book was successfully apply 10%% discount."
 msgid_plural "%d books were successfully apply 10%% discount."
 msgstr[0] "%d पुस्तक को सफलतापूर्वक 10%% छूट लागू की गई |"
 msgstr[1] "%d पुस्तकों को सफलतापूर्वक 10%% छूट लागू की गई |"
 
-#: src/system/admin.py:26
+#: src/system/admin.py:32
 #, python-format
 msgid "Apply 10%% discount"
 msgstr "10%% छूट लागू करें।"
@@ -211,3 +219,6 @@ msgstr ""
 #: src/system/templates/system/master.html:57
 msgid "About"
 msgstr ""
+
+#~ msgid "admin/"
+#~ msgstr "पुस्तक/"

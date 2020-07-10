@@ -44,6 +44,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'system.middleware.HttpPostTunnelingMiddleware',
     'django_otp.middleware.OTPMiddleware',  # Django-otp
 ]
 
@@ -96,6 +97,7 @@ TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+LANGUAGE_CODE = 'en'
 LANGUAGES = [
     ('en', 'English'),
     ('hi', 'Hindi'),
@@ -118,6 +120,7 @@ STATICFILES_FINDERS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),

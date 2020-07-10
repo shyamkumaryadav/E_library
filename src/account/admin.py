@@ -10,9 +10,6 @@ admin_site = OTPAdminSite(name='OTP Site')
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin, ImportExportModelAdmin):
-    list_display = ('username', 'email', 'first_name',
-                    'last_name', 'is_defaulter', 'is_staff')
-    list_filter = ('is_superuser', 'is_active', 'groups')
     fieldsets = (
         (None, {'fields': ('email', 'username', 'password')}),
         ('Personal info', {
@@ -22,7 +19,7 @@ class UserAdmin(BaseUserAdmin, ImportExportModelAdmin):
         ('Permissions', {
             'classes': ('collapse',),
             'fields': ('groups', 'user_permissions', 'is_superuser',
-                                    'is_active', 'is_staff', 'is_defaulter')}),
+                       'is_active', 'is_staff', )}),
         ('Important dates', {
             'classes': ('collapse',),
             'fields': ('last_login', 'date_joined')}),
@@ -30,9 +27,6 @@ class UserAdmin(BaseUserAdmin, ImportExportModelAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2', 'is_superuser', 'is_staff', 'is_defaulter',),
+            'fields': ('username', 'email', 'password1', 'password2', 'is_superuser', 'is_staff', ),
         }),
     )
-    search_fields = ('email', 'username', 'first_name', 'last_name',)
-    ordering = ('username',)
-    filter_horizontal = ('groups', 'user_permissions',)

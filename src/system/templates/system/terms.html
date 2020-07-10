@@ -16,7 +16,7 @@
 	<div class="card-body">
     <h5 class="card-title">{{row.username}}</h5>
     <p class="card-text">{{ row.first_name}} {{row.last_name}} {{ row.email}}</p>
-    <a href="{{row.prourl }}" class="btn btn-primary" download>Download Profile</a>
+    <a href="{% if row.username == user.username %}{% url 'account:update' username=user.username %}{% else %}{{row.prourl }}{%endif%}" class="btn btn-primary" {% if row.username != user.username %}download{%endif%}>{% if row.username == user.username %}Edit Profile{% else %}Download Profile{%endif%}</a>
   </div>
 </div>
 </div>

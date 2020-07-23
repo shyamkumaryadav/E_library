@@ -48,12 +48,12 @@ class BookPublishAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 @admin.register(Issue)
 class IssueAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('__str__', 'date', 'due_date', 'defaulter')
+    list_display = ('__str__', 'date', 'due_date',)
     list_filter = ('date',)
+    readonly_fields = ('date',)
 
-    def defaulter(self, obj):
-        return obj.user.is_defaulter
-    defaulter.boolean = True
+    # def defaulter(self, obj):
+    # defaulter.boolean = True
 
 
 @admin.register(Genre)

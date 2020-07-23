@@ -1,4 +1,4 @@
-{% extends 'system/master.html' %}
+{% extends 'master.html' %}
 {% load static %}
 
 {% block head %}
@@ -24,7 +24,7 @@
                     </div>
                     <div class="row">
                         <div class="col text-center">
-                            <img width="100px" src="{% static 'system/images/imgs/publisher.png' %}"/>         
+                            <img width="100px" src="{% static 'system/images/imgs/publisher.png' %}"/>
                         </div>
                     </div>
                     <div class="row">
@@ -68,9 +68,9 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-7 mb-3">
-            <form method="GET">
+            <form method="GET"  onchange="this.submit();">
                 <div class="card">
                     <div class="card-body">
 
@@ -85,10 +85,6 @@
                                         value="{{ request.GET.q }}" placeholder="by Name" data-toggle="tooltip"
                                         data-placement="left" title="Tooltip on left"
                                         aria-describedby="searchHelpBlock">
-                                    <div class="input-group-append">
-                                        <button id='id_for_search' type='submit' value="{{request.GET.q}}"
-                                            class="btn btn-outline-info"><i class="fas fa-search"></i></button>
-                                    </div>
                                 </div>
                                 <small id="searchHelpBlock" class="form-text text-muted">
                                     Your can search by Name?
@@ -105,16 +101,15 @@
                             <div class="col">
                                 {% if object_list %}
                                 {% for publisher in object_list %}
-                                <a href="{{ publisher.get_update_url }}">{{ publisher.name}}</a>
-                                <br>{% endfor %}
+                                {% include "system/card.html" with item=publisher %}<br>{% endfor %}
                                 {% elif object %}
-                                <h3>{{ object.name|title}}</h3>
+                                {% include "system/card.html" with item=object %}
                                 {% endif %}
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                {% include 'system/paginate.html' %} 
+                                {% include 'system/paginate.html' %}
                             </div>
                         </div>
 

@@ -43,7 +43,7 @@ class TermsView(generic.TemplateView):
 class ViewBookView(generic.ListView):
     model = models.Book
     search_kwarg = 'q'
-    paginate_by = 5
+    paginate_by = 10
     template_name = 'system/viewbooks.html'
 
     def get_queryset(self, *args, **kwargs):
@@ -61,7 +61,7 @@ class AuthorManagementView(mixins.AdminRequiredMixin, generic.CreateView, generi
     template_name = 'system/adminauthormanagement.html'
     model = models.BookAuthor
     search_kwarg = 'q'
-    paginate_by = 3
+    paginate_by = 10
     success_url = reverse_lazy('system:authormanagement')
     form_class = forms.BookAuthorForm
     extra_context = {'title': 'Author management'}
@@ -102,7 +102,7 @@ class AuthorManagementUpdateView(mixins.AdminRequiredMixin, generic.UpdateView):
         # print(request)
         # object = self.get_object()
         # object.delete()
-        # return HttpResponse("Deleted!")                                                                           
+        # return HttpResponse("Deleted!")
 
         # return redirect(self.success_url)
         # success_url = self.get_success_url()
@@ -118,7 +118,7 @@ class AuthorManagementUpdateView(mixins.AdminRequiredMixin, generic.UpdateView):
         return super().post(request, *args, **kwargs)
 
 
-class MemberManagementView(generic.TemplateView):
+class MemberManagementView(mixins.AdminRequiredMixin, generic.TemplateView):
     template_name = 'system/adminmembermanagement.html'
     extra_context = {'title': 'Member management'}
 
@@ -131,7 +131,7 @@ class BookIssuingView(generic.TemplateView):
 class BookInventoryView(mixins.AdminRequiredMixin, generic.ListView, generic.edit.BaseCreateView):
     form_class = forms.BookForm
     model = models.Book
-    paginate_by = 3
+    paginate_by = 10
     search_kwarg = 'q'
     success_url = reverse_lazy('system:bookinventory')
     template_name = 'system/adminbookinventory.html'
@@ -155,10 +155,11 @@ class BookInventoryView(mixins.AdminRequiredMixin, generic.ListView, generic.edi
         name = self.request.GET.get(search_kwarg)
         if name:
             object_list = self.model._default_manager.filter(
-                name__icontains=name)
+                Q(name__icontains=name)
+            )
         else:
             object_list = self.model._default_manager.all()
-        print(object_list)
+        # print(object_list)
         return object_list
 
 
@@ -182,7 +183,7 @@ class BookInventoryUpdateView(mixins.AdminRequiredMixin, generic.UpdateView):
 
 class PublisherManagementView(mixins.AdminRequiredMixin, generic.ListView, generic.edit.BaseCreateView):
     form_class = forms.BookPublishForm
-    paginate_by = 3
+    paginate_by = 10
     search_kwarg = 'q'
     model = models.BookPublish
     success_url = reverse_lazy('system:publishermanagement')
@@ -204,15 +205,13 @@ class PublisherManagementView(mixins.AdminRequiredMixin, generic.ListView, gener
 
     def get_queryset(self):
         search_kwarg = self.search_kwarg
-        name = self.request.GET.get(search_kwarg)
-        if name:
+        search = self.request.GET.get(search_kwarg)
+        if search:
             object_list = self.model._default_manager.filter(
-                name__icontains=name)
+                Q(name__icontains=search) | Q(address__icontains=search)
+            )
         else:
             object_list = self.model._default_manager.all()
-            from account.views import get_client_ip
-            print(get_client_ip(self.request))
-        # print(object_list)
         return object_list
 
 

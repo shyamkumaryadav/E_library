@@ -20,7 +20,7 @@ class BookAuthorForm(forms.ModelForm):
         model = models.BookAuthor
         fields = '__all__'
         widgets = {
-            'date_of_birth': DateInput(attrs={'max': get_today(), 'oninvalid':'setCustomValidity("flow this rule")'}),
+            'date_of_birth': DateInput(attrs={'max': get_today(), 'oninvalid': 'setCustomValidity("flow this rule")'}),
             'date_of_death': DateInput()
         }
 
@@ -33,7 +33,8 @@ class BookAuthorForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(Field('first_name', placeholder="Enter First Name")),
-                Column(Field('last_name', placeholder="Enter Last Name" if self.instance else 'No objext')),
+                Column(Field(
+                    'last_name', placeholder="Enter Last Name" if self.instance else 'No objext')),
             ),
             Row(
                 Column(Field('date_of_birth')),
@@ -50,7 +51,7 @@ class BookAuthorForm(forms.ModelForm):
             #     </button>{%endif%}'''), style='display: none;', id='deletebtn')
             #     ),
             Row(Column(Submit('submit', str('Update' if self.instance is not None else 'Add'), css_class=f'btn btn-{"success" if self.instance else "primary"} btn-lg btn-block m-1')),
-            ),
+                ),
             Row(Column(HTML('''{% if object %}<a style='text-decoration:none;' href={% url 'system:authormanagement' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>{%endif%}'''),
                        style='display: none;', css_class='btn btn-link', id='goback')),
         )
@@ -164,8 +165,8 @@ class BookForm(forms.ModelForm):
 
     def clean_profile(self):
         data = self.cleaned_data.get("profile")
-        print(data)
-        if data.size > 1024*1024*1:
-            raise forms.ValidationError("Image file too large ( > 1mb )")
+        if data:
+            if data.size > 1024*1024*1:
+                raise forms.ValidationError("Image file too large ( > 1mb )")
         else:
             return data

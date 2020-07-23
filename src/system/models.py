@@ -40,7 +40,7 @@ class BookAuthor(models.Model):
     first_name = models.CharField(verbose_name="First Name", max_length=100)
     last_name = models.CharField(verbose_name="Last Name", max_length=100)
     date_of_birth = models.DateField(
-        null=True, validators=[On_date(year=15, sign='+'), ])
+        null=True)
     date_of_death = models.DateField(
         verbose_name='Death Date', null=True, blank=True)
 
@@ -54,7 +54,8 @@ class BookAuthor(models.Model):
     def clean_fields(self, exclude=None):
         if self.date_of_death:
             if self.date_of_birth.year > self.date_of_death.year - 5:
-                raise ValidationError({'date_of_death': 'it"s not valid'})
+                raise ValidationError(
+                    {'date_of_death': 'it"s not right date.'})
 
     # def clean(self):
     #     raise ValidationError('this is error')
@@ -99,7 +100,7 @@ class GenreManager(models.Manager):
 
 
 class Genre(models.Model):
-    name = models.IntegerField(verbose_name="Genre Name", choices=[
+    name = models.IntegerField(choices=[
                                (None, "Select Language")] + settings.BOOK_GENRE)
     objects = GenreManager()
 
@@ -107,7 +108,9 @@ class Genre(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return str(self.get_name_display())
+        print(dir(self))
+        # return self.get_name_display()
+        return self.get_name_display()
 
 
 class Book(models.Model):
@@ -159,10 +162,10 @@ class Book(models.Model):
 
 
 class Issue(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={
-                             'is_defaulter': False})
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # , limit_choices_to={
+    #  'is_defaulter': False})
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True,)
     due_date = models.DateField()
 
     class Meta:

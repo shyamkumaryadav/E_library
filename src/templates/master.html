@@ -6,7 +6,10 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- bootstrap css -->
-	<link rel="stylesheet" type="text/css" href="{% static 'system/bootstrap/css/bootstrap.min.css'%}">
+	{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'system/bootstrap/css/bootstrap.min.css'%}"> {% endcomment %}
+	<link rel="stylesheet" type="text/css" href="{% static 'system/bootstrap/css/bootstrap.min.default.css'%}">
+
+
 	<!-- datatables css -->
 	<link rel="stylesheet" type="text/css" href="{% static 'system/datatables/css/datatables.min.css'%}">
 	<!-- fontawesome css -->
@@ -14,13 +17,13 @@
 	<!-- css -->
 	<link rel="stylesheet" type="text/css" href="{% static 'system/css/master.css' %}">
 
-	
+
 
 	<!-- AOS CSS -->
 	<!-- <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> -->
 
 	<!-- jquery -->
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	{% comment %} <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> {% endcomment %}
 	<link rel="icon" href="{%static 'system/images/imgs/books.png'%}" sizes="144x144" >
 
 	{% block head %}
@@ -30,7 +33,7 @@
 
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light ">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light  m-0 p-0">
 		<a class="navbar-brand" href="{% url 'system:home' %}">
 			<img src="{% static 'system/images/imgs/books.png' %}" width="30" height="30">
 			E-Library
@@ -54,7 +57,7 @@
 
 			<ul class="navbar-nav">
 				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'system:viewbooks'%}">View Books {% load tz %}{% get_current_timezone as TIME_ZONE %} {{TIME_ZONE}}</a>
+					<a class="nav-link" href="{% url 'system:viewbooks'%}">View Books </a>
 				</li>
 				{% if user.is_authenticated is False %}
 				<li class="nav-item active">
@@ -65,7 +68,7 @@
 				</li>
 				{% elif user.is_authenticated is True %}
 				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'account:logout' %}">Logout</a>
+					<a class="nav-link btn-outline-danger" href="{% url 'account:logout' %}">Logout</a>
 				</li>
 				<li class="nav-item active">
 					<a class="nav-link" href="{% url 'account:update' username=user.username %}">
@@ -78,22 +81,23 @@
 				</li>
 				{% endif %}
 				<li class="nav-item active">
-					<form action="{% url 'set_language' %}" method="post">{% csrf_token %}
-						<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
-				    <input name="next" type="hidden" value="{{ redirect_to }}">
-				    <select name="language" onchange="this.form.submit()" class="select form-control">
-				        {% get_current_language as LANGUAGE_CODE %}
-				        {% get_available_languages as LANGUAGES %}
-				        {% get_language_info_list for LANGUAGES as languages %}
-				        {% for language in languages %}
-				            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-				                {{ language.name_local }}
-				            </option>
-				        {% endfor %}
-				    </select>
+					<form action="{% url 'set_language' %}" class="form-inline" method="post">{% csrf_token %}
+				    <input name="next" class="form-control" type="hidden" value="{{ redirect_to }}">
+			        {% get_current_language as LANGUAGE_CODE %}
+			        {% get_available_languages as LANGUAGES %}
+			        {% get_language_info_list for LANGUAGES as languages %}
+		            {{ LANGUAGE_CODE }}
+			        {% for language in languages %}
+			            {% if language.code != LANGUAGE_CODE %}
+			            <div class="custom-control custom-switch align-middle">
+						  <input class="custom-control-input" name="language" onchange="this.form.submit();" type="checkbox" id="flexSwitchCheckChecked" value="{{ language.code }}">
+						  <label class="custom-control-label" for="flexSwitchCheckChecked">{{ language.name_local }}</label>
+						</div>
+						{% endif %}
+			        {% endfor %}
 					</form>
 				</li>
-				{% comment %} 
+				{% comment %}
 				<li class="nav-item active">
 					{% load tz %}
 					{% get_current_timezone as TIME_ZONE %}
@@ -107,17 +111,11 @@
 						</select>
 						<input type="submit" value="Set">
 					</form>
-				</li> 
+				</li>
 				{% endcomment %}
 			</ul>
 		</div>
 	</nav>
-	<div>
-	</div>
-
-<div>
-	
-</div>	
 <!-- main block  -->
 	<main id="mainblock">
 	{% if messages %}
@@ -164,9 +162,9 @@
 </body>
 <!-- bootstrap -->
 	<!-- bootstrap jquery -->
-	<!-- <script type="text/javascript" src="{% static 'system/bootstrap/javascript/jquery-3.4.1.slim.min.js'%}"></script> -->
+	<script type="text/javascript" src="{% static 'system/bootstrap/javascript/jquery-3.4.1.slim.min.js'%}"></script>
 	<!-- production ajax from google CDN -->
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 	<!-- bootstrap popper -->
 	<script type="text/javascript" src="{% static 'system/bootstrap/javascript/popper.min.js'%}"></script>
 	<!-- bootstrap  -->
@@ -174,11 +172,12 @@
 	<!-- end bootstrap -->
 	<!-- master -->
 	<script type="text/javascript" src="{% static 'system/javascript/main.js'%}"></script>
-<!-- AOS JS -->
-<!-- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> -->
-<!-- <script>
-  AOS.init();
-</script>
- -->{% block body %}
+	<!-- AOS JS -->
+	<!-- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> -->
+	<!-- <script>
+	AOS.init();
+	</script>
+	-->
+{% block body %}
 {% endblock body %}
 </html>

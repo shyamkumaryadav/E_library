@@ -132,9 +132,6 @@
 		{% block main %}
 		{% endblock main %}
 	</main>
-	<!-- endmain block  -->
-
-	<!-- Footer -->
 	<footer>
 		{% if user.is_superuser %}
 		<div id="footer1" class="container-fluid">
@@ -173,11 +170,11 @@
 	<!-- master -->
 	<script type="text/javascript" src="{% static 'system/javascript/main.js'%}"></script>
 	<!-- AOS JS -->
-	<!-- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> -->
-	<!-- <script>
+	<!-- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	 <script>
 	AOS.init();
-	</script>
-	-->
+	</script> -->
+
 {% block body %}
 {% endblock body %}
 </html>

@@ -15,7 +15,7 @@ class UserAdmin(BaseUserAdmin, ImportExportModelAdmin):
         ('Personal info', {
             'classes': ('collapse',),
             'fields': ('first_name', 'last_name', 'date_of_birth',
-                       'contactNo', 'state', 'city', 'pincode', 'full_address', 'profile')}),
+                       'phone_number', 'state', 'city', 'pincode', 'full_address', 'profile')}),
         ('Permissions', {
             'classes': ('collapse',),
             'fields': ('groups', 'user_permissions', 'is_superuser',

@@ -28,15 +28,15 @@
 {% endif %}
     <div class="form-control custom-file{% if field.errors %} is-invalid{%endif%}" style="border:0">
         <input type="{{ widget.data.type }}" name="{{ widget.data.name }}" class="custom-file-input{% if field.errors %} is-invalid{%endif%}" {% if field.field.disabled %}disabled{% endif %} {% for name, value in field.field.widget.attrs.items %}{% if value is not False %} {{ name }}{% if value is not True %}="{{ value|stringformat:'s' }}"{% endif %}{% endif %}{% endfor %}>
-        <label class="custom-file-label text-truncate" for="{{ field.id_for_label }}">Select Image File</label>
-        <script type="text/javascript" id="script-{{ field.id_for_label }}">        
+        <label class="custom-file-label text-truncate" for="{{ field.id_for_label }}">{{ widget.data.attrs.placeholder }}</label>
+        <script type="text/javascript" id="script-{{ field.id_for_label }}">
             document.getElementById("script-{{ field.id_for_label }}").parentNode.querySelector('.custom-file-input').onchange =  function (e){
                 var filenames = "";
                 for (let i=0;i<e.target.files.length;i++){
                     filenames+=(i>0?", ":"")+e.target.files[i].name;
                 }
-                e.target.parentNode.querySelector('.custom-file-label').textContent=filenames;    
-            }        
+                e.target.parentNode.querySelector('.custom-file-label').textContent=filenames;
+            }
         </script>
     </div>
     {% if not widget.data.is_initial %}

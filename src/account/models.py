@@ -5,6 +5,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.core import validators
+from django.core.exceptions import ValidationError
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, PermissionsMixin, UserManager, AbstractUser as BaseAbstractUser
@@ -16,6 +17,11 @@ from django.utils.translation import gettext_lazy as _
 def upload_to(instance, filename):
     return f"elibrary{secrets.token_hex()}.{filename.split('.')[-1]}"
 
+def age_18(value):
+    aaj = value.today()
+    age = aaj.year - value.year - ((aaj.month, aaj.day) < (value.month, value.day))
+    if age < 18:
+        raise ValidationError("You sude be 18+")
 
 class AbstractUser(BaseAbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -51,8 +57,9 @@ class AbstractUser(BaseAbstractUser):
     date_of_birth = models.DateField(
         verbose_name=_("Data of Birth"),
         null=True,
+        validators=[age_18]
     )
-    contactNo = models.CharField(verbose_name=_("Phone Number"),
+    phone_number = models.CharField(verbose_name=_("Phone Number"),
                                  max_length=13,
                                  null=True,
                                  validators=[validators.RegexValidator(

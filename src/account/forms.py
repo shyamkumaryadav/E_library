@@ -109,7 +109,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'date_of_birth', 'contactNo',
+        fields = ['first_name', 'last_name', 'username', 'email', 'date_of_birth', 'phone_number',
                   'state', 'city', 'pincode', 'full_address', 'profile']
         widgets = {
             'contactNo': forms.NumberInput(),
@@ -140,17 +140,17 @@ class UserChangeForm(forms.ModelForm):
             ),
             Row(
                 Column(Field('date_of_birth')),
-                Column(PrependedText('contactNo', '+91',
+                Column(PrependedText('phone_number', '+91',
                                      placeholder=_('Enter Phone Number'))),
             ),
+            Field('full_address', placeholder=_('Full Address'),
+                  maxlength=100, rows=2),
             Row(
                 Column(Field('state')),
                 Column(Field('city')),
                 Column(Field('pincode', placeholder=_('6 Digit pincode'))),
             ),
-            Field('full_address', placeholder=_('Full Address'),
-                  maxlength=100, rows=2),
-            Field('profile', accept='image/*'),
+            Field('profile', accept='image/*', placeholder='Open File'),
             Div(Field('password')),
             Div(Submit('value', _('Update'), css_class='btn-lg',),
                 css_class='text-center'),
@@ -173,14 +173,16 @@ class UserLoginForm(OTPAuthenticationFormMixin, AuthenticationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.auto_id="%s"
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            'username',
-            'password',
-            Field('otp_challenge', type='hidden')
+            Field('username', placeholder="Enter Your Username"),
+            AppendedText('password',
+                '<i id="eye" class="fa fa-eye-slash" aria-hidden="true" onclick="eye()"></i>', placeholder="Enter Your Password"),
+            Div(Submit('submit', 'Sign In', css_class="btn btn-lg"),css_class='text-center')
         )
         self.helper.form_method = 'POST'
-        self.helper.add_input(Submit('submit', 'Submit'))
+        # self.helper.add_input(Submit('submit', 'Submit'))
 
     def clean(self):
         # try:

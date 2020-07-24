@@ -44,33 +44,33 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active">
+				<li class="nav-item active align-self-center">
 					<a class="nav-link" href="{% url 'system:home' %}">{% trans 'Home' %}</a>
 				</li>
-				<li class="nav-item active">
+				<li class="nav-item active align-self-center">
 					<a class="nav-link" href="{% url 'system:about'%}">{% trans 'About' %}</a>
 				</li>
-				<li class="nav-item active">
+				<li class="nav-item active align-self-center">
 					<a class="nav-link" href="{% url 'system:terms'%}">Terms</a>
 				</li>
 			</ul>
 
 			<ul class="navbar-nav">
-				<li class="nav-item active">
+				<li class="nav-item active align-self-center">
 					<a class="nav-link" href="{% url 'system:viewbooks'%}">View Books </a>
 				</li>
 				{% if user.is_authenticated is False %}
-				<li class="nav-item active">
+				<li class="nav-item active align-self-center">
 					<a class="nav-link" href="{% url 'account:signin' %}">Sign In</a>
 				</li>
-				<li class="nav-item active">
+				<li class="nav-item active align-self-center">
 					<a class="nav-link" href="{% url 'account:signup' %}">Sign Up</a>
 				</li>
 				{% elif user.is_authenticated is True %}
-				<li class="nav-item active">
+				<li class="nav-item active align-self-center">
 					<a class="nav-link btn-outline-danger" href="{% url 'account:logout' %}">Logout</a>
 				</li>
-				<li class="nav-item active">
+				<li class="nav-item active align-self-center">
 					<a class="nav-link" href="{% url 'account:update' username=user.username %}">
 						Hello, {% if user.is_admin %}
 						Admin
@@ -80,13 +80,12 @@
 					</a>
 				</li>
 				{% endif %}
-				<li class="nav-item active">
-					<form action="{% url 'set_language' %}" class="form-inline" method="post">{% csrf_token %}
+				<li class="nav-item active d-flex flex-fill align-self-center">
+					<div class="align-self-center "><form action="{% url 'set_language' %}" class="form-inline" method="post">{% csrf_token %}
 				    <input name="next" class="form-control" type="hidden" value="{{ redirect_to }}">
 			        {% get_current_language as LANGUAGE_CODE %}
 			        {% get_available_languages as LANGUAGES %}
 			        {% get_language_info_list for LANGUAGES as languages %}
-		            {{ LANGUAGE_CODE }}
 			        {% for language in languages %}
 			            {% if language.code != LANGUAGE_CODE %}
 			            <div class="custom-control custom-switch align-middle">
@@ -95,7 +94,7 @@
 						</div>
 						{% endif %}
 			        {% endfor %}
-					</form>
+					</form></div>
 				</li>
 				{% comment %}
 				<li class="nav-item active">

@@ -88,10 +88,9 @@ class UserCreationForm(forms.ModelForm):
             ),
             Div(Submit('submit', 'Sign Up', css_class='btn-lg',),
                 css_class='text-center'),
+            HTML('<p class="text-muted text-center m-4" >Already have an account ? <a class="text-monospace text-uppercase text-decoration-none text-success" href={% url "account:signin" %}>Login</a></p>')
         )
-        self.helper.form_id = 'userCreationForm'
         self.helper.form_method = 'post'
-        self.helper.form_action = ''
 
 
 class UserChangeForm(forms.ModelForm):
@@ -178,11 +177,27 @@ class UserLoginForm(OTPAuthenticationFormMixin, AuthenticationForm):
         self.helper.layout = Layout(
             Field('username', placeholder="Enter Your Username"),
             AppendedText('password',
-                '<i id="eye" class="fa fa-eye-slash" aria-hidden="true" onclick="eye()"></i>', placeholder="Enter Your Password"),
-            Div(Submit('submit', 'Sign In', css_class="btn btn-lg"),css_class='text-center')
+                '<i id="eye" class="fa fa-eye-slash" aria-hidden="true"></i>', placeholder="Enter Your Password"),
+            HTML('''
+                <script>
+                   document.getElementById('div_password').children[1].children[0].children[1].children[0].addEventListener('click', (e) => {
+                      const eye = document.getElementById('eye').classList;
+                      eye.toggle("fa-eye")
+                      eye.toggle("fa-eye-slash")
+                      const id_password = document.getElementById('password');
+                      if(id_password.type == "text"){
+                         id_password.type = 'password';
+                      }else if(id_password.type == "password"){
+                         id_password.type = 'text';
+                      }
+                   });
+                </script>
+            '''),
+            HTML('<a class="badge mb-2 p-1" href={% url "account:password_reset" %}>Forget Password ?</a>'),
+            Div(Submit('submit', 'Log In', css_class="btn btn-lg"),css_class='text-center'),
+            HTML('<p class="text-muted text-center m-4" >New To E-library ? <a class="text-monospace text-uppercase text-decoration-none text-success" href={% url "account:signup" %}>Sign up</a></p>')
         )
         self.helper.form_method = 'POST'
-        # self.helper.add_input(Submit('submit', 'Submit'))
 
     def clean(self):
         # try:

@@ -15,14 +15,16 @@
                <div class="row">
                   <div class="col">
                      <center>
-                        <img width="150px" src="{% static 'system/images/imgs/generaluser.png' %}"/>
+                        <img width="150px" class="rounded-circle" src="{{ user.prourl }}"/>
                      </center>
                   </div>
                </div>
                <div class="row">
                   <div class="col">
                      <center>
-                        <h3>{{ title }}</h3>
+                        <h3>Profile</h3>
+                        {% if user.is_superuser %}<span class="badge badge-pill badge-primary">Admin</span>{% endif %}
+                        {% if user.is_superuser %}<span class="badge badge-pill badge-danger">Defaulter</span>{% endif %}
                      </center>
                   </div>
                </div>

@@ -13,27 +13,33 @@ from system.mixins import AdminRequiredMixin
 from .mixins import LogoutRequiredMixin, AdminSameRequiredMixin
 from django_otp.forms import OTPAuthenticationForm
 from .models import User
-
+from django.utils.translation import gettext_lazy as _
 
 class UserLoginView(LoginView):
     form_class = UserLoginForm
-    template_name = 'account/login.html'
+    template_name = 'account/form_.html'
     redirect_authenticated_user = False
+    extra_context = {'title' : _("User Login")}
     # authentication_form=OTPAuthenticationForm
+
+class UserCreateView(LogoutRequiredMixin, CreateView):
+    form_class = UserCreationForm
+    template_name = 'account/signup.html'
+    success_url = reverse_lazy('account:signin')
+    extra_context = {'title' : _("User Signup")}
 
 
 
 class UserLogoutView(LogoutView):
-    next_page = reverse_lazy('account:signin')
     template_name = 'account/logout.html'
-    redirect_authenticated_user = False
+    redirect_authenticated_user = True
 
 
 class UserUpdateView(AdminSameRequiredMixin, UpdateView):
     next_page = reverse_lazy('account:signin')
     model = User
     form_class = UserChangeForm
-    template_name = 'account/signup.html'
+    template_name = 'account/profile.html'
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
@@ -42,37 +48,15 @@ class UserUpdateView(AdminSameRequiredMixin, UpdateView):
         return reverse_lazy('account:update', kwargs={'username': self.request.user.username})
 
 
-class UserPasswordResetView(PasswordResetView):
-    email_template_name = ''
-    extra_email_context = None
-    # form_class = PasswordResetForm
-    from_email = None
-    html_email_template_name = None
-    # subject_template_name = 'account/password_reset_subject.txt'
-    success_url = reverse_lazy('account:password_reset_done')
+class UserPasswordResetView(LogoutRequiredMixin, PasswordResetView):
+    email_template_name = 'account/password_reset_email.html'
+    # extra_email_context = None
+    # from_email = None
+    # html_email_template_name = None
+    success_url = reverse_lazy('system:home')
     template_name = 'account/password_reset_form.html'
-    title = 'Password reset'
+    # title = 'Password reset'
     # token_generator = default_token_generator
-
-
-class UserPasswordResetDoneView(PasswordResetDoneView):
-    template_name = 'account/password_reset_done.html'
-
-
-class UserPasswordResetConfirmView(PasswordResetConfirmView):
-    # form_class = SetPasswordForm
-    post_reset_login = False
-    post_reset_login_backend = None
-    reset_url_token = 'set-password'
-    success_url = reverse_lazy('account:password_reset_complete')
-    template_name = 'account/password_reset_confirm.html'
-    # title = _('Enter new password')
-    # token_generator = default_token_generator
-
-
-class UserPasswordResetCompleteView(PasswordResetCompleteView):
-    template_name = 'account/password_reset_complete.html'
-
 
 class UserPasswordChangeView(PasswordChangeView):
     success_url = reverse_lazy('system:home')
@@ -82,15 +66,26 @@ class UserPasswordChangeView(PasswordChangeView):
         messages.success(self.request, 'Your Password Change success.')
         return '/'
 
+class UserPasswordResetConfirmView(LogoutRequiredMixin, PasswordResetConfirmView):
+    post_reset_login = False
+    success_url = reverse_lazy('system:home')
+    template_name = 'account/password_reset_confirm.html'
 
-class UserPasswordChangeDoneView(PasswordChangeDoneView):
+
+class UserPasswordResetDoneView(LogoutRequiredMixin, PasswordResetDoneView):
+    template_name = 'account/password_reset_done.html'
+
+
+
+class UserPasswordResetCompleteView(LogoutRequiredMixin, PasswordResetCompleteView):
+    template_name = 'account/password_reset_complete.html'
+
+
+
+
+class UserPasswordChangeDoneView(LogoutRequiredMixin, PasswordChangeDoneView):
     template_name = 'account/password_change_done.html'
 
-
-class UserCreateView(LogoutRequiredMixin, CreateView):
-    form_class = UserCreationForm
-    template_name = 'account/signup.html'
-    success_url = reverse_lazy('account:signin')
 
 
 def test(request, token):

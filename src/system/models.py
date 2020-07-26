@@ -8,31 +8,7 @@ from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
 from django.urls import reverse_lazy
 from PIL import Image
-from account.models import User, upload_to
-
-
-@deconstructible
-class On_date:
-    year = 1
-    sign = ''
-
-    def __init__(self, year=None, sign=None):
-        if year is not None:
-            self.year = year
-        if sign is not None:
-            self.sign = sign
-
-    def __call__(self, value):
-        print('how the valide..')
-        if int(value.year) > int(timezone.now().year - self.year):
-            raise ValidationError(f'You must be {self.year}{self.sign}')
-
-    def __eq__(self, other):
-        return (
-            isinstance(other, On_date) and
-            (self.year == other.year) and
-            (self.sign == other.sign)
-        )
+from account.models import User, upload_to, age_18
 
 
 class BookAuthor(models.Model):
@@ -40,7 +16,7 @@ class BookAuthor(models.Model):
     first_name = models.CharField(verbose_name="First Name", max_length=100)
     last_name = models.CharField(verbose_name="Last Name", max_length=100)
     date_of_birth = models.DateField(
-        null=True)
+        null=True, validators=[age_18])
     date_of_death = models.DateField(
         verbose_name='Death Date', null=True, blank=True)
 
@@ -124,7 +100,7 @@ class Book(models.Model):
     publish = models.ForeignKey('BookPublish', on_delete=models.CASCADE,
                                 verbose_name="Publisher Name")
     publish_date = models.DateField(
-        validators=[On_date, ], verbose_name="Publish Date")
+        validators=[], verbose_name="Publish Date")
     date = models.DateTimeField(auto_now=True, verbose_name="Date")
     language = models.CharField(max_length=12, verbose_name="Language", choices=[
                                 (None, "Select Language")] + global_settings.LANGUAGES)
@@ -150,6 +126,7 @@ class Book(models.Model):
 
     class Meta:
         ordering = ['name']
+        permissions = [('is_defaulter', 'User in defaulter list')]
 
     def __str__(self):
         return self.name

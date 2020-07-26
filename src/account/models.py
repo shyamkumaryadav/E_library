@@ -17,11 +17,11 @@ from django.utils.translation import gettext_lazy as _
 def upload_to(instance, filename):
     return f"elibrary{secrets.token_hex()}.{filename.split('.')[-1]}"
 
-def age_18(value):
+def age_18(value, message="You sude be 18+"):
     aaj = value.today()
     age = aaj.year - value.year - ((aaj.month, aaj.day) < (value.month, value.day))
     if age < 18:
-        raise ValidationError("You sude be 18+")
+        raise ValidationError(message)
 
 class AbstractUser(BaseAbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

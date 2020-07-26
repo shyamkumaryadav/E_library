@@ -20,7 +20,7 @@ class BookAuthorForm(forms.ModelForm):
         model = models.BookAuthor
         fields = '__all__'
         widgets = {
-            'date_of_birth': DateInput(attrs={'max': get_today(), 'oninvalid': 'setCustomValidity("flow this rule")'}),
+            'date_of_birth': DateInput(),
             'date_of_death': DateInput()
         }
 
@@ -34,7 +34,7 @@ class BookAuthorForm(forms.ModelForm):
             Row(
                 Column(Field('first_name', placeholder="Enter First Name")),
                 Column(Field(
-                    'last_name', placeholder="Enter Last Name" if self.instance else 'No objext')),
+                    'last_name', placeholder="Enter Last Name")),
             ),
             Row(
                 Column(Field('date_of_birth')),

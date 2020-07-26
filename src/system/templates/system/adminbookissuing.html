@@ -108,7 +108,23 @@
                   </div>
                   <div class="row">
                      <div class="col">
-                        <!-- <asp:GridView class="table table-striped table-bordered" ID="GridView1" runat="server"></asp:GridView> -->
+                        {% if perms.system %}
+                         <p>You have permission to do something in the system app.</p>
+                         {% if perms.system.add_book %}
+                             <p>You can add!</p>
+                         {% endif %}
+                         {% if perms.system.view_book %}
+                             <p>You can view!</p>
+                         {% endif %}
+                         {% if perms.system.edit_book %}
+                             <p>You can edit!</p>
+                         {% endif %}
+                         {% if perms.system.view_book %}
+                             <p>You can view!</p>
+                         {% endif %}
+                     {% else %}
+                         <p>You don't have permission to do anything in the system app.</p>
+                     {% endif %}
                      </div>
                   </div>
                </div>

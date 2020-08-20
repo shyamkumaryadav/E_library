@@ -15,6 +15,10 @@ class HomeView(generic.TemplateView):
     template_name = 'system/home.html'
     extra_context = {'title': 'Home'}
 
+    def get(self, request, *args, **kwargs):
+        print(f"Meta Ip: {request.META['REMOTE_ADDR']}")
+        return super().get(request, *args, **kwargs)
+
 
 class aboutView(generic.TemplateView):
     template_name = 'system/about.html'

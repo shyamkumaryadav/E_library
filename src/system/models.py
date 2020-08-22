@@ -1,8 +1,9 @@
 import uuid
 import secrets
+from . import data_list
 from django.db import models
 from django.utils import timezone
-from django.conf import settings, global_settings
+from django.conf import global_settings
 from django.core import validators
 from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
@@ -68,7 +69,7 @@ class BookPublish(models.Model):
 class GenreManager(models.Manager):
     def test0001(self):
         n = 0
-        for i in settings.BOOK_GENRE:
+        for i in data_list.BOOK_GENRE:
             obj, _ = self.get_or_create(name=i[0])
             if _:
                 n += 1
@@ -77,7 +78,7 @@ class GenreManager(models.Manager):
 
 class Genre(models.Model):
     name = models.IntegerField(choices=[
-                               (None, "Select Language")] + settings.BOOK_GENRE)
+                               (None, "Select Language")] + data_list.BOOK_GENRE)
     objects = GenreManager()
 
     class Meta:
@@ -105,7 +106,7 @@ class Book(models.Model):
     language = models.CharField(max_length=12, verbose_name="Language", choices=[
                                 (None, "Select Language")] + global_settings.LANGUAGES)
     edition = models.IntegerField(verbose_name="Edition", choices=[
-                                  (None, "Select Edition")] + settings.BOOK_EDITION)
+                                  (None, "Select Edition")] + data_list.BOOK_EDITION)
     cost = models.DecimalField(
         max_digits=8, decimal_places=2, verbose_name="Book Cost(per unit)")
     page = models.PositiveIntegerField(verbose_name="Total Page")

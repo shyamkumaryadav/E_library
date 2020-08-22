@@ -1,7 +1,7 @@
 import uuid
 import secrets
 from django.db import models
-from django.conf import settings
+from system import data_list
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.core import validators
@@ -17,11 +17,14 @@ from django.utils.translation import gettext_lazy as _
 def upload_to(instance, filename):
     return f"elibrary{secrets.token_hex()}.{filename.split('.')[-1]}"
 
+
 def age_18(value, message="You sude be 18+"):
     aaj = value.today()
-    age = aaj.year - value.year - ((aaj.month, aaj.day) < (value.month, value.day))
+    age = aaj.year - value.year - \
+        ((aaj.month, aaj.day) < (value.month, value.day))
     if age < 18:
         raise ValidationError(message)
+
 
 class AbstractUser(BaseAbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -60,16 +63,16 @@ class AbstractUser(BaseAbstractUser):
         validators=[age_18]
     )
     phone_number = models.CharField(verbose_name=_("Phone Number"),
-                                 max_length=13,
-                                 null=True,
-                                 validators=[validators.RegexValidator(
-                                     regex=r"^[4-9]\d{9}$", message=_("Enter Valid Phone Number.")), ]
-                                 )
+                                    max_length=13,
+                                    null=True,
+                                    validators=[validators.RegexValidator(
+                                        regex=r"^[4-9]\d{9}$", message=_("Enter Valid Phone Number.")), ]
+                                    )
     state = models.CharField(verbose_name=_("State"),
                              max_length=2,
                              null=True,
                              choices=[(None, _("Select State"))] +
-                             settings.LIST_STATE,
+                             data_list.LIST_STATE,
                              )
     city = models.CharField(verbose_name=_("City"), max_length=20,
                             null=True,

@@ -1,12 +1,15 @@
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u'
-DEBUG = True
-ALLOWED_HOSTS = ['*']
-ADMINS = [
-    ('Shyamkumar Yadav', os.getenv('EMAIL')),
 
-]
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+SECRET_KEY = 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u'
+
+DEBUG = True
+
+ALLOWED_HOSTS = ['*']
+
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -21,7 +24,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'import_export',
     'django_cleanup',
-    # Crispy Form is Best idea
+
+    # Crispy Form is Best
     'crispy_forms',
 
     # otp django
@@ -30,6 +34,7 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_totp',
     'django_otp.plugins.otp_hotp',
     'django_otp.plugins.otp_static',
+
     # myApps
     'account',
     'system',
@@ -44,7 +49,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'system.middleware.HttpPostTunnelingMiddleware',
     'django_otp.middleware.OTPMiddleware',  # Django-otp
 ]
 
@@ -104,6 +108,7 @@ LANGUAGES = [
 ]
 
 LANGUAGE_COOKIE_NAME = 'library_lang'
+
 LOCALE_PATH = (
     os.path.join(BASE_DIR, 'locale'),
 )
@@ -113,10 +118,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -136,14 +138,8 @@ LOGOUT_REDIRECT_URL = 'account:signin'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # password Email send
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
-PASSWORD_RESET_TIMEOUT_DAYS = 1
+
+
 
 OTP_TWILIO_ACCOUNT = os.getenv('OTP_TWILIO_ACCOUNT')
 OTP_TWILIO_AUTH = os.getenv('OTP_TWILIO_AUTH')

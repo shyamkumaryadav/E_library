@@ -12,7 +12,6 @@ urlpatterns = i18n_patterns(
     path('', include('system.urls')),
     path('', include('account.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
-    path('', include('user_sessions.urls', 'user_sessions')),
     prefix_default_language=False
 )
 

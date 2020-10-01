@@ -1,0 +1,28 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+pillow = "*"
+django-cleanup = "*"
+dj-database-url = "*"
+django-crispy-forms = "*"
+django-extensions = "*"
+django-heroku = "*"
+django-import-export = "*"
+django-otp = "*"
+django-otp-twilio = "*"
+faker = "*"
+gunicorn = "*"
+psycopg2 = "*"
+whitenoise = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
+
+[packages.django-storages]
+extras = [ "dropbox",]

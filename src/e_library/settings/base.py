@@ -1,14 +1,14 @@
 import os
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))
 
 SECRET_KEY = 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u'
 
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 
 INSTALLED_APPS = [
@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     'otp_twilio',
     'django_otp.plugins.otp_totp',
     'django_otp.plugins.otp_hotp',
-    'django_otp.plugins.otp_static',
 
     # myApps
     'account',
@@ -57,9 +56,7 @@ ROOT_URLCONF = 'e_library.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'),
-                 # os.path.join(BASE_DIR, 'reactapp/build'),
-                 ],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -107,7 +104,7 @@ LANGUAGES = [
     ('hi', 'Hindi'),
 ]
 
-LANGUAGE_COOKIE_NAME = 'library_lang'
+LANGUAGE_COOKIE_NAME = 'library_language'
 
 LOCALE_PATH = (
     os.path.join(BASE_DIR, 'locale'),
@@ -127,6 +124,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
+
 # Custome User Model
 AUTH_USER_MODEL = 'account.User'
 
@@ -140,7 +138,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # password Email send
 
 
-
+# OPT TWILIO
 OTP_TWILIO_ACCOUNT = os.getenv('OTP_TWILIO_ACCOUNT')
 OTP_TWILIO_AUTH = os.getenv('OTP_TWILIO_AUTH')
 OTP_TWILIO_CHALLENGE_MESSAGE = 'OTP send to your number...'
@@ -149,4 +147,4 @@ OTP_TWILIO_TOKEN_TEMPLATE = '''
 otp: {token}
 '''
 OTP_TWILIO_FROM = os.getenv('OTP_TWILIO_FROM')
-OTP_TWILIO_TOKEN_VALIDITY = 360  # otp valid for 5Min
+OTP_TWILIO_TOKEN_VALIDITY = 300  # otp valid for 5Min (5*60)

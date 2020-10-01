@@ -10,8 +10,8 @@
 #####     ```PostgreSQL DATABASE (From Heroku)```
 #####     ```HTML CSS JavaScript```
 #####     ```BOOTSTRAP```
-#####     ```REACT :-)```
-#####     ```jQuery AJAX```
+#####     ```VUE :-)```
+#####     ```AJAX```
 
 ### *Detail*
      0. Member Signup -- New users can sign up

@@ -11,6 +11,7 @@ from django.utils.translation import activate
 from account.models import User
 from django.utils.translation import gettext_lazy as _
 
+
 class HomeView(generic.TemplateView):
     template_name = 'system/home.html'
     extra_context = {'title': 'Home'}

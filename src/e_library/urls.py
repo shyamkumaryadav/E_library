@@ -4,8 +4,7 @@ from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
 from django.conf.urls.static import static
 from django_otp.admin import OTPAdminSite
-from django.utils.translation import gettext_lazy as _
-# admin.site.__class__ = OTPAdminSite
+admin.site.__class__ = OTPAdminSite
 
 urlpatterns = i18n_patterns(
     path('admin/', admin.site.urls),

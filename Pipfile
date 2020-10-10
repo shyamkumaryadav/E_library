@@ -18,6 +18,10 @@ faker = "*"
 gunicorn = "*"
 psycopg2 = "*"
 whitenoise = "*"
+djangorestframework = "*"
+tqdm = "*"
+django-filter = "*"
+django-allauth = "*"
 
 [dev-packages]
 pygraphviz = "*"

@@ -10,20 +10,37 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# AUTHENTICATION_BACKENDS = [
 
+#     # Needed to login by username in Django admin, regardless of `allauth`
+#     'django.contrib.auth.backends.ModelBackend',
+
+#     # `allauth` specific authentication methods, such as login by e-mail
+#     'allauth.account.auth_backends.AuthenticationBackend',
+
+# ]
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+
+    # Django allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 
     # Django Extensions
     'django_extensions',
     'import_export',
     'django_cleanup',
+
+    # Django-Rest
+    'rest_framework',
 
     # Crispy Form is Best
     'crispy_forms',
@@ -38,6 +55,9 @@ INSTALLED_APPS = [
     'account',
     'system',
 ]
+
+SITE_ID = 1
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

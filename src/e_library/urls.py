@@ -8,8 +8,10 @@ admin.site.__class__ = OTPAdminSite
 
 urlpatterns = i18n_patterns(
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
     path('', include('system.urls')),
     path('', include('account.urls')),
+    path('api/', include('rest_framework.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
     prefix_default_language=False
 )

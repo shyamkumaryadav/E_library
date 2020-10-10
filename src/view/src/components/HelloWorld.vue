@@ -1,22 +1,31 @@
 <template>
-  <v-card flat>
-    <v-toolbar flat height="700">
-      <v-switch
-        v-model="$vuetify.theme.dark"
-        value="$vuetify.theme.dark"
-        hint="This toggles the global state of the Vuetify theme"
-        inset
-        label="Theme light"
-        persistent-hint
-      ></v-switch>
-    </v-toolbar>
-  </v-card>
+  <v-container>
+    <v-col cols="12" sm="6">
+      <v-text-field
+        label="Main input"
+        :rules="rules"
+        outlined
+        clearable
+        hide-details="auto"
+        color="success"
+      ></v-text-field>
+    </v-col>
+  </v-container>
 </template>
 
 <script>
-// import Vuetify from "vuetify/lib";
-
 export default {
   name: "HelloWorld",
+  data() {
+    return {
+      sw: false,
+      name: "",
+      rules: [
+        (value) => !!value || "Required.",
+        (value) => (value && value.length >= 3) || "Min 3 characters",
+        (value) => value === "shyam" || "shyam",
+      ],
+    };
+  },
 };
 </script>

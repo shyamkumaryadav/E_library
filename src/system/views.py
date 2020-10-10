@@ -10,6 +10,14 @@ from django.urls import reverse_lazy
 from django.utils.translation import activate
 from account.models import User
 from django.utils.translation import gettext_lazy as _
+from .serializers import BookSerializer
+from rest_framework import viewsets
+
+
+class BookView(viewsets.ModelViewSet):
+    from .models import Book
+    serializer_class = BookSerializer
+    queryset = Book.objects.all()
 
 
 class HomeView(generic.TemplateView):

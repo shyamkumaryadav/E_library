@@ -30,9 +30,9 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 
     # Django allauth
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
 
     # Django Extensions
     'django_extensions',
@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'system',
 ]
 
-SITE_ID = 1
+# SITE_ID = 1
 
 
 MIDDLEWARE = [

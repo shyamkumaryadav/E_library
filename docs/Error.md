@@ -3,3 +3,9 @@
 ```bash 
 sudo apt install libpq-dev python3-dev #ubuntu
 ```
+
+## [graphviz](http://www.graphviz.org/download/)
+> Unable to install graphviz  
+```bash
+sudo apt install graphviz 
+```

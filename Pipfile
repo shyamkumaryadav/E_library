@@ -25,6 +25,7 @@ django-allauth = "*"
 
 [dev-packages]
 pygraphviz = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.8"

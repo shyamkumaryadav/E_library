@@ -15,7 +15,7 @@ class EmailActivationTokenGenerator(PasswordResetTokenGenerator):
 
 token_generator = EmailActivationTokenGenerator()
 
-def send_mail(user, request=None, subject_template_name="account/email/subject.txt", email_template_name="account/email/body.html", html_email_template_name=None, from_email=None):
+def send_mail(user, request=None, subject_template_name="account/email/subject.txt", email_template_name="account/email/body.html", html_email_template_name="account/email/body.html", from_email=None):
         """
         Send a django.core.mail.EmailMultiAlternatives to `to_email`.
         """

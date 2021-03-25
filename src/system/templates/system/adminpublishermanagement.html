@@ -49,21 +49,14 @@
                                         are you sure you want to delete this Publisher?
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" name="delAuthor" class="btn btn-primary">Yes</button>
+                                        <form method="post" action="{% url 'system:publishermanagementdelete' pk=object.pk %}">{% csrf_token %}
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary" value="Confirm">Yes</button>
+                                        </form>                                        
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <script>
-                            $('#deletebtn').css('display', '');
-                            $('#goback').css('display', '');
-                            $("button[name='delAuthor']").on('click', function(e) {
-                                $('#bookAuthorForm').append('<input type="hidden" name="Delete" value="{{ object.id }}">');
-                                $("#bookAuthorForm").submit();
-                            });
-                        </script>
                     {%endif%}
                 </div>
             </div>
@@ -87,7 +80,7 @@
                                         aria-describedby="searchHelpBlock">
                                 </div>
                                 <small id="searchHelpBlock" class="form-text text-muted">
-                                    Your can search by Name?
+                                    Your can search by Name?  {% if request.GET.q %}<a class="btn-sm btn-link" href="{{ request.path }}">clear Filter</a>{% endif %}
                                 </small>
                             </div>
                             {%endif%}
@@ -99,35 +92,34 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                {% if object_list %}
-                                {% for item in object_list %}
-                                <div class="card mb-2"
-                                onclick="if (document.location.pathname !== '{{ item.get_update_url }}'){document.location = '{{ item.get_update_url }}';};" style="max-width: 540px;cursor: pointer;">
-                                  <div class="row g-0">
-                                    <div class="col-md-8">
-                                      <div class="card-body">
-                                        <h5 class="card-title">Name - {{ item.name }}</h5>
-                                        <p class="card-text">Address - {{ item.address }}</p>
-                                        <p class="card-text"><small class="text-muted">{{ item.date }}</small></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                {% endfor %}
-                                {% elif object %}
-                                <div class="card mb-2"
-                                onclick="if (document.location.pathname !== '{{ object.get_update_url }}'){document.location = '{{ object.get_update_url }}';};" style="max-width: 540px;cursor: pointer;">
-                                  <div class="row g-0">
-                                    <div class="col-md-8">
-                                      <div class="card-body">
-                                        <h5 class="card-title">Name - {{ object.name }}</h5>
-                                        <p class="card-text">Address - {{ object.address }}</p>
-                                        <p class="card-text"><small class="text-muted">{{ object.date }}</small></p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                {% endif %}
+                                    {% if object_list %}
+                                        {% for object in object_list %}
+                                        <div class="col-12 card mb-2"
+                                            onclick="if (document.location.pathname !== '{{ object.get_update_url }}'){document.location = '{{ object.get_update_url }}';};" style="cursor: pointer;">
+                                            <div class="row g-0">
+                                                <div class="col-md-12">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Name - {{ object.name|title }}</h5>
+                                                    <p class="card-text">Address - {{ object.address|title }}</p>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        
+                                        {% endfor %}
+                                    {% elif object %}
+                                    <div class="card mb-2"
+                                            onclick="if (document.location.pathname !== '{{ object.get_update_url }}'){document.location = '{{ object.get_update_url }}';};" style="cursor: pointer;">
+                                            <div class="row g-0">
+                                                <div class="col-md-12">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">First Name - {{ object.name|title }}</h5>
+                                                    <p class="card-text">Address - {{ object.address|title }}</p>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                    {% endif %}
                             </div>
                         </div>
                         <div class="row">

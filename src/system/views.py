@@ -5,7 +5,7 @@ from system import mixins
 from django.contrib import messages
 from django.views import generic
 from django.shortcuts import render, redirect
-from django.http import JsonResponse, Http404, HttpResponse
+from django.http import JsonResponse, Http404, HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.translation import activate
 from account.models import User
@@ -38,14 +38,66 @@ class TermsView(generic.TemplateView):
         messages.add_message(request, 23, 'Over light!', extra_tags='light')
         messages.add_message(request, 23, 'Over dark!', extra_tags='dark')
         return super().get(request, *args, **kwargs)
+
+
+class MemberManagementView(mixins.AdminRequiredMixin, generic.UpdateView, generic.ListView):
+    template_name = 'system/adminmembermanagement.html'
+    model = User
+    extra_context = {'title': 'Member management'}
+    template_name = 'system/adminmembermanagement.html' 
+    search_kwarg = 'q'
+    paginate_by = 10
+    form_class = forms.MemberForm
+
+    def get_object(self, queryset=None):
+        try:
+            username = self.request.GET.get('username')
+            if queryset is None:
+                queryset = self.get_queryset()
+                queryset = queryset.filter(username__icontains=username)
+                obj = queryset.get()
+                return obj
+        except:
+            pass
     
+    def form_valid(self, form):
+        form.save(request=self.request)
+        return super().form_valid(form)
+    
+    def post(self, request, *args, **kwargs):
+        user = self.get_object()
+        if request.POST.get('is_superuser') == '1':
+            user.is_superuser = True
+        elif request.POST.get('is_superuser') == '0':
+            user.is_superuser = False
+        if request.POST.get('is_active') == '1':
+            user.is_active = True
+        elif request.POST.get('is_active') == '0':
+            user.is_active = False
+        if request.POST.get('send_mail') == '1':
+            pass
+        user.save()
+        return HttpResponseRedirect(self.get_success_url())
+    
+    def get_success_url(self):
+        messages.success(self.request, 'User Update Success.')
+        return reverse_lazy('system:membermanagement')
+
+class MemberManagementDeleteView(mixins.AdminRequiredMixin, generic.DeleteView):
+    model = User
+    http_method_names = ['post',]
+
+    def get_success_url(self):
+        messages.success(self.request, 'User Delete Success.')
+        return reverse_lazy('system:membermanagement')
 
 class ViewBookView(generic.ListView):
     model = models.Book
     search_kwarg = 'q'
     paginate_by = 10
     template_name = 'system/viewbooks.html'
-
+    extra_context = {'title': 'Books'}
+    
     def get_queryset(self, *args, **kwargs):
         search_kwarg = self.search_kwarg
         name = self.request.GET.get(search_kwarg)
@@ -90,6 +142,7 @@ class AuthorManagementView(mixins.AdminRequiredMixin, generic.CreateView, generi
         return object_list
 
 
+
 class AuthorManagementUpdateView(mixins.AdminRequiredMixin, generic.UpdateView):
     template_name = 'system/adminauthormanagement.html'
     model = models.BookAuthor
@@ -97,10 +150,16 @@ class AuthorManagementUpdateView(mixins.AdminRequiredMixin, generic.UpdateView):
     form_class = forms.BookAuthorForm
     extra_context = {'title': 'Author management'}
 
+class AuthorManagementDeleteView(mixins.AdminRequiredMixin, generic.DeleteView):
+    model = models.BookAuthor
+    http_method_names = ['post',]
 
-class MemberManagementView(mixins.AdminRequiredMixin, generic.TemplateView):
-    template_name = 'system/adminmembermanagement.html'
-    extra_context = {'title': 'Member management'}
+    def get_success_url(self):
+        messages.success(self.request, 'Author Delete Success.')
+        return reverse_lazy('system:authormanagement')
+
+
+
 
 
 class BookIssuingView(generic.TemplateView):
@@ -149,6 +208,14 @@ class BookInventoryUpdateView(mixins.AdminRequiredMixin, generic.UpdateView):
     template_name = 'system/adminbookinventory.html'
     extra_context = {'title': 'admin book inventory Update'}
 
+class BookInventoryDeleteView(mixins.AdminRequiredMixin, generic.DeleteView):
+    model = models.Book
+    http_method_names = ['post',]
+
+    def get_success_url(self):
+        messages.success(self.request, 'Book Delete Success.')
+        return reverse_lazy('system:bookinventory')
+
 
 
 class PublisherManagementView(mixins.AdminRequiredMixin, generic.ListView, generic.edit.BaseCreateView):
@@ -191,6 +258,14 @@ class PublisherManagementUpdateView(mixins.AdminRequiredMixin, generic.UpdateVie
     success_url = reverse_lazy('system:publishermanagement')
     form_class = forms.BookPublishForm
     extra_context = {'title': 'Author management'}
+
+class PublisherManagementDeleteView(mixins.AdminRequiredMixin, generic.DeleteView):
+    model = models.BookPublish
+    http_method_names = ['post',]
+
+    def get_success_url(self):
+        messages.success(self.request, 'Publisher Delete Success.')
+        return reverse_lazy('system:publishermanagement')
 
 
 

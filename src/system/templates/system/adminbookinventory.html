@@ -2,203 +2,341 @@
 {% load static %}
 {% load humanize %}
 
-
 {% block head %}
-<link rel="icon" href="{%static 'system/images/imgs/books1.png'%}" sizes="144x144" >
+<link
+  rel="icon"
+  href="{%static 'system/images/imgs/books1.png'%}"
+  sizes="144x144"
+/>
 <title>{{ title }}</title>
 {% endblock head %}
 
 {% block main %}
 <div class="container-fluid">
-      <div class="row mt-3">
-         <div class="col-md-5 mb-3">
-            <div class="card">
-               <div class="card-body">
-                  <div class="row">
-                     <div class="col text-center">
-                           <h4>Book Details</h4>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col text-center">
-                           <img width="100px" src="{% static 'system/images/imgs/books.png'%}" />
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col">
-                        <hr>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col">
-                        {% load crispy_forms_tags %}
-                        {% crispy form %}
-                        {%if object %}
-                        <div class="modal fade" id="deletemodel" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Publisher <span class="badge badge-danger">{{ object.name|title }}</span></h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        are you sure you want to delete this Publisher?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" name="delAuthor" class="btn btn-primary">Yes</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <script>
-                          $(document).ready(function(){
-                            $('#deletebtn').css('display', '');
-                            $('#goback').css('display', '');
-                            {% comment %} $('#div_id_profile a').text("{{ object.name }}"); {% endcomment %}
-                            $("button[name='delAuthor']").on('click', function(e) {
-                                $('#bookForm').append('<input type="hidden" name="Delete" value="{{ object.id }}">');
-                                $("#bookForm").submit();
-                            });
-                          });
-                        </script>
-                    {%endif%}
-                     </div>
-                  </div>
-               </div>
+  <div class="row mt-3">
+    <div class="col-md-5 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col text-center">
+              <h4>Book Details</h4>
             </div>
-         </div>
-
-         <div class="col-md-7 mb-3">
-            <form method="GET">
-                <div class="card">
-                    <div class="card-body">
-
-                        <div class="row">
-                            <div class="col-md-6 col-lg-6">
-                                <h4>Book {% if object %}Object {% else %}List{% endif %}</h4>
-                            </div>
-                            {% if is_paginated %}
-                            <div class="col-sm-12 col-md-6 col-lg-6">
-                                <div class="input-group">
-                                    <input type="text" name='q' class="form-control mr-1"
-                                        value="{{ request.GET.q }}" placeholder="by Name" data-toggle="tooltip"
-                                        data-placement="left" title="Tooltip on left"
-                                        aria-describedby="searchHelpBlock">
-                                    <div class="input-group-append">
-                                        <button id='id_for_search' type='submit' value="{{request.GET.q}}"
-                                            class="btn btn-outline-info"><i class="fas fa-search"></i></button>
-                                    </div>
-                                </div>
-                                <small id="searchHelpBlock" class="form-text text-muted">
-                                    Your can search by Name? {% if request.GET.q %}<a class="btn-sm btn-link" href="{{ request.path }}">clear Filter</a>{% endif %}
-                                </small>
-                            </div>
-                            {%endif%}
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <hr>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                {% if object_list %}
-                                {% for book in object_list %}
-                                <div class="container-fluid table table-striped table-bordered">
-                                    <div class="row ml-3">
-                                        <div class="col-md-10">
-                                            <div class="row pt-3">
-                                                <div class="col-12">
-                                                    <h3 style="font-weight: bold;font-size:x-large;">{{ book.name}}</h3>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                            Author - <span style="font-weight: bold;">{{ book.author}}</span> &nbsp;| Genre - <span style="font-weight: bold;">[{% for genre in book.genre.all %}{{ genre }}, {% endfor %}]</span>&nbsp;| Language - <span style="font-weight: bold;">{{ book.get_language_display}}</span>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                            Publisher - <span style="font-weight: bold;">{{ book.publish }}</span> &nbsp;| Publish date - <span style="font-weight: bold;">{{ book.publish_date|naturalday}}</span> &nbsp;| Page - <span style="font-weight: bold;">{{ book.page }}</span> &nbsp;| Edition - <span style="font-weight: bold;">{{ book.edition|ordinal}}</span>
-                                                </div></div>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                            Cost - <span style="font-weight: bold;">{{ book.cost|intcomma }}$</span> &nbsp;| Actual Stock - <span style="font-weight: bold;">{{ book.stock }}</span> &nbsp;| Avalabel Stock - <span style="font-weight: bold;">{{ book.today_stock }}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                            Description - <span style="font-weight: bold;">{{ book.description }}</span>
-                                            </div></div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <span>{{ book.date|naturaltime|naturalday}} Added</span><br>
-                                        <a href="{{ book.get_update_url }}">Edit Book</a>
-                                        </div></div>
-        
-                                        </div>
-                                        <div class="col-md-2 pr-0 align-self-center">
-                                            <img src="{% if book.profile.url %}{{book.profile.url }}{%else%}#{% endif%}" class="img-fluid" alt="" data-toggle="tooltip" data-placement="left" title="{{ book.rating }}">
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                                {% endif %}
-                                {% if object %}
-                                    <div class="row ml-3">
-                                        <div class="col-md-10">
-                                            <div class="row pt-3">
-                                                <div class="col-12">
-                                                    <h3 style="font-weight: bold;font-size:x-large;">{{ object.name}}</h3>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                            Author - <span style="font-weight: bold;">{{ object.author}}</span> &nbsp;| Genre - <span style="font-weight: bold;">[{% for genre in object.genre.all %}{{ genre }}, {% endfor %}]</span>&nbsp;| Language - <span style="font-weight: bold;">{{ object.get_language_display}}</span>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                            Publisher - <span style="font-weight: bold;">{{ object.publish }}</span> &nbsp;| Publish date - <span style="font-weight: bold;">{{ object.publish_date|naturalday}}</span> &nbsp;| Page - <span style="font-weight: bold;">{{ object.page }}</span> &nbsp;| Edition - <span style="font-weight: bold;">{{ object.edition|ordinal}}</span>
-                                                </div></div>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                            Cost - <span style="font-weight: bold;">{{ object.cost|intcomma }}$</span> &nbsp;| Actual Stock - <span style="font-weight: bold;">{{ object.stock }}</span> &nbsp;| Avalabel Stock - <span style="font-weight: bold;">{{ object.today_stock }}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                            Description - <span style="font-weight: bold;">{{ object.description }}</span>
-                                            </div></div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <span>{{ object.date|naturaltime|naturalday}} Added</span><br>
-                                        </div></div>
-        
-                                        </div>
-                                        <div class="col-md-2 pr-0 align-self-center">
-                                            <img src="{% if book.profile.url %}{{book.profile.url }}{%else%}#{% endif%}" class="img-fluid" alt="" data-toggle="tooltip" data-placement="left" title="{{ book.rating }}">
-                                        </div>
-                                    </div>
-                                {%endif %}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                {% include 'system/paginate.html' %} 
-                            </div>
-                        </div>
-
+          </div>
+          <div class="row">
+            <div class="col text-center">
+              <img
+                width="100px"
+                src="{% static 'system/images/imgs/books.png'%}"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <hr />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              {% load crispy_forms_tags %}
+              {% crispy form %}
+              {% if object %}
+              <div
+                class="modal fade"
+                id="deletemodel"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Publisher
+                        <span class="badge badge-danger"
+                          >{{ object.name|title }}</span
+                        >
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                     </div>
+                    <div class="modal-body">
+                      are you sure you want to delete this Publisher?
+                    </div>
+                    <div class="modal-footer">
+                      <form
+                        method="post"
+                        action="{% url 'system:bookinventorydelete' pk=object.pk %}"
+                      >
+                        {% csrf_token %}
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                        <button
+                          type="submit"
+                          class="btn btn-primary"
+                          value="Confirm"
+                        >
+                          Yes
+                        </button>
+                      </form>
+                    </div>
+                  </div>
                 </div>
-            </form>
-         </div>
+              </div>
+              {%endif%}
+            </div>
+          </div>
+        </div>
       </div>
-   </div>
-   
-   {%endblock main%}
+    </div>
+
+    <div class="col-md-7 mb-3">
+      <form method="GET">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 col-lg-6">
+                <h4>Book {% if object %}Object {% else %}List{% endif %}</h4>
+              </div>
+              {% if is_paginated %}
+              <div class="col-sm-12 col-md-6 col-lg-6">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    name="q"
+                    class="form-control mr-1"
+                    value="{{ request.GET.q }}"
+                    placeholder="by Name"
+                    data-toggle="tooltip"
+                    data-placement="left"
+                    title="Tooltip on left"
+                    aria-describedby="searchHelpBlock"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      id="id_for_search"
+                      type="submit"
+                      value="{{request.GET.q}}"
+                      class="btn btn-outline-info"
+                    >
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+                <small id="searchHelpBlock" class="form-text text-muted">
+                  Your can search by Name? {% if request.GET.q %}<a
+                    class="btn-sm btn-link"
+                    href="{{ request.path }}"
+                    >clear Filter</a
+                  >{% endif %}
+                </small>
+              </div>
+              {%endif%}
+            </div>
+            <div class="row">
+              <div class="col">
+                <hr />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                {% if object_list %} {% for book in object_list %}
+                <div class="container-fluid table table-striped table-bordered">
+                  <div class="row ml-3">
+                    <div class="col-md-10">
+                      <div class="row pt-3">
+                        <div class="col-12">
+                          <h3 style="font-weight: bold; font-size: x-large">
+                            {{ book.name}}
+                          </h3>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          Author -
+                          <span style="font-weight: bold"
+                            >{{ book.author}}</span
+                          >
+                          &nbsp;| Genre -
+                          <span style="font-weight: bold"
+                            >[{% for genre in book.genre.all %}{{ genre }}, {% endfor %}]</span
+                          >&nbsp;| Language -
+                          <span style="font-weight: bold"
+                            >{{ book.get_language_display}}</span
+                          >
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          Publisher -
+                          <span style="font-weight: bold"
+                            >{{ book.publish }}</span
+                          >
+                          &nbsp;| Publish date -
+                          <span style="font-weight: bold"
+                            >{{ book.publish_date|naturalday}}</span
+                          >
+                          &nbsp;| Page -
+                          <span style="font-weight: bold">{{ book.page }}</span>
+                          &nbsp;| Edition -
+                          <span style="font-weight: bold"
+                            >{{ book.edition|ordinal}}</span
+                          >
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          Cost -
+                          <span style="font-weight: bold"
+                            >{{ book.cost|intcomma }}$</span
+                          >
+                          &nbsp;| Actual Stock -
+                          <span style="font-weight: bold"
+                            >{{ book.stock }}</span
+                          >
+                          &nbsp;| Avalabel Stock -
+                          <span style="font-weight: bold"
+                            >{{ book.today_stock }}</span
+                          >
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          Description -
+                          <span style="font-weight: bold"
+                            >{{ book.description }}</span
+                          >
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <span
+                            >{{ book.date|naturaltime|naturalday}} Added</span
+                          ><br />
+                          <a href="{{ book.get_update_url }}">Edit Book</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-2 pr-0 align-self-center">
+                      <img
+                        src="{% if book.profile.url %}{{book.profile.url }}{% else %}#{% endif%}"
+                        class="img-fluid"
+                        alt=""
+                        data-toggle="tooltip"
+                        data-placement="left"
+                        title="{{ book.rating }}"
+                      />
+                    </div>
+                  </div>
+                </div>
+                {% endfor %} {% endif %} {% if object %}
+                <div class="row ml-3">
+                  <div class="col-md-10">
+                    <div class="row pt-3">
+                      <div class="col-12">
+                        <h3 style="font-weight: bold; font-size: x-large">
+                          {{ object.name}}
+                        </h3>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        Author -
+                        <span style="font-weight: bold"
+                          >{{ object.author}}</span
+                        >
+                        &nbsp;| Genre -
+                        <span style="font-weight: bold"
+                          >[{% for genre in object.genre.all %}{{ genre }}, {% endfor %}]</span
+                        >&nbsp;| Language -
+                        <span style="font-weight: bold"
+                          >{{ object.get_language_display}}</span
+                        >
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        Publisher -
+                        <span style="font-weight: bold"
+                          >{{ object.publish }}</span
+                        >
+                        &nbsp;| Publish date -
+                        <span style="font-weight: bold"
+                          >{{ object.publish_date|naturalday}}</span
+                        >
+                        &nbsp;| Page -
+                        <span style="font-weight: bold">{{ object.page }}</span>
+                        &nbsp;| Edition -
+                        <span style="font-weight: bold"
+                          >{{ object.edition|ordinal}}</span
+                        >
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        Cost -
+                        <span style="font-weight: bold"
+                          >{{ object.cost|intcomma }}$</span
+                        >
+                        &nbsp;| Actual Stock -
+                        <span style="font-weight: bold"
+                          >{{ object.stock }}</span
+                        >
+                        &nbsp;| Avalabel Stock -
+                        <span style="font-weight: bold"
+                          >{{ object.today_stock }}</span
+                        >
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        Description -
+                        <span style="font-weight: bold"
+                          >{{ object.description }}</span
+                        >
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <span
+                          >{{ object.date|naturaltime|naturalday}} Added</span
+                        ><br />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 pr-0 align-self-center">
+                    <img
+                      src="{% if book.profile.url %}{{ book.profile.url }}{% else %}#{% endif%}"
+                      class="img-fluid"
+                      alt=""
+                      data-toggle="tooltip"
+                      data-placement="left"
+                      title="{{ book.rating }}"
+                    />
+                  </div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">{% include 'system/paginate.html' %}</div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{%endblock main%}

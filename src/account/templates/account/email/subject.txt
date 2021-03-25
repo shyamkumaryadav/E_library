@@ -1,1 +1,3 @@
-Verify your email for {{ request.META.SERVER_NAME }}
+{% load i18n %}{% autoescape off %}
+{% blocktranslate %}Verify your email for E_library {% endblocktranslate %}
+{% endautoescape %}

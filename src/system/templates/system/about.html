@@ -1,27 +1,17 @@
 {% extends 'system/master.html' %}
 
-{% block head %}
-<link rel="icon" href="https://picsum.photos/50" sizes="144x144" >
-<title>{{ title }}</title>
-
-{% endblock head %}
-
 {% block main %}
-{% if perms.system %}
-    <p>You have permission to do something in the system app.</p>
+    {% if perms.system %}
+        <p>You have permission to do something in the system app.</p>
     {% if perms.system.add_book %}
-    <p>You can add!</p>
-    {% endif %}
-    {% if perms.system.view_book %}
-    <p>You can view!</p>
-    {% endif %}
-    {% if perms.system.delete_book %}
-    <p>You can delete!</p>
-    {% endif %}
-    {% if perms.system.is_defaulter %}
-    <p>You can change!</p>
-    {% endif %}
-    {% else %}
-    <p>You don't have permission to do anything in the system app.</p>
+        <p>You can add!</p>
+    {% endif %} {% if perms.system.view_book %}
+        <p>You can view!</p>
+    {% endif %} {% if perms.system.delete_book %}
+        <p>You can delete!</p>
+    {% endif %} {% if perms.system.is_defaulter %}
+        <p>You can change!</p>
+    {% endif %} {% else %}
+        <p>You don't have permission to do anything in the system app.</p>
     {% endif %}
 {% endblock main %}

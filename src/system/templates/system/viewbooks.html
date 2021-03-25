@@ -1,202 +1,230 @@
-{% extends 'system/master.html' %}
-{% load static %}
-{% load humanize %}
-
+{% extends 'system/master.html' %} {% load static %} {% load humanize %}
 {% block head %}
 <title>{{ title }}</title>
-
 {% endblock head %}
 
 {% block main %}
 <form method="GET">
-<div class="container">
-   <div class="row py-2">
-		<div class="col-md-12 mx-auto">
-					<div class="row">
-						<div class="col">
-							<div class="row ">
-								<div class="col-md-6 col-lg-9">
-								<h1>Book List</h1>
-								</div>
-								{% if is_paginated %}
-								<div action="" class="col-sm-12 col-md-6 col-lg-3" id="searchme">
-							    	<div class="input-group">
-									    <input type="text" name='q' class="form-control mr-1" value="{{ request.GET.q }}" placeholder="by Name"  data-toggle="tooltip" data-placement="left" title="Tooltip on left" aria-describedby="searchHelpBlock">
-									    <div class="input-group-append">
-										    <button id='id_for_search' type='submit' value="" class="btn btn-outline-info"><i class="fas fa-search"></i></button>
-										</div>
-									</div>
-								    <small id="searchHelpBlock" class="form-text text-muted">
-									  Your can search by Book Name? {% if request.GET.q %}<a class="btn-sm btn-link" href="{{ request.path }}">clear Filter</a>{% endif %}
-									</small>
-								</div>
-								{% endif %}
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col">
-							<hr>
-						</div>
-					</div>
-				    <div class="row">
-						{% if object_list %}
-						{% for book in object_list %}
-						<div class="container-fluid table table-striped table-bordered">
-							<div class="row ml-3">
-								<div class="col-md-10">
-									<div class="row pt-3">
-										<div class="col-12">
-											<h3 style="font-weight: bold;font-size:x-large;">{{ book.name}}</h3>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12">
-									Author - <span style="font-weight: bold;">{{ book.author}}</span> &nbsp;| Genre - <span style="font-weight: bold;">[{% for genre in book.genre.all %}{{ genre }}, {% endfor %}]</span>&nbsp;| Language - <span style="font-weight: bold;">{{ book.get_language_display}}</span>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12">
-									Publisher - <span style="font-weight: bold;">{{ book.publish }}</span> &nbsp;| Publish date - <span style="font-weight: bold;">{{ book.publish_date|naturalday}}</span> &nbsp;| Page - <span style="font-weight: bold;">{{ book.page }}</span> &nbsp;| Edition - <span style="font-weight: bold;">{{ book.edition|ordinal}}</span>
-										</div></div>
-										<div class="row">
-											<div class="col-12">
-									Cost - <span style="font-weight: bold;">{{ book.cost|intcomma }}$</span> &nbsp;| Actual Stock - <span style="font-weight: bold;">{{ book.stock }}</span> &nbsp;| Avalabel Stock - <span style="font-weight: bold;">{{ book.today_stock }}</span>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-12">
-									Description - <span style="font-weight: bold;">{{ book.description }}</span>
-									</div></div>
-									<div class="row">
-										<div class="col-12">
-											<span>{{ book.date|naturaltime|naturalday}} Added</span><br>
-								<a href="#">Edit Book</a>
-								</div></div>
+  <div class="container">
+    <div class="row py-2">
+      <div class="col-md-12 mx-auto">
+        <div class="row">
+          <div class="col">
+            <div class="row">
+              <div class="col-md-6 col-lg-9">
+                <h1>Book List</h1>
+              </div>
+              {% if is_paginated %}
+              <div action="" class="col-sm-12 col-md-6 col-lg-3" id="searchme">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    name="q"
+                    class="form-control mr-1"
+                    value="{{ request.GET.q }}"
+                    placeholder="by Name"
+                    data-toggle="tooltip"
+                    data-placement="left"
+                    title="Tooltip on left"
+                    aria-describedby="searchHelpBlock"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      id="id_for_search"
+                      type="submit"
+                      value=""
+                      class="btn btn-outline-info"
+                    >
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+                <small id="searchHelpBlock" class="form-text text-muted">
+                  Your can search by Book Name? {% if request.GET.q %}<a
+                    class="btn-sm btn-link"
+                    href="{{ request.path }}"
+                    >clear Filter</a
+                  >{% endif %}
+                </small>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <hr />
+          </div>
+        </div>
+        <div class="row">
+          {% if object_list %}
+          {% for book in object_list %}
+          <div class="container-fluid table table-striped table-bordered">
+            <div class="row ml-3">
+              <div class="col-md-10">
+                <div class="row pt-3">
+                  <div class="col-12">
+                    <h3 style="font-weight: bold; font-size: x-large">
+                      {{ book.name}}
+                    </h3>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    Author -
+                    <span style="font-weight: bold">{{ book.author}}</span>
+                    &nbsp;| Genre -
+                    <span style="font-weight: bold"
+                      >[{% for genre in book.genre.all %}
+                      {% if forloop.counter0 < 4 %}
+                          {{ genre }}
+                          {% if not forloop.first %}, {% endif %}
+                          {% else %}
+                          {% if forloop.last %}...{% endif %}
+                          {% endif %}
+                        {% endfor %}]</span
+                    >&nbsp;| Language -
+                    <span style="font-weight: bold"
+                      >{{ book.get_language_display}}</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    Publisher -
+                    <span style="font-weight: bold">{{ book.publish }}</span>
+                    &nbsp;| Publish date -
+                    <span style="font-weight: bold"
+                      >{{ book.publish_date|naturalday}}</span
+                    >
+                    &nbsp;| Page -
+                    <span style="font-weight: bold">{{ book.page }}</span>
+                    &nbsp;| Edition -
+                    <span style="font-weight: bold"
+                      >{{ book.edition|ordinal}}</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    Cost -
+                    <span style="font-weight: bold"
+                      >{{ book.cost|intcomma }}$</span
+                    >
+                    &nbsp;| Actual Stock -
+                    <span style="font-weight: bold">{{ book.stock }}</span>
+                    &nbsp;| Avalabel Stock -
+                    <span style="font-weight: bold"
+                      >{{ book.today_stock }}</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    Description -
+                    <span style="font-weight: bold"
+                      >{{ book.description }}</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    <span>{{ book.date|naturaltime|naturalday}} Added</span
+                    ><br />
+                    <a href="{{ book.get_update_url }}">Edit Book</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 pr-0">
+                <img
+                  src="{% if book.profile.url %}{{book.profile.url }}{%else%}#{% endif %}"
+                  class="img-fluid"
+                  alt=""
+                  data-toggle="tooltip"
+                  data-placement="left"
+                  title="{{ book.rating }}"
+                />
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- More on https://docs.djangoproject.com/en/3.0/topics/pagination/ -->
+  {% if is_paginated %}
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li
+        class="page-item {% if page_obj.has_previous is False %}disabled{% endif %}"
+      >
+        <button
+          type="submit"
+          class="page-link"
+          name="page"
+          value="{% if page_obj.has_previous %}1{% endif %}"
+        >
+          First
+        </button>
+      </li>
+      <li
+        class="page-item {% if page_obj.has_previous is False %}disabled{% endif %}"
+      >
+        <button
+          type="submit"
+          class="page-link"
+          name="page"
+          value="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% endif %}"
+          aria-label="Previous"
+        >
+          <span aria-hidden="true">&laquo;</span>
+        </button>
+      </li>
 
-								</div>
-								<div class="col-md-2 pr-0">
-									<img src="{% if book.profile.url %}{{book.profile.url }}{%else%}#{% endif%}" class="img-fluid" alt="" data-toggle="tooltip" data-placement="left" title="{{ book.rating }}">
-								</div>
-							</div>
-						</div>
-							{% endfor %}
-							{% else %}
-							<div class="container-fluid table table-striped table-bordered">
-								<div class="row ml-3">
-									<div class="col-md-10">
-										<div class="row pt-3">
-											<div class="col-12">
-												<h3 style="font-weight: bold;font-size:x-large;">name</h3>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-12">
-										Author - <span style="font-weight: bold;">lorem</span> &nbsp;| Genre -<span style="font-weight: bold;">lorem</span><span style="font-weight: bold;"> lorem</span>&nbsp;| Language - <span style="font-weight: bold;">lorem</span>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-12">
-										Publisher - <span style="font-weight: bold;">lorem</span> &nbsp;| publish_date - <span style="font-weight: bold;">lorem</span> &nbsp;| Page - <span style="font-weight: bold;">lorem</span> &nbsp;| edition - <span style="font-weight: bold;">lorem</span>
-											</div></div>
-											<div class="row">
-												<div class="col-12">
-										Cost - <span style="font-weight: bold;">lorem</span> &nbsp;| Actual Stock - <span style="font-weight: bold;">lorem</span> &nbsp;| Avalabel Stock - <span style="font-weight: bold;">lorem</span>
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-12">
-										Description - <span style="font-weight: bold;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut voluptate doloremque aliquam laudantium corporis recusandae mollitia sint aspernatur provident nostrum itaque sequi, iste voluptas. Recusandae veritatis dolor impedit magnam dolorem!</span>
-										</div></div>
-										<div class="row">
-											<div class="col-12">
-									<a href="#">Edit Book</a>
-									</div></div>
+      {% for num in page_obj.paginator.page_range %} {% if page_obj.number == num %}
+      <li class="page-item active">
+        <span class="page-link"
+          >{{ num }}<span class="sr-only">(current)</span>
+        </span>
+      </li>
+      {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
+      <li class="page-item">
+        <button type="submit" class="page-link" name="page" value="{{ num }}">
+          {{ num }}
+        </button>
+      </li>
+      {% endif %} {% endfor %}
 
-									</div>
-									<div class="col-md-2 pr-0">
-										<img src="{% static 'system/images/books/b1.jpg' %}" class="img-fluid" alt="">
-									</div>
-								</div>
-							</div>
-							<div class="container-fluid table table-striped table-bordered">
-								<div class="row ml-3">
-									<div class="col-md-10">
-										<div class="row pt-3">
-											<div class="col-12">
-												<h3 style="font-weight: bold;font-size:x-large;">name</h3>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-12">
-										Author - <span style="font-weight: bold;">lorem</span> &nbsp;| Genre -<span style="font-weight: bold;">lorem</span><span style="font-weight: bold;"> lorem</span>&nbsp;| Language - <span style="font-weight: bold;">lorem</span>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-12">
-										Publisher - <span style="font-weight: bold;">lorem</span> &nbsp;| publish_date - <span style="font-weight: bold;">lorem</span> &nbsp;| Page - <span style="font-weight: bold;">lorem</span> &nbsp;| edition - <span style="font-weight: bold;">lorem</span>
-											</div></div>
-											<div class="row">
-												<div class="col-12">
-										Cost - <span style="font-weight: bold;">lorem</span> &nbsp;| Actual Stock - <span style="font-weight: bold;">lorem</span> &nbsp;| Avalabel Stock - <span style="font-weight: bold;">lorem</span>
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-12">
-										Description - <span style="font-weight: bold;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut voluptate doloremque aliquam laudantium corporis recusandae mollitia sint aspernatur provident nostrum itaque sequi, iste voluptas. Recusandae veritatis dolor impedit magnam dolorem!</span>
-										</div></div>
-										<div class="row">
-											<div class="col-12">
-									<a href="#">Edit Book</a>
-									</div></div>
-
-									</div>
-									<div class="col-md-2 pr-0">
-										<img src="{% static 'system/images/books/b1.jpg' %}" class="img-fluid" data-toggle="tooltip" data-placement="left" title="4">
-									</div>
-								</div>
-							</div>
-							{% endif %}							
-						</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- More on https://docs.djangoproject.com/en/3.0/topics/pagination/ -->
-{% if is_paginated %}
-<nav aria-label="Page navigation example">
-	<ul class="pagination justify-content-center">
-		<li class="page-item {% if page_obj.has_previous is False %}disabled{% endif %}">
-			<button type="submit" class="page-link" name="page" value="{% if page_obj.has_previous %}1{% endif %}">First
-			</button>
-		</li>
-		<li class="page-item {% if page_obj.has_previous is False %}disabled{% endif %}">
-			<button type="submit" class="page-link" name="page" value="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% endif %}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></button>
-		</li>
-
-		{% for num in page_obj.paginator.page_range %}
-			{% if page_obj.number == num %}
-			  <li class="page-item active"><span class="page-link">{{ num }}<span class="sr-only">(current)</span>
-			  </span></li>
-			{% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
-			  <li class="page-item"><button type="submit" class="page-link" name="page" value="{{ num }}" >{{ num }}</button></li>
-			{% endif %}
-		{% endfor %}
-
-		<li class="page-item {% if page_obj.has_next is False %}disabled{% endif %}"><button type="submit" class="page-link" name="page" value="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{%endif%}" aria-label="Next"><span aria-hidden="true">&raquo;</span></button></li>
-		<li class="page-item {% if page_obj.has_next is False %}disabled{% endif %}"><button type="submit" class="page-link" name="page" value="{% if page_obj.has_next %}{{ page_obj.paginator.num_pages }}{%endif%}">Last</button></li>
-	</ul>
-</nav>
-{% endif %}
+      <li
+        class="page-item {% if page_obj.has_next is False %}disabled{% endif %}"
+      >
+        <button
+          type="submit"
+          class="page-link"
+          name="page"
+          value="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% endif %}"
+          aria-label="Next"
+        >
+          <span aria-hidden="true">&raquo;</span>
+        </button>
+      </li>
+      <li
+        class="page-item {% if page_obj.has_next is False %}disabled{% endif %}"
+      >
+        <button
+          type="submit"
+          class="page-link"
+          name="page"
+          value="{% if page_obj.has_next %}{{ page_obj.paginator.num_pages }}{% endif %}"
+        >
+          Last
+        </button>
+      </li>
+    </ul>
+  </nav>
+  {% endif %}
 </form>
 
-<script type="text/javascript">
-	$.ajax({
-		url: 'https://picsum.photos/v2/list',
-		success: (data) => {
-			data.forEach(elem => $('#bookimg').append('<img id="'+elem.id+'" src="'+elem.url+'" alt="'+elem.author+'"></img>'))
-		}
-
-	});
-</script>
 {% endblock main %}

@@ -1,135 +1,168 @@
-{% extends 'system/master.html' %}
-{% load static %}
-
-
-{% block head %}
-<link rel="icon" href="{%static 'system/images/imgs/books1.png'%}" sizes="144x144" >
+{% extends 'system/master.html' %} {% load static %} {% block head %}
+<link
+  rel="icon"
+  href="{%static 'system/images/imgs/books1.png'%}"
+  sizes="144x144"
+/>
 <title>{{ title }}</title>
-{% endblock head %}
-
-{% block main %}
+{% endblock head %} {% block main %}
 <div class="container-fluid">
-      <div class="row">
-         <div class="col-md-5">
-            <div class="card">
-               <div class="card-body">
-                  <div class="row">
-                     <div class="col">
-                        <center>
-                           <h4>Book Issuing</h4>
-                        </center>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col">
-                        <center>
-                           <img width="100px" src="{% static 'system/images/imgs/books.png'%}" />
-                        </center>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col">
-                        <hr>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-md-6">
-                        <label>Member ID</label>
-                        <div class="form-group">
-                           <input type="text" class="form-control" name="MemberID" placeholder="Member ID" required>
-                        </div>
-                     </div>
-                     <div class="col-md-6">
-                        <label>Book ID</label>
-                        <div class="form-group">
-                           <div class="input-group">
-                              <input type="number" class="form-control" name="BookID" placeholder="Book ID">
-                              <button class="btn btn-primary" name="go" Text="Go">Go</button>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-md-6">
-                        <label>Member Name</label>
-                        <div class="form-group">
-                           <input class="form-control" name="MemberName" runat="server" placeholder="Member Name">
-                        </div>
-                     </div>
-                     <div class="col-md-6">
-                        <label>Book Name</label>
-                        <div class="form-group">
-                           <input type="text" class="form-control" placeholder="Book Name">
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-md-6">
-                        <label>Start Date</label>
-                        <div class="form-group">
-                           <input type="date" class="form-control" placeholder="Start Date">
-                        </div>
-                     </div>
-                     <div class="col-md-6">
-                        <label>End Date</label>
-                        <div class="form-group">
-                           <input type="date" class="form-control" placeholder="End Date">
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-6">
-                        <Button class="btn btn-lg btn-block btn-primary" Text="Issue">Issue</Button>
-                     </div>
-                     <div class="col-6">
-                        <Button class="btn btn-lg btn-block btn-success" Text="Return">Return</Button>
-                     </div>
-                  </div>
-               </div>
+  <div class="row">
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <center>
+                <h4>Book Issuing</h4>
+              </center>
             </div>
-            <br>
-            <a href="{% url 'system:home' %}"><i class="fas fa-arrow-left"></i> Back to Home</a>
-            <br>
-         </div>
-         <div class="col-md-7">
-            <div class="card">
-               <div class="card-body">
-                  <div class="row">
-                     <div class="col">
-                        <center>
-                           <h4>Issued Book List</h4>
-                        </center>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col">
-                        <hr>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col">
-                        {% if perms.system %}
-                         <p>You have permission to do something in the system app.</p>
-                         {% if perms.system.add_book %}
-                             <p>You can add!</p>
-                         {% endif %}
-                         {% if perms.system.view_book %}
-                             <p>You can view!</p>
-                         {% endif %}
-                         {% if perms.system.edit_book %}
-                             <p>You can edit!</p>
-                         {% endif %}
-                         {% if perms.system.view_book %}
-                             <p>You can view!</p>
-                         {% endif %}
-                     {% else %}
-                         <p>You don't have permission to do anything in the system app.</p>
-                     {% endif %}
-                     </div>
-                  </div>
-               </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <center>
+                <img
+                  width="100px"
+                  src="{% static 'system/images/imgs/books.png'%}"
+                />
+              </center>
             </div>
-         </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <hr />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label>Member ID</label>
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="MemberID"
+                  placeholder="Member ID"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label>Book ID</label>
+              <div class="form-group">
+                <div class="input-group">
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="BookID"
+                    placeholder="Book ID"
+                  />
+                  <button class="btn btn-primary" name="go" Text="Go">
+                    Go
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label>Member Name</label>
+              <div class="form-group">
+                <input
+                  class="form-control"
+                  name="MemberName"
+                  runat="server"
+                  placeholder="Member Name"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label>Book Name</label>
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Book Name"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label>Start Date</label>
+              <div class="form-group">
+                <input
+                  type="date"
+                  class="form-control"
+                  placeholder="Start Date"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label>End Date</label>
+              <div class="form-group">
+                <input
+                  type="date"
+                  class="form-control"
+                  placeholder="End Date"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <button class="btn btn-lg btn-block btn-primary" Text="Issue">
+                Issue
+              </button>
+            </div>
+            <div class="col-6">
+              <button class="btn btn-lg btn-block btn-success" Text="Return">
+                Return
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+      <br />
+      <a href="{% url 'system:home' %}"
+        ><i class="fas fa-arrow-left"></i> Back to Home</a
+      >
+      <br />
+    </div>
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <center>
+                <h4>Issued Book List</h4>
+              </center>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <hr />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              {% if perms.system %}
+              <p>You have permission to do something in the system app.</p>
+              {% if perms.system.add_book %}
+              <p>You can add!</p>
+              {% endif %} {% if perms.system.view_book %}
+              <p>You can view!</p>
+              {% endif %} {% if perms.system.edit_book %}
+              <p>You can edit!</p>
+              {% endif %} {% if perms.system.view_book %}
+              <p>You can view!</p>
+              {% endif %} {% else %}
+              <p>You don't have permission to do anything in the system app.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {%endblock main%}

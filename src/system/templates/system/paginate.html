@@ -1,43 +1,76 @@
 <div class="row">
-    <div class="col">
-        <!-- More on https://docs.djangoproject.com/en/3.0/topics/pagination/ -->
-        {% if is_paginated %}
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li
-                    class="page-item {% if page_obj.has_previous is False %}disabled{% endif %}">
-                    <button type="submit" class="page-link" name="page"
-                        value="{% if page_obj.has_previous %}1{% endif %}">First
-                    </button>
-                </li>
-                <li
-                    class="page-item {% if page_obj.has_previous is False %}disabled{% endif %}">
-                    <button type="submit" class="page-link" name="page"
-                        value="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% endif %}"
-                        aria-label="Previous"><span aria-hidden="true">&laquo;</span></button>
-                </li>
+  <div class="col">
+    <!-- More on https://docs.djangoproject.com/en/3.0/topics/pagination/ -->
+    {% if is_paginated %}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li
+          class="page-item {% if page_obj.has_previous is False %}disabled{% endif %}"
+        >
+          <button
+            type="submit"
+            class="page-link"
+            name="page"
+            value="{% if page_obj.has_previous %}1{% endif %}"
+          >
+            First
+          </button>
+        </li>
+        <li
+          class="page-item {% if page_obj.has_previous is False %}disabled{% endif %}"
+        >
+          <button
+            type="submit"
+            class="page-link"
+            name="page"
+            value="{% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% endif %}"
+            aria-label="Previous"
+          >
+            <span aria-hidden="true">&laquo;</span>
+          </button>
+        </li>
 
-                {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                <li class="page-item active"><span class="page-link">{{ num }}<span
-                            class="sr-only">(current)</span>
-                    </span></li>
-                {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
-                <li class="page-item"><button type="submit" class="page-link" name="page"
-                        value="{{ num }}">{{ num }}</button></li>
-                {% endif %}
-                {% endfor %}
+        {% for num in page_obj.paginator.page_range %} {% if page_obj.number == num %}
+        <li class="page-item active">
+          <span class="page-link"
+            >{{ num }}<span class="sr-only">(current)</span>
+          </span>
+        </li>
+        {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
+        <li class="page-item">
+          <button type="submit" class="page-link" name="page" value="{{ num }}">
+            {{ num }}
+          </button>
+        </li>
+        {% endif %} {% endfor %}
 
-                <li class="page-item {% if page_obj.has_next is False %}disabled{% endif %}">
-                    <button type="submit" class="page-link" name="page"
-                        value="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{%endif%}"
-                        aria-label="Next"><span aria-hidden="true">&raquo;</span></button></li>
-                <li class="page-item {% if page_obj.has_next is False %}disabled{% endif %}">
-                    <button type="submit" class="page-link" name="page"
-                        value="{% if page_obj.has_next %}{{ page_obj.paginator.num_pages }}{%endif%}">Last</button>
-                </li>
-            </ul>
-        </nav>
-        {% endif %}
-    </div>
+        <li
+          class="page-item {% if page_obj.has_next is False %}disabled{% endif %}"
+        >
+          <button
+            type="submit"
+            class="page-link"
+            name="page"
+            value="{% if page_obj.has_next %}{{ page_obj.next_page_number }}{% endif %}"
+            aria-label="Next"
+          >
+            <span aria-hidden="true">&raquo;</span>
+          </button>
+        </li>
+        <li
+          class="page-item {% if page_obj.has_next is False %}disabled{% endif %}"
+        >
+          <button
+            type="submit"
+            class="page-link"
+            name="page"
+            value="{% if page_obj.has_next %}{{ page_obj.paginator.num_pages }}{% endif %}"
+          >
+            Last
+          </button>
+        </li>
+      </ul>
+    </nav>
+    {% endif %}
+  </div>
 </div>

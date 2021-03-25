@@ -1,99 +1,33 @@
+{% extends 'system/master.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-<title>{{ title }}</title>
-<link rel="stylesheet" type="text/css" href="{% static 'system/fontawesome/css/all.css'%}">
-<style type="text/css">
-	.slinks{
-		margin: 0;
-		padding: 0;
-		background: #ccc;
-	}
-	.slinks ul{
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		margin: 0;
-		padding: 0;
-		display: flex;
-	}
-	.slinks ul li{
-		list-style: none;
-		margin: 0 40px;
-	}
-	.slinks ul li a .fab{
-		font-size: 40px;
-		color: #262626;
-	}
-	.slinks ul li a{
-		position: relative;
-		display: block;
-		width: 80px;
-		height: 80px;
-		background: #fff;
-		text-align: center;
-		transform: perspective(1000px) rotate(-30deg) skew(25deg) translate(0, 0);
-		transition: .5s;
-		box-shadow: -20px 20px 10px rgba(0, 0, 0, .5);
-	}
-	.slinks ul li a:before{
-		content: '';
-		position: absolute;
-		top: 10px;
-		left: -20px;
-		width: 20px;
-		height: 100%;
-		background: #b1b1b1;
-		transition: .5s;
-		transform: rotate(0deg) skewY(-45deg);
-	}
-	.slinks ul li a:after{
-		content: '';
-		position: absolute;
-		left: -10px;
-		bottom: -20px;
-		width: 100%;
-		height: 20px;
-		background: #b1b1b1;
-		transition: .5s;
-		transform: rotate(0deg) skewX(-45deg);
-	}
-	.slinks ul li a:hover{
-		transform: perspective(1000px) rotate(-30deg) skew(25deg) translate(20px, -20px);
-		box-shadow: -50px 50px 50px rgba(0, 0, 0, .5);
-	}
 
-
-</style>
-</head>
-<body>
-
-<div class="slinks container-fluid">
-	<ul class="slinks-center row">
-		<li class="col-md-4">
-			<a href="https://www.facebook.com/ishyamkumaryadav/"><i class="fab fa-facebook-f"></i></a>
-		</li>
-		<li class="col-md-4">
-			<a href="https://www.instagram.com/ishyamkumaryadav/"><i class="fab fa-instagram"></i></a>
-		</li>
-		<li class="col-md-4">
-			<a href="https://twitter.com/shyamkumaryada"><i class="fab fa-twitter"></i></a>
-		</li>
-		<li class="col-md-4">
-			<a href="https://www.twitch.tv/shyamkumaryadav"><i class="fab fa-twitch"></i></a>
-		</li>
-		<li class="col-md-4">
-			<a href="http://linkedin.com/in/shyamkumaryadav"><i class="fab fa-linkedin"></i></a>
-		</li>
-		<li class="col-md-4">
-			<a href="https://www.reddit.com/r/shyamkumaryadav"><i class="fab fa-reddit-alien"></i></a>
-		</li>
-	</ul>
+{% block main %}
+<div class="container">
+  <div class="row py-2">
+    <div class="col-md-6 mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col text-center">
+              <img
+                width="150px"
+                src="{% static 'system/images/imgs/generaluser.png' %}"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col text-center">
+              <h3>{{ title }}</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <hr />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-
-
-</body>
-</html>
+{% endblock main %}

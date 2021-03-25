@@ -1,6 +1,7 @@
-{% extends 'system/master.html' %} {% load i18n %} {% block head %}
-<title>{% if title %}{{ title }}{% else %}Email verify{% endif %}</title>
-{% endblock head %} {% block main %}
+{% extends 'system/master.html' %}
+{% load i18n %}
+
+{% block main %}
 <div class="container">
   <div class="row py-2">
     <div class="col-md-6 mx-auto">
@@ -20,8 +21,7 @@
               <p>{% translate "You can now sign in with your new account" %}</p>
               {% else %}
               <p>
-                {% translate "Your request to verify your email has expired or
-                the link has already been used." %}
+                {% translate "Your request to verify your email has expired or the link has already been used." %}
               </p>
               <a href="{% url 'system:home' %}">Back</a>
               {% endif %}

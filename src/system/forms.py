@@ -166,7 +166,7 @@ class BookForm(forms.ModelForm):
 
 class MemberForm(forms.ModelForm):
     username = forms.CharField(disabled=True)
-    user_dropdown = forms.ChoiceField(choices=[(None, "Select User")]+[(user.username, f"{user.username} -> {user.email}") for user in User.objects.all()], label="Select User", required=False)
+    user_dropdown = forms.ChoiceField(choices=[(None, "Select User")], label="Select User", required=False)
 
     class Meta:
         model = User
@@ -180,6 +180,7 @@ class MemberForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        print(self.fields['user_dropdown'])
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(

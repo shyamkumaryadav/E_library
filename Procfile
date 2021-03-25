@@ -1,1 +1,1 @@
-web: gunicorn src.e_library.wsgi --log-file -
+web: sh -c 'cd ./src/ && exec gunicorn e_library.wsgi --log-file -'

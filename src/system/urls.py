@@ -1,16 +1,10 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views
-from rest_framework import routers
-
-
-router = routers.DefaultRouter()
-router.register('Books', views.BookView)
 
 app_name = 'system'
 
 urlpatterns = [
-    path('bookapi/', include(router.urls)),
     path('', views.HomeView.as_view(), name='home'),
     path('about/', views.aboutView.as_view(), name='about'),
     path('terms/', views.TermsView.as_view(), name='terms'),

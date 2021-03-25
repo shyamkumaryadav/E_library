@@ -1,7 +1,15 @@
-*{
-	padding: 0;
-	margin: 0;
+body {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
+
+main {
+    flex: 1 0 auto;
+}
+
 .footerlinks{
 	color: #ffffff;
 	text-decoration: none !important;
@@ -18,6 +26,9 @@
 #footer2{
 	background: #531f00;
 	position: center;
+}
+.alert{
+  margin: 5px 10px;
 }
 
 *[data-aos="example-anim3"] {

@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
 from django.urls import reverse_lazy
 from PIL import Image
-from account.models import User, upload_to, age_18
+from account.models import User, upload_to, age_18, profile_size
 
 
 class BookAuthor(models.Model):
@@ -85,8 +85,6 @@ class Genre(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        print(dir(self))
-        # return self.get_name_display()
         return self.get_name_display()
 
 
@@ -109,26 +107,25 @@ class Book(models.Model):
     edition = models.IntegerField(verbose_name="Edition", choices=[
                                   (None, "Select Edition")] + data_list.BOOK_EDITION)
     cost = models.DecimalField(
-        max_digits=8, decimal_places=2, verbose_name="Book Cost(per unit)")
+        max_digits=8, decimal_places=2, verbose_name="Book Cost(per unit)", validators=[validators.MinValueValidator(0), validators.MaxValueValidator(100000)])
     page = models.PositiveIntegerField(verbose_name="Total Page")
     description = models.TextField(verbose_name="Book Description")
-    stock = models.PositiveIntegerField(verbose_name="Stock")
+    stock = models.PositiveIntegerField(verbose_name="Stock", validators=[validators.MinValueValidator(0),])
     today_stock = models.PositiveIntegerField(
         verbose_name="Current stock", null=True, blank=True)
     rating = models.DecimalField(
-        max_digits=2, decimal_places=1, verbose_name="Rating")
+        max_digits=2, decimal_places=1, verbose_name="Rating", validators=[validators.MinValueValidator(0), validators.MaxValueValidator(10)])
     profile = models.FileField(
         upload_to=upload_to, verbose_name="Book cover",
         default="default.jpg", blank=True,
         validators=[validators.FileExtensionValidator(
                 allowed_extensions=validators.get_available_image_extensions(),
-                message="Select valid Cover Image.")
+                message="Select valid Cover Image."), profile_size
         ],
     )
 
     class Meta:
-        ordering = ['name']
-        permissions = [('is_defaulter', 'User in defaulter list')]
+        ordering = ['date']
 
     def __str__(self):
         return self.name

@@ -1,25 +1,9 @@
 {% extends 'system/master.html' %}
 {% block head %}
-<link rel="icon" href="#" sizes="144x144" >
 <title>{{ title }}</title>
 
 {% endblock head %}
 
 {% block main %}
-<label>{{ luser.count}}</label>
-<div class="row">
-
-{% for row in luser %}
-<div class="col">
-<div class="card m-3" style="width: 19rem;">
-	<img src="{{ row.prourl }}" class="card-img-top" alt="{{row.username}}" >
-	<div class="card-body">
-    <h5 class="card-title">{{row.username}}</h5>
-    <p class="card-text">{{ row.first_name}} {{row.last_name}} {{ row.email}}</p>
-    <a href="{% if row.username == user.username %}{% url 'account:update' username=user.username %}{% else %}{{row.prourl }}{%endif%}" class="btn btn-primary" {% if row.username != user.username %}download{%endif%}>{% if row.username == user.username %}Edit Profile{% else %}Download Profile{%endif%}</a>
-  </div>
-</div>
-</div>
-{%endfor%}
-</div>
+<h1>Terms</h1>
 {% endblock main %}

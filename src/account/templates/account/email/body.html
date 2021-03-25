@@ -1,0 +1,20 @@
+token: {{ token }}
+uid: {{ uid }}
+user: {{ user.email }}
+url : 
+{% if url %}
+    {{ url}}
+{% else %}
+    {% url 'account:email_confirm' uid=uid token=token %}
+{% endif %}
+
+Hi {{ user.username }},
+
+We just need to verify your email address before you can access elibrary.
+
+Verify your email address [verification link]
+
+Thanks! – The [company] team
+
+
+

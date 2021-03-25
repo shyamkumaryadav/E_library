@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 {% block head %}
 <link rel="icon" href="{%static 'system/images/imgs/generaluser.png'%}" sizes="144x144" >
-<title>{% if title %}{{ title }}{% else %}Sign Up{% endif %}</title>
+<title>{% if title %}{{ title }}{% else %}Profile{% endif %}</title>
 {% endblock head %}
 
 {% block main %}
@@ -24,7 +24,8 @@
                      <center>
                         <h3>Profile</h3>
                         {% if user.is_superuser %}<span class="badge badge-pill badge-primary">Admin</span>{% endif %}
-                        {% if user.is_superuser %}<span class="badge badge-pill badge-danger">Defaulter</span>{% endif %}
+                        {% if user.is_defaulter %}<span class="badge badge-pill badge-danger">Defaulter</span>{% endif %}
+                        {% if user.is_active %}<span class="badge badge-pill badge-info">Active</span>{% endif %}
                      </center>
                   </div>
                </div>

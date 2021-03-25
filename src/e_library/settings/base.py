@@ -25,38 +25,22 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.sites',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-
-    # Django allauth
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
 
     # Django Extensions
     'django_extensions',
     'import_export',
     'django_cleanup',
 
-    # Django-Rest
-    'rest_framework',
-
     # Crispy Form is Best
     'crispy_forms',
-
-    # otp django
-    'django_otp',
-    'otp_twilio',
-    'django_otp.plugins.otp_totp',
-    'django_otp.plugins.otp_hotp',
 
     # myApps
     'account',
     'system',
 ]
 
-# SITE_ID = 1
 
 
 MIDDLEWARE = [
@@ -68,7 +52,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_otp.middleware.OTPMiddleware',  # Django-otp
 ]
 
 ROOT_URLCONF = 'e_library.urls'
@@ -154,17 +137,3 @@ LOGOUT_REDIRECT_URL = 'account:signin'
 
 # crispy-form
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-# password Email send
-
-
-# OPT TWILIO
-OTP_TWILIO_ACCOUNT = os.getenv('OTP_TWILIO_ACCOUNT')
-OTP_TWILIO_AUTH = os.getenv('OTP_TWILIO_AUTH')
-OTP_TWILIO_CHALLENGE_MESSAGE = 'OTP send to your number...'
-OTP_TWILIO_TOKEN_TEMPLATE = '''
-\nFrom E_library:please don't share your
-otp: {token}
-'''
-OTP_TWILIO_FROM = os.getenv('OTP_TWILIO_FROM')
-OTP_TWILIO_TOKEN_VALIDITY = 300  # otp valid for 5Min (5*60)

@@ -27,8 +27,6 @@ class BookAuthorForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(BookAuthorForm, self).__init__(*args, **kwargs)
         self.auto_id = "%s"
-        print(self.instance.id)
-        print(self.instance.id is None)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
@@ -40,17 +38,7 @@ class BookAuthorForm(forms.ModelForm):
                 Column(Field('date_of_birth')),
                 Column(Field('date_of_death')),
             ),
-            # Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}add{%endif%}"
-            #     value=true
-            #     class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')),
-            #     Column(HTML('''{% if object %}<button type="button"
-            #     class="btn btn-danger btn-lg btn-block m-1"
-            #     data-toggle="modal"
-            #     data-target="#deletemodel">
-            #     Delete
-            #     </button>{%endif%}'''), style='display: none;', id='deletebtn')
-            #     ),
-            Row(Column(Submit('submit', str('Update' if self.instance is not None else 'Add'), css_class=f'btn btn-{"success" if self.instance else "primary"} btn-lg btn-block m-1')),
+            Row(Column(Submit('submit', str('Update' if self.initial else 'Add'), css_class=f'btn btn-{"success" if self.initial else "primary"} btn-lg btn-block m-1')),
                 ),
             Row(Column(HTML('''{% if object %}<a style='text-decoration:none;' href={% url 'system:authormanagement' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>{%endif%}'''),
                        style='display: none;', css_class='btn btn-link', id='goback')),
@@ -83,16 +71,17 @@ class BookPublishForm(forms.ModelForm):
             Field('address', placeholder="Enter Address", maxlength=80, rows=2),
             Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}add{%endif%}"
                 value="{% if object %}Update{%else%}Add{%endif%}"
-                class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')
+                class="btn btn-{% if object %}success{%else%}primary{% endif %} btn-lg btn-block m-1">''')
                        ),
+                
                 Column(HTML('''{% if object %}<button type="button"
                     class="btn btn-danger btn-lg btn-block m-1"
                     data-toggle="modal"
                     data-target="#deletemodel">
                     Delete
-                    </button>{%endif%}'''),
-                       style='display: none;text-decoration: none;', id='deletebtn'
-                       ),
+                    </button>{% endif %}'''),
+                       id='deletebtn'
+                       ) if self.initial else None,
                 ),
             Row(Column(HTML('''{% if object %}<a href={% url 'system:publishermanagement' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>{%endif%}'''),
                        style='display: none;', css_class='btn btn-link', id='goback')),
@@ -110,13 +99,13 @@ class BookForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'publish_date': DateInput(),
-            'rating': forms.NumberInput(attrs={'type': 'range', 'class': 'custom-range'}),
+            'rating': forms.NumberInput(),
         }
 
     def __init__(self, *args, **kwargs):
         super(BookForm, self).__init__(*args, **kwargs)
-        self.fields['publish'].empty_label = 'select Publisher'
-        self.fields['author'].empty_label = 'select Author'
+        self.fields['publish'].empty_label = 'Select Publisher'
+        self.fields['author'].empty_label = 'Select Author'
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
@@ -143,30 +132,22 @@ class BookForm(forms.ModelForm):
             ),
             Row(Column(Field('stock', placeholder="Total Stock"))),
             Row(Column(Field('genre'))),
-            Row(Column(Field('rating', min="0", max="5",
-                             step="0.5", css_class='Rangesform', data_toggle="tooltip", data_placement="top", title=self.instance.rating
+            Row(Column(Field('rating', min="0", max="10",
+                             step="0.5", css_class='Rangesform', title=self.instance.rating
                              ))),
             Row(Column(Field('profile', accept='image/*'))),
             Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}{%endif%}"
                 value="{% if object %}Update{%else%}Add{%endif%}"
                 class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')),
-                Column(HTML('''{% if object %}<button type="button"
+                Column(HTML('''<button type="button"
                 class="btn btn-danger btn-lg btn-block m-1"
                 data-toggle="modal"
                 data-target="#deletemodel">
                 Delete
-                </button>{%endif%}'''), style='display: none;', id='deletebtn')
+                </button>''') , id='deletebtn') if self.initial else None
                 ),
         )
         self.helper.form_id = 'bookForm'
         self.helper.form_class = 'form-group'
         self.helper.form_method = 'post'
-        # self.helper.form_action = ''
-
-    def clean_profile(self):
-        data = self.cleaned_data.get("profile")
-        if data:
-            if data.size > 1024*1024*1:
-                raise forms.ValidationError("Image file too large ( > 1mb )")
-        else:
-            return data
+        

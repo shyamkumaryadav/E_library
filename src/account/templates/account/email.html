@@ -1,0 +1,39 @@
+{% extends 'system/master.html' %}
+{% load i18n %}
+{% block head %}
+<title>{% if title %}{{ title }}{% else %}Email verify{% endif %}</title>
+{% endblock head %}
+
+{% block main %}
+<div class="container">
+	<div class="row py-2">
+	   <div class="col-md-6 mx-auto">
+		  <div class="card">
+			 <div class="card-body">
+				 <div class="row">
+					 <div class="col text-center">
+                        <h3>
+                            {% if validlink %}
+                                Your email has been verified
+                            {% else %}
+                                Try verifying your email again
+                            {% endif %}
+                        </h3>
+					 </div>
+				 </div>
+				<div class="row">
+					<div class="col">
+            {% if validlink %}
+            <p>{% translate "You can now sign in with your new account" %}</p>
+            {% else %}
+            <p>{% translate "Your request to verify your email has expired or the link has already been used." %}</p>
+            <a href={% url "system:home"%}>back</a>
+            {% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	
+{% endblock main %}

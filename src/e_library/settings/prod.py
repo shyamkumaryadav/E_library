@@ -23,7 +23,7 @@ LOGGING = {
     },
 }
 
-ALLOWED_HOSTS = [".ngrok.io", ".herokuapps.com"]
+ALLOWED_HOSTS = ["localhost", ".herokuapps.com"]
 
 INSTALLED_APPS += ["whitenoise.runserver_nostatic", ]
 

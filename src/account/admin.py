@@ -19,7 +19,7 @@ class UserAdmin(BaseUserAdmin, ImportExportModelAdmin):
         ('Permissions', {
             'classes': ('collapse',),
             'fields': ('groups', 'user_permissions', 'is_superuser',
-                       'is_active', 'is_staff', )}),
+                       'is_active', 'is_staff', 'is_defaulter')}),
         ('Important dates', {
             'classes': ('collapse',),
             'fields': ('last_login', 'date_joined')}),
@@ -27,6 +27,6 @@ class UserAdmin(BaseUserAdmin, ImportExportModelAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2', 'is_superuser', 'is_staff', ),
+            'fields': ('username', 'email', 'password1', 'password2', 'is_superuser', 'is_staff', 'is_defaulter'),
         }),
     )

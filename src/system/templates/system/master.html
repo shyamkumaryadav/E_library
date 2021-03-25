@@ -26,10 +26,6 @@
 	<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
 	<link rel="icon" href="{%static 'system/images/imgs/books.png'%}" sizes="144x144" >
 
-	<!-- Vue for Dev -->
-	<script src="{% static 'vue.js' %}"></script>
-	<!-- Vue for prod -->
-	<!-- <script src="{% static 'vue.min.js' %}"></script> -->
 
 	{% block head %}
 	{% endblock head %}
@@ -38,7 +34,7 @@
 
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light  m-0 p-0">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="{% url 'system:home' %}">
 			<img src="{% static 'system/images/imgs/books.png' %}" width="30" height="30">
 			E-Library
@@ -73,7 +69,7 @@
 				</li>
 				{% elif user.is_authenticated is True %}
 				<li class="nav-item active align-self-center">
-					<a class="nav-link btn-outline-danger" href="{% url 'account:logout' %}">Logout</a>
+					<a class="nav-link" href="{% url 'account:logout' %}">Logout</a>
 				</li>
 				<li class="nav-item active align-self-center">
 					<a class="nav-link" href="{% url 'account:update' username=user.username %}">
@@ -85,22 +81,7 @@
 					</a>
 				</li>
 				{% endif %}
-				<li class="nav-item active d-flex flex-fill align-self-center">
-					<div class="align-self-center "><form action="{% url 'set_language' %}" class="form-inline" method="post">{% csrf_token %}
-				    <input name="next" class="form-control" type="hidden" value="{{ redirect_to }}">
-			        {% get_current_language as LANGUAGE_CODE %}
-			        {% get_available_languages as LANGUAGES %}
-			        {% get_language_info_list for LANGUAGES as languages %}
-			        {% for language in languages %}
-			            {% if language.code != LANGUAGE_CODE %}
-			            <div class="custom-control custom-switch align-middle">
-						  <input class="custom-control-input" name="language" onchange="this.form.submit();" type="checkbox" id="flexSwitchCheckChecked" value="{{ language.code }}">
-						  <label class="custom-control-label" for="flexSwitchCheckChecked">{{ language.name_local }}</label>
-						</div>
-						{% endif %}
-			        {% endfor %}
-					</form></div>
-				</li>
+				
 				{% comment %}
 				<li class="nav-item active">
 					{% load tz %}
@@ -141,7 +122,7 @@
 		<div id="footer1" class="container-fluid">
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-sm-12 text-center">
-					<p>
+					<p  class=" py-1 my-1">
 						<a id="linkbtn2" class="footerlinks" href="{% url 'system:authormanagement' %}">Author Management</a>&nbsp;
 						<a id="linkbtn3" class="footerlinks" href="{% url 'system:publishermanagement' %}">Publisher Mangement</a>&nbsp;
 						<a id="linkbtn4" class="footerlinks" href="{% url 'system:bookinventory' %}">Book Inventory</a>&nbsp;
@@ -151,11 +132,22 @@
 				</div>
 			</div>
 		</div>
+		{% else %}
+		<div id="footer1" class="container-fluid">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-sm-12 text-center">
+					<p class=" py-1 my-1">
+						<a id="linkbtn2" class="footerlinks" href="{% url 'account:signin' %}?admin=1">Admin Login</a>
+					</p>
+				</div>
+			</div>
+		</div>
 		{% endif %}
 		<div class="container-fluid" id="footer2">
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12 text-center">
-					<p class="pt-2" style="color: whitesmoke"><i class="far fa-copyright"></i> All right Reversed. <a class="footerlinks" href="{%url 'system:shyamkumaryadav'%}" target="_blank">Shyamkumar Yadav</a></p>
+					<p class="my-1 py-2" style="color: whitesmoke"><i class="far fa-copyright"></i> All right Reversed. <a class="footerlinks" href="{%url 'system:shyamkumaryadav'%}" target="_blank">Shyamkumar Yadav</a>
+					</p>
 				</div>
 			</div>
 		</div>

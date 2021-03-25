@@ -14,17 +14,13 @@
          <div class="card">
             <div class="card-body">
                <div class="row">
-                  <div class="col">
-                     <center>
+                  <div class="col text-center">
                         <img width="150px" src="{% static 'system/images/imgs/generaluser.png' %}"/>
-                     </center>
                   </div>
                </div>
                <div class="row">
-                  <div class="col">
-                     <center>
+                  <div class="col text-center">
                         <h3>{{ title }}</h3>
-                     </center>
                   </div>
                </div>
                <div class="row">
@@ -34,7 +30,7 @@
                </div>
                <div class="row">
                   <div class="col">
-                  {% crispy form %}
+                     {% crispy form %}
                   </div>
                </div>
             </div>

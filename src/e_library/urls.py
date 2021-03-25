@@ -3,15 +3,11 @@ from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
 from django.conf.urls.static import static
-from django_otp.admin import OTPAdminSite
-admin.site.__class__ = OTPAdminSite
 
 urlpatterns = i18n_patterns(
     path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
     path('', include('system.urls')),
     path('', include('account.urls')),
-    path('api/', include('rest_framework.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
     prefix_default_language=False
 )

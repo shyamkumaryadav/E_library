@@ -12,14 +12,13 @@
 <div class="container">
    <div class="row py-2">
 		<div class="col-md-12 mx-auto">
-			<div class="card">
-				<div class="card-body">
 					<div class="row">
 						<div class="col">
 							<div class="row ">
 								<div class="col-md-6 col-lg-9">
 								<h1>Book List</h1>
 								</div>
+								{% if is_paginated %}
 								<div action="" class="col-sm-12 col-md-6 col-lg-3" id="searchme">
 							    	<div class="input-group">
 									    <input type="text" name='q' class="form-control mr-1" value="{{ request.GET.q }}" placeholder="by Name"  data-toggle="tooltip" data-placement="left" title="Tooltip on left" aria-describedby="searchHelpBlock">
@@ -28,9 +27,10 @@
 										</div>
 									</div>
 								    <small id="searchHelpBlock" class="form-text text-muted">
-									  Your can search by Book Name?
+									  Your can search by Book Name? {% if request.GET.q %}<a class="btn-sm btn-link" href="{{ request.path }}">clear Filter</a>{% endif %}
 									</small>
 								</div>
+								{% endif %}
 							</div>
 						</div>
 					</div>
@@ -40,35 +40,124 @@
 						</div>
 					</div>
 				    <div class="row">
-						<div class="col">
-							<h3>{{ page_obj.paginator.count }}</h3>
-							
-							<img id="bookimg" src='#' alt="{{ book.name}}"></img>
-							{% if object_list %}
-							{% for book in object_list %}
-							<div class="card m-1 btn-outline-secondary">
-								<div class="card-body">
-									<div class="col">
-										{% if book.profile.url %}
-										<img src="{{book.profile.url }}" alt="{{book.name}}">
-										{% endif%}
-										<h3>{{ book.name}}</h3><br>
-										<h3>{{ book.cost|intcomma}}</h3><br>
-										<h3>{{ book.edition|ordinal}}</h3><br>
-										<h3>{{ book.rating}}</h3><br>
-										<p>{{ book.date|naturaltime|naturalday}}</p><br>
-										<p>{{ book.publish_date|naturalday}}</p><br>
-										<p>stock: {{ book.stock }} Today: {{ book.today_stock }}</p>
+						{% if object_list %}
+						{% for book in object_list %}
+						<div class="container-fluid table table-striped table-bordered">
+							<div class="row ml-3">
+								<div class="col-md-10">
+									<div class="row pt-3">
+										<div class="col-12">
+											<h3 style="font-weight: bold;font-size:x-large;">{{ book.name}}</h3>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-12">
+									Author - <span style="font-weight: bold;">{{ book.author}}</span> &nbsp;| Genre - <span style="font-weight: bold;">[{% for genre in book.genre.all %}{{ genre }}, {% endfor %}]</span>&nbsp;| Language - <span style="font-weight: bold;">{{ book.get_language_display}}</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-12">
+									Publisher - <span style="font-weight: bold;">{{ book.publish }}</span> &nbsp;| Publish date - <span style="font-weight: bold;">{{ book.publish_date|naturalday}}</span> &nbsp;| Page - <span style="font-weight: bold;">{{ book.page }}</span> &nbsp;| Edition - <span style="font-weight: bold;">{{ book.edition|ordinal}}</span>
+										</div></div>
+										<div class="row">
+											<div class="col-12">
+									Cost - <span style="font-weight: bold;">{{ book.cost|intcomma }}$</span> &nbsp;| Actual Stock - <span style="font-weight: bold;">{{ book.stock }}</span> &nbsp;| Avalabel Stock - <span style="font-weight: bold;">{{ book.today_stock }}</span>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-12">
+									Description - <span style="font-weight: bold;">{{ book.description }}</span>
+									</div></div>
+									<div class="row">
+										<div class="col-12">
+											<span>{{ book.date|naturaltime|naturalday}} Added</span><br>
+								<a href="#">Edit Book</a>
+								</div></div>
+
+								</div>
+								<div class="col-md-2 pr-0">
+									<img src="{% if book.profile.url %}{{book.profile.url }}{%else%}#{% endif%}" class="img-fluid" alt="" data-toggle="tooltip" data-placement="left" title="{{ book.rating }}">
+								</div>
+							</div>
+						</div>
+							{% endfor %}
+							{% else %}
+							<div class="container-fluid table table-striped table-bordered">
+								<div class="row ml-3">
+									<div class="col-md-10">
+										<div class="row pt-3">
+											<div class="col-12">
+												<h3 style="font-weight: bold;font-size:x-large;">name</h3>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-12">
+										Author - <span style="font-weight: bold;">lorem</span> &nbsp;| Genre -<span style="font-weight: bold;">lorem</span><span style="font-weight: bold;"> lorem</span>&nbsp;| Language - <span style="font-weight: bold;">lorem</span>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-12">
+										Publisher - <span style="font-weight: bold;">lorem</span> &nbsp;| publish_date - <span style="font-weight: bold;">lorem</span> &nbsp;| Page - <span style="font-weight: bold;">lorem</span> &nbsp;| edition - <span style="font-weight: bold;">lorem</span>
+											</div></div>
+											<div class="row">
+												<div class="col-12">
+										Cost - <span style="font-weight: bold;">lorem</span> &nbsp;| Actual Stock - <span style="font-weight: bold;">lorem</span> &nbsp;| Avalabel Stock - <span style="font-weight: bold;">lorem</span>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-12">
+										Description - <span style="font-weight: bold;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut voluptate doloremque aliquam laudantium corporis recusandae mollitia sint aspernatur provident nostrum itaque sequi, iste voluptas. Recusandae veritatis dolor impedit magnam dolorem!</span>
+										</div></div>
+										<div class="row">
+											<div class="col-12">
+									<a href="#">Edit Book</a>
+									</div></div>
+
+									</div>
+									<div class="col-md-2 pr-0">
+										<img src="{% static 'system/images/books/b1.jpg' %}" class="img-fluid" alt="">
 									</div>
 								</div>
 							</div>
-							{% endfor %}
-							{% else %}
-							<h1>sorry</h1>
+							<div class="container-fluid table table-striped table-bordered">
+								<div class="row ml-3">
+									<div class="col-md-10">
+										<div class="row pt-3">
+											<div class="col-12">
+												<h3 style="font-weight: bold;font-size:x-large;">name</h3>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-12">
+										Author - <span style="font-weight: bold;">lorem</span> &nbsp;| Genre -<span style="font-weight: bold;">lorem</span><span style="font-weight: bold;"> lorem</span>&nbsp;| Language - <span style="font-weight: bold;">lorem</span>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-12">
+										Publisher - <span style="font-weight: bold;">lorem</span> &nbsp;| publish_date - <span style="font-weight: bold;">lorem</span> &nbsp;| Page - <span style="font-weight: bold;">lorem</span> &nbsp;| edition - <span style="font-weight: bold;">lorem</span>
+											</div></div>
+											<div class="row">
+												<div class="col-12">
+										Cost - <span style="font-weight: bold;">lorem</span> &nbsp;| Actual Stock - <span style="font-weight: bold;">lorem</span> &nbsp;| Avalabel Stock - <span style="font-weight: bold;">lorem</span>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-12">
+										Description - <span style="font-weight: bold;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut voluptate doloremque aliquam laudantium corporis recusandae mollitia sint aspernatur provident nostrum itaque sequi, iste voluptas. Recusandae veritatis dolor impedit magnam dolorem!</span>
+										</div></div>
+										<div class="row">
+											<div class="col-12">
+									<a href="#">Edit Book</a>
+									</div></div>
+
+									</div>
+									<div class="col-md-2 pr-0">
+										<img src="{% static 'system/images/books/b1.jpg' %}" class="img-fluid" data-toggle="tooltip" data-placement="left" title="4">
+									</div>
+								</div>
+							</div>
 							{% endif %}							
 						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>

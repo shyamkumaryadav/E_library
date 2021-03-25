@@ -10,23 +10,13 @@ from django.urls import reverse_lazy
 from django.utils.translation import activate
 from account.models import User
 from django.utils.translation import gettext_lazy as _
-from .serializers import BookSerializer
-from rest_framework import viewsets
 
 
-class BookView(viewsets.ModelViewSet):
-    from .models import Book
-    serializer_class = BookSerializer
-    queryset = Book.objects.all()
 
 
 class HomeView(generic.TemplateView):
     template_name = 'system/home.html'
     extra_context = {'title': 'Home'}
-
-    def get(self, request, *args, **kwargs):
-        print(f"Meta Ip: {request.META['REMOTE_ADDR']}")
-        return super().get(request, *args, **kwargs)
 
 
 class aboutView(generic.TemplateView):
@@ -43,15 +33,12 @@ class TermsView(generic.TemplateView):
         messages.debug(request, 'this is debug')
         messages.info(request, 'this is info')
         messages.warning(request, 'this is warning')
-        messages.error(request, 'this is error')
+        messages.add_message(request, 23, 'Over secondary!', extra_tags='secondary')
         messages.add_message(request, 23, 'Over danger!', extra_tags='danger')
+        messages.add_message(request, 23, 'Over light!', extra_tags='light')
+        messages.add_message(request, 23, 'Over dark!', extra_tags='dark')
         return super().get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['luser'] = User.objects.all()
-        return context
-
+    
 
 class ViewBookView(generic.ListView):
     model = models.Book
@@ -110,26 +97,6 @@ class AuthorManagementUpdateView(mixins.AdminRequiredMixin, generic.UpdateView):
     form_class = forms.BookAuthorForm
     extra_context = {'title': 'Author management'}
 
-    def post(self, request, *args, **kwargs):
-        # return super().delete(request, *args, **kwargs)
-        # print(request)
-        # object = self.get_object()
-        # object.delete()
-        # return HttpResponse("Deleted!")
-
-        # return redirect(self.success_url)
-        # success_url = self.get_success_url()
-        # self.object.delete()
-        # return HttpResponseRedirect(success_url)
-        try:
-            if self.request.POST.get('Delete'):
-                self.get_object().delete()
-                return redirect(self.success_url)
-        except self.model.DoesNotExist:
-            raise Http404(
-                f"No {self.model._meta.verbose_name}s found matching the query")
-        return super().post(request, *args, **kwargs)
-
 
 class MemberManagementView(mixins.AdminRequiredMixin, generic.TemplateView):
     template_name = 'system/adminmembermanagement.html'
@@ -172,7 +139,6 @@ class BookInventoryView(mixins.AdminRequiredMixin, generic.ListView, generic.edi
             )
         else:
             object_list = self.model._default_manager.all()
-        # print(object_list)
         return object_list
 
 
@@ -183,15 +149,6 @@ class BookInventoryUpdateView(mixins.AdminRequiredMixin, generic.UpdateView):
     template_name = 'system/adminbookinventory.html'
     extra_context = {'title': 'admin book inventory Update'}
 
-    def post(self, request, *args, **kwargs):
-        try:
-            if self.request.POST.get('Delete'):
-                self.get_object().delete()
-                return redirect(self.success_url)
-        except self.model.DoesNotExist:
-            raise Http404(
-                f"No {self.model._meta.verbose_name}s found matching the query")
-        return super().post(request, *args, **kwargs)
 
 
 class PublisherManagementView(mixins.AdminRequiredMixin, generic.ListView, generic.edit.BaseCreateView):
@@ -235,16 +192,6 @@ class PublisherManagementUpdateView(mixins.AdminRequiredMixin, generic.UpdateVie
     form_class = forms.BookPublishForm
     extra_context = {'title': 'Author management'}
 
-    def post(self, request, *args, **kwargs):
-        try:
-            if self.request.POST.get('Delete'):
-                self.model._default_manager.get(
-                    pk=self.request.POST.get('Delete')).delete()
-                return redirect(self.success_url)
-        except self.model.DoesNotExist:
-            raise Http404(
-                f"No {self.model._meta.verbose_name}s found matching the query")
-        return super().post(request, *args, **kwargs)
 
 
 class ShyamkumaryadavView(generic.TemplateView):

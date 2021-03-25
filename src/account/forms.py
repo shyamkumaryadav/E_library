@@ -17,8 +17,8 @@ from django.contrib.auth.forms import (
     UsernameField
 )
 from django.urls import reverse_lazy
-from django_otp.forms import OTPAuthenticationFormMixin
 from .models import User
+from .token import send_mail
 from django.utils.translation import gettext_lazy as _
 
 
@@ -66,12 +66,16 @@ class UserCreationForm(forms.ModelForm):
             )
         return password2
 
-    def save(self, commit=True):
+    def save(self, commit=True, request=None):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password2"])
-        if commit:
+        user.is_active = False
+        if commit and request:
+            send_mail(user, request=request)
             user.save()
         return user
+    
+    
 
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
@@ -88,6 +92,14 @@ class UserCreationForm(forms.ModelForm):
             ),
             Div(Submit('submit', 'Sign Up', css_class='btn-lg',),
                 css_class='text-center'),
+            HTML('''
+                <style>
+                   #hint_password1>ul{
+                        list-style: none;
+                        padding-left: 0;
+                    }
+                </style>
+            '''),
             HTML('<p class="text-muted text-center m-4" >Already have an account ? <a class="text-monospace text-uppercase text-decoration-none text-success" href={% url "account:signin" %}>Login</a></p>')
         )
         self.helper.form_method = 'post'
@@ -158,21 +170,10 @@ class UserChangeForm(forms.ModelForm):
         self.helper.form_method = 'post'
 
 
-class UserLoginForm(OTPAuthenticationFormMixin, AuthenticationForm):
-    otp_error_messages = dict(OTPAuthenticationFormMixin.otp_error_messages,
-                              challenge_message='{0}',
-                              challenge_exception=_('Error Please try again.'),
-                              )
-
-    otp_device = forms.CharField(
-        required=False, widget=forms.Select)
-    otp_token = forms.CharField(
-        required=False, widget=forms.TextInput(attrs={'autocomplete': 'off'}))
-    otp_challenge = forms.CharField(required=False)
+class UserLoginForm(AuthenticationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.auto_id="%s"
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Field('username', placeholder="Enter Your Username"),
@@ -180,11 +181,11 @@ class UserLoginForm(OTPAuthenticationFormMixin, AuthenticationForm):
                 '<i id="eye" class="fa fa-eye-slash" aria-hidden="true"></i>', placeholder="Enter Your Password"),
             HTML('''
                 <script>
-                   document.getElementById('div_password').children[1].children[0].children[1].children[0].addEventListener('click', (e) => {
+                   document.getElementById('div_id_password').children[1].children[0].children[1].children[0].addEventListener('click', (e) => {
                       const eye = document.getElementById('eye').classList;
                       eye.toggle("fa-eye")
                       eye.toggle("fa-eye-slash")
-                      const id_password = document.getElementById('password');
+                      const id_password = document.getElementById('id_password');
                       if(id_password.type == "text"){
                          id_password.type = 'password';
                       }else if(id_password.type == "password"){
@@ -198,100 +199,3 @@ class UserLoginForm(OTPAuthenticationFormMixin, AuthenticationForm):
             HTML('<p class="text-muted text-center m-4" >New To E-library ? <a class="text-monospace text-uppercase text-decoration-none text-success" href={% url "account:signup" %}>Sign up</a></p>')
         )
         self.helper.form_method = 'POST'
-
-    def clean(self):
-        # try:
-        self.cleaned_data = super().clean()
-
-        # if super().get_user():
-        #     self.helper[0:2].wrap(Field, type='hidden')
-        #     # if self.cleaned_data['otp_token'] != '':
-        #     print(self.device_choices(super().get_user()))
-        #     # try:
-        #     #     self.cleaned_data['otp_device'] = self.device_choices(
-        #     #         super().get_user())[0][0]
-        #     # except:
-        #     #     pass
-        #     self.cleaned_data['otp_challenge'] = 'otp' if self.cleaned_data['otp_token'] == '' else ''
-        #     if len(self.device_choices(super().get_user())) > 1:
-        #         self.helper.layout.append(Field('otp_device'))
-        #     else:
-        #         self.cleaned_data['otp_device'] = self.device_choices(
-        #             super().get_user())[0][0]
-        #     self.helper.layout.append(
-        #         Field('otp_token', placeholder='Enter Your OTP...'))
-        #     # self.helper.layout.append(Field('otp_device'))
-        #     # self.helper.layout.append(Field('otp_challenge'))
-        #     # print(self.cleaned_data)
-        #     # self.helper.add_input(Submit('otp_challenge', 'Get OTP'))
-        # print(self.cleaned_data)
-        # self.clean_otp(self.get_user())
-
-        return self.cleaned_data
-
-# class UserLoginForm(OTPAuthenticationFormMixin, forms.Form):
-#     name = forms.CharField()
-#     password = forms.CharField(
-#         label="Password",
-#         strip=False,
-#         widget=forms.PasswordInput(
-#             attrs={'autocomplete': "current-password", 'placeholder': "Enter Password"}),
-#     )
-#     otp_device = forms.CharField(required=False, widget=forms.Select)
-#     otp_token = forms.CharField(
-#         required=False, widget=forms.TextInput(attrs={'autocomplete': 'off'}))
-#     otp_challenge = forms.CharField(required=False)
-
-#     def __init__(self, request=None, *args, **kwargs):
-#         self.request = request
-#         self.user_cache = None
-#         super().__init__(auto_id='%s', *args, **kwargs)
-#         self.helper = FormHelper()
-#         self.helper.layout = Layout(
-#             Column(Field('name', placeholder="Enter Username or Email")),
-#             Column(AppendedText(
-#                 'password', '<i id="eye" class="fa fa-eye-slash" aria-hidden="true"></i>')),
-#             # '<div  class="input-group-addon" style="background-color:transparent !important;">\
-#             # ),
-#             Column(Field('otp_device')),
-#             # Column(Field('otp_challenge')),
-#             Column(Field('otp_token', placeholder="Enter OTP")),
-#             Div(Submit('submit', 'Sign In', css_class="btn-block btn-lg"),
-#                 css_class='text-center m-4',
-#             Div(Submit('otp_callenge', 'Get Challenge', css_class="btn-block btn-lg"),
-#                 css_class='text-center m-4'),
-#         )
-#         # {% if form.get_user %}<input type="submit" name="otp_challenge" class='btn btn-info' value="Get Challenge" />{% endif %}
-
-#         self.helper.form_id = 'LoginForm'
-#         self.helper.form_class = 'blueForms'
-#         self.helper.form_method = 'post'
-#         self.helper.form_action = ''
-
-#     def clean(self):
-#         self.cleaned_data = super().clean()
-#         name = self.cleaned_data.get('name')
-#         password = self.cleaned_data.get("password")
-#         try:
-#             if name.find('@' and '.') != -1:
-#                 name = User.objects.get(email=name).username
-#         except:
-#             raise forms.ValidationError(
-#                 "Please enter a correct email and password."
-#                 " Note that both fields may be case-sensitive.")
-#         if name is not None and password:
-#             self.user_cache = authenticate(
-#                 self.request, username=name, password=password)
-#             if self.user_cache is None:
-#                 raise forms.ValidationError(
-#                     "Please enter a correct username and password."
-#                     " Note that both fields may be case-sensitive.")
-#             else:
-#                 if not self.user_cache.is_active:
-#                     raise forms.ValidationError(
-#                         "This account is inactive. Contact to Admin")
-#         self.clean_otp(self.get_user())
-#         return self.cleaned_data
-
-#     def get_user(self):
-#         return self.user_cache

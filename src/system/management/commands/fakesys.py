@@ -57,7 +57,7 @@ class Command(BaseCommand):
                     book.genre.set([*genre])
                     book.save()
                     book.profile.save(f'{uuid.uuid4()}.jpg', ContentFile(
-                        requests.get('https://picsum.photos/200/300').content))
+                        requests.get('https://picsum.photos/150/250').content))
 
                 except Exception as e:
                     kwargs['n'] -= 1

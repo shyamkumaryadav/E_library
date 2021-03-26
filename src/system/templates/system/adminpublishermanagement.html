@@ -10,13 +10,11 @@
 
 {% block main %}
 
-<div class="container">
+<div class="container my-3">
     <div class="row">
-
         <div class="col-md-5 mb-3">
             <div class="card">
                 <div class="card-body">
-
                     <div class="row">
                         <div class="col text-center">
                             <h4>Publisher Details</h4>
@@ -61,12 +59,10 @@
                 </div>
             </div>
         </div>
-
         <div class="col-md-7 mb-3">
             <form method="GET"  onchange="this.submit();">
                 <div class="card">
                     <div class="card-body">
-
                         <div class="row">
                             <div class="col-md-6 col-lg-6">
                                 <h4>Publisher {% if object %}Object {% else %}List{% endif %}</h4>
@@ -105,7 +101,6 @@
                                                 </div>
                                             </div>
                                             </div>
-                                        
                                         {% endfor %}
                                     {% elif object %}
                                     <div class="card mb-2"
@@ -127,12 +122,10 @@
                                 {% include 'system/paginate.html' %}
                             </div>
                         </div>
-
                     </div>
                 </div>
             </form>
         </div>
-
     </div>
 </div>
 

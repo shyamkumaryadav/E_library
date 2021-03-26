@@ -131,8 +131,8 @@ class BookForm(forms.ModelForm):
                 Column(Field('edition')),
             ),
             Row(
-                Column(PrependedAppendedText(
-                    'cost', '$', '.00', min=0),),
+                Column(AppendedText(
+                    'cost', '<i class="fas fa-rupee-sign"></i>', min=0),),
                 Column(Field('page', min=0, step=1,
                              placeholder="Enter Total Pages")),
             ),
@@ -143,7 +143,7 @@ class BookForm(forms.ModelForm):
             Row(Column(Field('stock', placeholder="Total Stock"))),
             Row(Column(Field('genre'))),
             Row(Column(Field('rating', min="0", max="10",
-                             step="0.5", css_class='Rangesform', title=self.instance.rating
+                             css_class='Rangesform'
                              ))),
             Row(Column(Field('profile', accept='image/*'))),
             Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}{%endif%}"

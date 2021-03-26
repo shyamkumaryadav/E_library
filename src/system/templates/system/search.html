@@ -1,0 +1,38 @@
+{% if is_paginated %}
+<div class="col-sm-12 col-md-6 col-lg-6">
+  <div class="input-group">
+    <input
+      type="text"
+      name="q"
+      id="search_input"
+      class="form-control mr-1"
+      value="{{ request.GET.q }}"
+      placeholder="/ for focus"
+    />
+    <div class="input-group-append">
+      <button
+        id="id_for_search"
+        type="submit"
+        value="{{request.GET.q}}"
+        class="btn btn-outline-info"
+      >
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+  </div>
+  {% if request.GET.q %}
+  <small id="searchHelpBlock" class="form-text text-muted">
+    <a class="btn-sm btn-link"
+      href="{{ request.path }}"
+      >clear Filter</a>
+    </small>
+    {% endif %}
+</div>
+<script>
+    document.addEventListener('keyup', event => {
+    if(event.key === '/' ){
+      document.getElementById("search_input").focus();
+    }
+  })
+</script>
+{%endif%}

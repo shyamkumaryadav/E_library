@@ -19,25 +19,15 @@ class HomeView(generic.TemplateView):
     extra_context = {'title': 'Home'}
 
 
-class aboutView(generic.TemplateView):
-    template_name = 'system/about.html'
-    extra_context = {'title': 'About'}
+class privacyView(generic.TemplateView):
+    template_name = 'system/privacy.html'
+    extra_context = {'title': 'Privacy'}
 
 
 class TermsView(generic.TemplateView):
     template_name = 'system/terms.html'
     extra_context = {'title': 'Terms'}
 
-    def get(self, request, *args, **kwargs):
-        messages.success(request, 'this is success')
-        messages.debug(request, 'this is debug')
-        messages.info(request, 'this is info')
-        messages.warning(request, 'this is warning')
-        messages.add_message(request, 23, 'Over secondary!', extra_tags='secondary')
-        messages.add_message(request, 23, 'Over danger!', extra_tags='danger')
-        messages.add_message(request, 23, 'Over light!', extra_tags='light')
-        messages.add_message(request, 23, 'Over dark!', extra_tags='dark')
-        return super().get(request, *args, **kwargs)
 
 
 class MemberManagementView(mixins.AdminRequiredMixin, generic.UpdateView, generic.ListView):
@@ -46,7 +36,7 @@ class MemberManagementView(mixins.AdminRequiredMixin, generic.UpdateView, generi
     extra_context = {'title': 'Member management'}
     template_name = 'system/adminmembermanagement.html' 
     search_kwarg = 'q'
-    paginate_by = 10
+    paginate_by = 5
     form_class = forms.MemberForm
 
     def get_object(self, queryset=None):
@@ -94,7 +84,7 @@ class MemberManagementDeleteView(mixins.AdminRequiredMixin, generic.DeleteView):
 class ViewBookView(generic.ListView):
     model = models.Book
     search_kwarg = 'q'
-    paginate_by = 10
+    paginate_by = 5
     template_name = 'system/viewbooks.html'
     extra_context = {'title': 'Books'}
     
@@ -113,7 +103,7 @@ class AuthorManagementView(mixins.AdminRequiredMixin, generic.CreateView, generi
     template_name = 'system/adminauthormanagement.html'
     model = models.BookAuthor
     search_kwarg = 'q'
-    paginate_by = 10
+    paginate_by = 5
     success_url = reverse_lazy('system:authormanagement')
     form_class = forms.BookAuthorForm
     extra_context = {'title': 'Author management'}
@@ -170,7 +160,7 @@ class BookIssuingView(generic.TemplateView):
 class BookInventoryView(mixins.AdminRequiredMixin, generic.ListView, generic.edit.BaseCreateView):
     form_class = forms.BookForm
     model = models.Book
-    paginate_by = 10
+    paginate_by = 5
     search_kwarg = 'q'
     success_url = reverse_lazy('system:bookinventory')
     template_name = 'system/adminbookinventory.html'
@@ -220,7 +210,7 @@ class BookInventoryDeleteView(mixins.AdminRequiredMixin, generic.DeleteView):
 
 class PublisherManagementView(mixins.AdminRequiredMixin, generic.ListView, generic.edit.BaseCreateView):
     form_class = forms.BookPublishForm
-    paginate_by = 10
+    paginate_by = 5
     search_kwarg = 'q'
     model = models.BookPublish
     success_url = reverse_lazy('system:publishermanagement')

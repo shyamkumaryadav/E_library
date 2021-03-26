@@ -87,8 +87,8 @@
             >
           </li>
           <li class="nav-item active align-self-center">
-            <a class="nav-link" href="{% url 'system:about'%}"
-              >{% trans 'About' %}</a
+            <a class="nav-link" href="{% url 'system:privacy'%}"
+              >{% trans 'Privacy' %}</a
             >
           </li>
           <li class="nav-item active align-self-center">
@@ -132,7 +132,7 @@
     <main id="mainblock">
       {% if messages %} {% for message in messages %}
       <div
-        class="alert alert-{{ message.tags }} alert-dismissible fade show mb-0"
+        class="alert alert-{{ message.tags }} alert-dismissible fade show my-2"
         role="alert"
       >
         {{ message|safe }}
@@ -243,11 +243,7 @@
     type="text/javascript"
     src="{% static 'system/javascript/main.js'%}"
   ></script>
-  <!-- AOS JS -->
-  <!-- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-	 <script>
-	AOS.init();
-	</script> -->
+ 
 
   {% block body %} {% endblock body %}
 </html>

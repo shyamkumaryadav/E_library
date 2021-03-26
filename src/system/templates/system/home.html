@@ -1,16 +1,13 @@
 {% extends 'system/master.html' %}
 {% load static %}
 {% load i18n %}
-{% block head %}
-<title>{{ title }}</title>
-{% endblock head %}
 
 {% block main %}
 <section class="card" data-aos="flip-up" data-aos-duration="1000">
-  <img src="{% static 'system/images/imgs/home-bg.jpg' %}" class="img-fluid" />
+  <img src="{% static 'system/images/imgs/bg.png' %}" class="img-fluid" />
 </section>
 <section>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
       <div class="col-12 text-center">
         <h2>Our Features</h2>
@@ -23,20 +20,17 @@
         data-aos="fade-up-right"
         data-aos-duration="1500"
       >
-        <img
-          width="150px"
-          src="{% static 'system/images/imgs/digital-inventory.png' %}"
+        <img class="img-home"
+          src="{% static 'system/images/imgs/digital-data.svg' %}"
         />
-        <h4>Digital Book Inventory</h4>
+        <h4>Simple & Easy to Use</h4>
         <p class="align-middle">
           {% blocktrans %}
-          Lorem ipsum dolor sit amet, consectetur adipisicing
-          elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-          in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          E-Library is simple, user-friendly, and can be
+          easily integrated with your existing system. The 
+          E-Library benefits provide online and offline storage,
+          automated backups, and easy upgrades to simplify
+          and enhance the learning process.
           {% endblocktrans %}
         </p>
       </div>
@@ -45,20 +39,15 @@
         data-aos="fade-up"
         data-aos-duration="1500"
       >
-        <img
-          width="150px"
-          src="{% static 'system/images/imgs/search-online.png' %}"
+        <img class="img-home"
+          src="{% static 'system/images/imgs/map.svg' %}"
         />
-        <h4>Search Books</h4>
+        <h4>Use Anywhere</h4>
         <p class="align-middle">
           {% blocktrans %}
-          Lorem ipsum dolor sit amet, consectetur adipisicing
-          elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-          in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          E-library provides mobile access to search the library catalog,
+          schedules, books and resources from anywhere, at any given
+          time via smartphones and tablets etc.
           {% endblocktrans %}
         </p>
       </div>
@@ -67,20 +56,85 @@
         data-aos="fade-up-left"
         data-aos-duration="1500"
       >
-        <img
-          width="150px"
-          src="{% static 'system/images/imgs/defaulters-list.png' %}"
+        <img class="img-home"
+          src="{% static 'system/images/imgs/defaulters-list.svg' %}"
         />
-        <h4>Defaulter List</h4>
+        <h4>Cost-effective</h4>
         <p class="align-middle">
           {% blocktrans %}
-          Lorem ipsum dolor sit amet, consectetur adipisicing
-          elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-          in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          Embracing sophisticated technologies is cost-effective and a viable
+          choice for education institutions. Using cloud, mobile and
+          digital libraries eliminates paper-based processes and
+          maintenance overheads, improves productivity, reduces operation costs and saves time.
+          {% endblocktrans %}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<section data-aos="flip-down" data-aos-duration="1000">
+  <img
+    src="{% static 'system/images/imgs/home-bg.jpg' %}"
+    class="img-fluid"
+  />
+</section>
+<section>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2>Our Process</h2>
+        <p><b>We have a Simple 3 Step Process -</b></p>
+      </div>
+    </div>
+    <div class="row">
+      <div
+        class="col-md-4 text-center"
+        data-aos="fade-up-right"
+        data-aos-duration="1500"
+      >
+        <img class="img-home"
+          src="{% static 'system/images/imgs/sign-up.png' %}"
+        />
+        <h4>Sign Up</h4>
+        <p class="align-middle">
+          {% blocktrans %}
+          A Form where People create account using username (no change in future)
+          with valid email and a strong password. Yes, you need to
+          verify that it's your email you use and valid one.
+          {% endblocktrans %}
+        </p>
+      </div>
+      <div
+        class="col-md-4 text-center"
+        data-aos="fade-up"
+        data-aos-duration="1500"
+      >
+        <img class="img-home"
+          src="{% static 'system/images/imgs/search-online.svg' %}"
+        />
+        <h4>Search Books</h4>
+        <p class="align-middle">
+          {% blocktrans %}
+          you also need to find book from book list which can be
+          filter by many aspects.
+          <br/>
+          <span class="text-muted">Note: book has no stocks are disabled</span>
+          {% endblocktrans %}
+        </p>
+      </div>
+      <div
+        class="col-md-4 text-center"
+        data-aos="fade-up-left"
+        data-aos-duration="1500"
+      >
+        <img class="img-home"
+          src="{% static 'system/images/imgs/library.svg' %}"
+        />
+        <h4>Visit Us</h4>
+        <p class="align-middle">
+          {% blocktrans %}
+          After selecting the books from the book list, you go to the
+          library manager who can issue the book to you
           {% endblocktrans %}
         </p>
       </div>
@@ -96,9 +150,9 @@
 <section>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-12 text-center" data-aos="example-anim3">
-        <h2>Our Process</h2>
-        <p><b>We have a Simple 3 Step Process</b></p>
+      <div class="col-12 text-center">
+        <h2>Why to Use</h2>
+        <p><b>We believe in Privacy, simplified and Security -</b></p>
       </div>
     </div>
     <div class="row">
@@ -107,20 +161,16 @@
         data-aos="fade-up-right"
         data-aos-duration="1500"
       >
-        <img
-          width="150px"
-          src="{% static 'system/images/imgs/sign-up.png' %}"
+        <img class="img-home"
+          src="{% static 'system/images/imgs/time.svg' %}"
         />
-        <h4>Sign Up</h4>
+        <h4>Record Maintenance</h4>
         <p class="align-middle">
           {% blocktrans %}
-          Lorem ipsum dolor sit amet, consectetur adipisicing
-          elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-          in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          All records related to the book issued and return deadline
+          can managed by the authorised personnel. The system also allows
+          to record the fine received from the student in the same platform,
+          which eases the work of reporting for the Library department.
           {% endblocktrans %}
         </p>
       </div>
@@ -129,20 +179,15 @@
         data-aos="fade-up"
         data-aos-duration="1500"
       >
-        <img
-          width="150px"
-          src="{% static 'system/images/imgs/search-online.png' %}"
+        <img class="img-home"
+          src="{% static 'system/images/imgs/sign-up.svg' %}"
         />
-        <h4>Search Books</h4>
+        <h4>Secure and Reliable</h4>
         <p class="align-middle">
           {% blocktrans %}
-          Lorem ipsum dolor sit amet, consectetur adipisicing
-          elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-          in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          The paper based process might incur data loss, however in case of
+          Library Management System, it is much secure and reliable.
+          Only the authorised personnel can login to the system and use it.
           {% endblocktrans %}
         </p>
       </div>
@@ -151,24 +196,24 @@
         data-aos="fade-up-left"
         data-aos-duration="1500"
       >
-        <img
-          width="150px"
-          src="{% static 'system/images/imgs/library.png' %}"
+        <img class="img-home"
+          src="{% static 'system/images/imgs/simple.svg' %}"
         />
-        <h4>Visit Us</h4>
+        <h4>Fully Customizable</h4>
         <p class="align-middle">
           {% blocktrans %}
-          Lorem ipsum dolor sit amet, consectetur adipisicing
-          elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-          aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-          laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-          in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          E-Library automation system is fully customizable and adaptable to
+          the needs of educational institutions to provide fast, reliable data.
           {% endblocktrans %}
         </p>
       </div>
     </div>
   </div>
 </section>
+<style>
+  .img-home{
+    height: 150px;
+    width: 150px;
+  }
+</style>
 {% endblock main %}

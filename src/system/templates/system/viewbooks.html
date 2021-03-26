@@ -11,43 +11,10 @@
         <div class="row">
           <div class="col">
             <div class="row">
-              <div class="col-md-6 col-lg-9">
+              <div class="col-md-6 col-lg-6">
                 <h1>Book List</h1>
               </div>
-              {% if is_paginated %}
-              <div action="" class="col-sm-12 col-md-6 col-lg-3" id="searchme">
-                <div class="input-group">
-                  <input
-                    type="text"
-                    name="q"
-                    class="form-control mr-1"
-                    value="{{ request.GET.q }}"
-                    placeholder="by Name"
-                    data-toggle="tooltip"
-                    data-placement="left"
-                    title="Tooltip on left"
-                    aria-describedby="searchHelpBlock"
-                  />
-                  <div class="input-group-append">
-                    <button
-                      id="id_for_search"
-                      type="submit"
-                      value=""
-                      class="btn btn-outline-info"
-                    >
-                      <i class="fas fa-search"></i>
-                    </button>
-                  </div>
-                </div>
-                <small id="searchHelpBlock" class="form-text text-muted">
-                  Your can search by Book Name? {% if request.GET.q %}<a
-                    class="btn-sm btn-link"
-                    href="{{ request.path }}"
-                    >clear Filter</a
-                  >{% endif %}
-                </small>
-              </div>
-              {% endif %}
+              {% include 'system/search.html' %}
             </div>
           </div>
         </div>

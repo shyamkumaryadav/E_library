@@ -6,7 +6,7 @@ app_name = 'system'
 
 urlpatterns = [
      path('', views.HomeView.as_view(), name='home'),
-     path('about/', views.aboutView.as_view(), name='about'),
+     path('privacy/', views.privacyView.as_view(), name='privacy'),
      path('terms/', views.TermsView.as_view(), name='terms'),
      
      # Author LIST UPDATE DELETE

@@ -28,6 +28,7 @@ def send_mail(user, request=None, subject_template_name="account/email/subject.t
             'uid': uid,
             'user': user,
             'token': token,
+            'home' : request.build_absolute_uri(reverse_lazy('system:home'))
         }
         if request:
             context['url'] = request.build_absolute_uri(reverse_lazy('account:email_confirm', kwargs={'uid':uid, 'token':token}))

@@ -180,7 +180,7 @@ class MemberForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        print(self.fields['user_dropdown'])
+        self.fields['user_dropdown'].choices += [(user.username, user.email) for user in User.objects.all()]
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(

@@ -5,8 +5,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY', 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u')
 
 DEBUG = os.getenv('DEBUG') == '1'
-print(not DEBUG)
-ALLOWED_HOSTS = ['*.herokuapps.com', 'localhost', '*']
+ALLOWED_HOSTS = ['*.herokuapps.com', 'localhost', '192.168.0.102', '0.0.0.0', '*',]
 
 
 ADMINS = [

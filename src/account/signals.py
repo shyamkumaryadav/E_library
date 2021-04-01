@@ -24,15 +24,14 @@ def user_is_login(request, user, **kwargs):
     try:
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
-            ip = x_forwarded_for.split(',')[0]
+            ip = x_forwarded_for
         else:
             ip = request.META.get('REMOTE_ADDR')
         data = requests.get("https://api.iplocation.net/", params={"ip": ip }).json()
-        data['USER_AGENT'] = request.META['HTTP_USER_AGENT']
+        data['USER_AGENT'] = request.META['HTTP_USER_AGENT'].split(" ")
         data['user'] = user
         data['prourl'] = request.build_absolute_uri(user.prourl)
         data['login'] = request.build_absolute_uri(reverse('account:signin'))
-        data['pcpng'] = request.build_absolute_uri('/static/pc.png')
         data['update'] = request.build_absolute_uri(user.get_update_url)
         body = loader.render_to_string("account/email/login.html", data)
         user.email_user("New Login at e_library", body, html_message=body)

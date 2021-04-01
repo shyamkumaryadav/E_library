@@ -1,0 +1,79 @@
+{% extends 'system/master.html' %} {% load static %} {% load humanize %}
+{% block head %}
+<title>{{ title }}</title>
+{% endblock head %}
+
+{% block main %}
+<form method="GET">
+  <div class="container">
+    <div class="row py-2">
+      <div class="col-md-12 mx-auto">
+        <div class="row">
+          <div class="col {% if object.today_stock < 0%}text-muted{% endif %}">
+            <div class="flex-md-row mb-4 ">
+              <div class="body d-flex flex-column align-items-start">
+                <strong class="d-inline-block mb-2 text-success">{{ object.get_language_display}}</strong>
+                <h3 class="mb-0">
+                  <p class="text-dark">{{ object.name}}</p>
+                </h3>
+                <div class="mb-1 text-muted">{{ object.publish_date|naturalday}}</div>
+                <div class="row">
+                  <div class="col-12">
+                    Author -
+                    <span style="font-weight: bold">{{ object.author}}</span>
+                    &nbsp;| Genre -
+                    <span style="font-weight: bold"
+                      >[{% for genre in object.genre.all %}
+                      {% if forloop.counter0 < 3 %}
+                          {{ genre }}
+                          {% if forloop.last %}{% else %}, {% endif %}
+                          {% else %}
+                          {% if forloop.last %}...{% endif %}
+                          {% endif %}
+                        {% endfor %}]</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    Publisher -
+                    <span style="font-weight: bold">{{ object.publish }}</span>
+                    &nbsp;| Page -
+                    <span style="font-weight: bold">{{ object.page }}</span>
+                    &nbsp;| Edition -
+                    <span style="font-weight: bold"
+                      >{{ object.edition|ordinal}}</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    Cost -
+                    <span style="font-weight: bold"
+                      >{{ object.cost|intcomma }} &#8377;</span
+                    >
+                    &nbsp;| Actual Stock -
+                    <span style="font-weight: bold">{{ object.stock }}</span>
+                    &nbsp;| Avalabel Stock -
+                    <span style="font-weight: bold"
+                      >{{ object.today_stock }}</span
+                    >
+                  </div>
+                </div>
+                <p class="card-text mb-auto">{{ object.description}}</p>
+                {% if user.is_superuser %}<a href="{{ object.get_update_url }}"></a>{% endif %}
+              </div>
+              <img class="card-img-right flex-auto d-none d-md-block"
+                src="{% if object.profile.url %}{{ object.profile.url }}{% endif %}"
+                alt="{{ object.name }}"
+                style="width: 200px; height: 250px;">
+            </div>
+            <a class="text-decoration-none" href={% url 'system:viewbooks' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock main %}

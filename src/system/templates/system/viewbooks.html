@@ -31,7 +31,7 @@
               <div class="card-body d-flex flex-column align-items-start">
                 <strong class="d-inline-block mb-2 text-success">{{ book.get_language_display}}</strong>
                 <h3 class="mb-0">
-                  <a class="text-dark" href="#update">{{ book.name}}</a>
+                  <a class="text-dark" href="#{{ book.pk }}" id="{{ book.pk }}">{{ book.name}}</a>
                 </h3>
                 <div class="mb-1 text-muted">{{ book.publish_date|naturalday}}</div>
                 <div class="row">
@@ -67,7 +67,7 @@
                   <div class="col-12">
                     Cost -
                     <span style="font-weight: bold"
-                      >{{ book.cost|intcomma }}$</span
+                      >{{ book.cost|intcomma }} &#8377;</span
                     >
                     &nbsp;| Actual Stock -
                     <span style="font-weight: bold">{{ book.stock }}</span>
@@ -78,13 +78,13 @@
                   </div>
                 </div>
                 <p class="card-text mb-auto">{{ book.description|truncatechars:120 }}</p>
-                {% if user.is_superuser %}<a href="{{ book.get_update_url }}">Continue reading</a>{% endif %}
+                {% if user.is_superuser %}<a href="{{ book.get_update_url }}" class="text-decoration-none"></a>{% endif %}
+                <a href="{{ book.get_detail_url }}" class="text-decoration-none">Continue reading</a>
               </div>
               <img class="card-img-right flex-auto d-none d-md-block"
-                data-src="holder.js/200x250?theme=thumb"
+                src="{% if book.profile.url %}{{ book.profile.url }}{% endif %}"
                 alt="{{ book.name }}"
-                src="{% if book.profile.url %}{{book.profile.url }}{%else%}#{% endif %}"
-                data-holder-rendered="true"
+                
                 style="width: 200px; height: 250px;">
             </div>
           </div>
@@ -177,6 +177,11 @@
             </div>
           </div> -->
           {% endfor %}
+          {% else %}
+              <div class="col">
+                <img src="{% static 'no_data.svg' %}" alt="" srcset="">
+                <h1 class="text-center">No data {% if request.GET.q %}<a class="text-decoration-none text-muted" href="{{ request.path }}">Clear filter ?</a>{% endif %}</h1>
+              </div>
           {% endif %}
         </div>
       </div>

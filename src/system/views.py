@@ -216,6 +216,28 @@ class BookInventoryView(mixins.AdminRequiredMixin, generic.ListView, generic.edi
             object_list = self.model._default_manager.all()
         return object_list
 
+class BookIssuingUpdateView(mixins.AdminRequiredMixin, generic.UpdateView):
+    model = models.Issue
+    form_class = forms.IssueForm
+    success_url = reverse_lazy('system:bookissuing')
+    template_name = 'system/adminbookissuing.html'
+    extra_context = {'title': 'admin book issuing'}
+
+
+class BookIssuingDeleteView(mixins.AdminRequiredMixin, generic.DeleteView):
+    model = models.Issue
+    http_method_names = ['post',]
+
+    def get_success_url(self):
+        messages.success(self.request, 'Issued Book Delete Success.')
+        return reverse_lazy('system:bookissuing')
+
+class BookInventoryDetailView(mixins.AdminRequiredMixin, generic.DetailView):
+    form_class = forms.BookForm
+    model = models.Book
+    success_url = reverse_lazy('system:bookinventory')
+    template_name = 'system/viewbooksdetail.html'
+    extra_context = {'title': 'admin book inventory'}
 
 class BookInventoryUpdateView(mixins.AdminRequiredMixin, generic.UpdateView):
     form_class = forms.BookForm

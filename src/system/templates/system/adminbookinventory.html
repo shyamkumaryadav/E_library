@@ -207,7 +207,8 @@
                     </div>
                   </div>
                 </div>
-                {% endfor %} {% endif %} {% if object %}
+                {% endfor %}
+                {% elif object %}
                 <div class="row ml-3">
                   <div class="col-md-10">
                     <div class="row pt-3">
@@ -292,6 +293,11 @@
                       title="{{ book.rating }}"
                     />
                   </div>
+                </div>
+                {% else %}
+                <div class="col">
+                  <img src="{% static 'no_data.svg' %}" alt="" srcset="">
+                  <h1 class="text-center">No data {% if request.GET.q %}<a class="text-decoration-none text-muted" href="{{ request.path }}">Clear filter ?</a>{% endif %}</h1>
                 </div>
                 {% endif %}
               </div>

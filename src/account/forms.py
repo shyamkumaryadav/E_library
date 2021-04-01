@@ -123,7 +123,7 @@ class UserChangeForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'username', 'email', 'date_of_birth', 'phone_number',
                   'state', 'city', 'pincode', 'full_address', 'profile']
         widgets = {
-            'contactNo': forms.NumberInput(),
+            'phone_number': forms.NumberInput(),
             'pincode': forms.NumberInput(),
             'date_of_birth': DateInput(),
             # 'profile': forms.FileInput(),

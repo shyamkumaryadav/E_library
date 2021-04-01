@@ -67,19 +67,7 @@
                             <div class="col-md-6 col-lg-6">
                                 <h4>Publisher {% if object %}Object {% else %}List{% endif %}</h4>
                             </div>
-                            {% if not object %}
-                            <div class="col-sm-12 col-md-6 col-lg-6">
-                                <div class="input-group">
-                                    <input type="text" name='q' class="form-control mr-1"
-                                        value="{{ request.GET.q }}" placeholder="by Name" data-toggle="tooltip"
-                                        data-placement="left" title="Tooltip on left"
-                                        aria-describedby="searchHelpBlock">
-                                </div>
-                                <small id="searchHelpBlock" class="form-text text-muted">
-                                    Your can search by Name?  {% if request.GET.q %}<a class="btn-sm btn-link" href="{{ request.path }}">clear Filter</a>{% endif %}
-                                </small>
-                            </div>
-                            {%endif%}
+                            {% include "system/search.html" %}
                         </div>
                         <div class="row">
                             <div class="col">
@@ -114,6 +102,11 @@
                                                 </div>
                                             </div>
                                             </div>
+                                    {% else %}
+                                    <div class="col">
+                                        <img src="{% static 'no_data.svg' %}" />
+                                        <h1 class="text-center">No data {% if request.GET.q %}<a class="text-decoration-none text-muted" href="{{ request.path }}">Clear filter ?</a>{% endif %}</h1>
+                                      </div>
                                     {% endif %}
                             </div>
                         </div>

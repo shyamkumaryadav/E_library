@@ -135,17 +135,35 @@ class Book(models.Model):
         return reverse_lazy('system:bookinventoryupdate', kwargs={
             'pk': self.pk
         })
+    
+    @property
+    def get_detail_url(self):
+        return reverse_lazy('system:bookinventorydetail', kwargs={
+            'pk': self.pk
+        })
 
 
 class Issue(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # , limit_choices_to={
-    #  'is_defaulter': False})
+    user = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={
+        'is_defaulter': False})
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True,)
-    due_date = models.DateField()
+    date = models.DateTimeField(auto_now_add=True, editable=False,
+        help_text="The date book is issue by user.",
+    )
+    due_date = models.DateTimeField(
+        default=timezone.now() + timezone.timedelta(days=7),
+        help_text="By defualt date is +7 days",
+    )
 
     class Meta:
         unique_together = ('user', 'book',)
+        ordering = ['due_date']
 
     def __str__(self):
         return f"{self.book}, {self.user}"
+    
+    @property
+    def due_date_end(self):
+        return self.due_date <= timezone.now()
+

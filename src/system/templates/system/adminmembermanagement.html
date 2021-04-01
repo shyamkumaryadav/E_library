@@ -1,9 +1,6 @@
 {% extends 'system/master.html' %}
 {% load static %}
-{% block head %}
-<link rel="icon" href="{%static 'system/images/imgs/writer.png'%}" sizes="144x144">
-<title>{{ title }}</title>
-{% endblock head %}
+
 
 {% block main %}
 
@@ -111,6 +108,11 @@
                                                 </div>
                                             </div>
                                             </div>
+                                            {% else %}
+                                            <div class="col">
+                                                <img src="{% static 'no_data.svg' %}" alt="" srcset="">
+                                                <h1 class="text-center">No data</h1>
+                                              </div>
                                     {% endif %}
                             </div>
                         </div>

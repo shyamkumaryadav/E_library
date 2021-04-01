@@ -31,11 +31,17 @@ urlpatterns = [
      # Book Issue LIST UPDATE DELETE
      path('book-issuing/', views.BookIssuingView.as_view(),
           name='bookissuing'),
+     path('book-issuing/<pk>/', views.BookIssuingUpdateView.as_view(),
+          name='bookissuingupdate'),
+     path('book-issuing/<pk>/delete/', views.BookIssuingDeleteView.as_view(),
+          name='bookissuingdelete'),
      # Book LIST UPDATE DELETE
      path('view-books/', views.ViewBookView.as_view(),
           name='viewbooks'),
      path('book-inventory/', views.BookInventoryView.as_view(),
           name='bookinventory'),
+     path('book-inventory/<pk>/', views.BookInventoryDetailView.as_view(),
+          name='bookinventorydetail'),
      path('book-inventory/<uuid:pk>/', views.BookInventoryUpdateView.as_view(),
           name='bookinventoryupdate'),
      path('book-inventory/<uuid:pk>/delete/', views.BookInventoryDeleteView.as_view(),

@@ -180,7 +180,7 @@ class MemberForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['user_dropdown'].choices += [(user.username, user.email) for user in User.objects.all()]
+        self.fields['user_dropdown'].choices += [(user.username, f"{user.email} ({user.username})") for user in User.objects.all()]
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
@@ -234,4 +234,76 @@ class MemberForm(forms.ModelForm):
                        css_class='btn btn-link')) if self.initial else None,
         )
         self.helper.form_id = 'memberForm'
+        self.helper.form_method = 'post'
+
+class IssueForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Issue
+        fields = '__all__'
+        widgets = {
+        #     'contactNo': forms.NumberInput(),
+        #     'pincode': forms.NumberInput(),
+            'due_date': DateInput(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    #     self.fields['user_dropdown'].choices += [(user.username, f"{user.email} ({user.username})") for user in User.objects.all()]
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(Field('user')),
+                Column(Field('book')),
+    #             Column(HTML('''
+    #                     <label>Status</label>
+    #                     <div class="form-group">
+    #                        <div class="input-group">
+    #                           <button {% if request.user == object or form.is_active.value == True %}disabled{% endif %} class="form-control btn btn-success mr-1" type="submit" name="is_active" value="1"><i class="fas fa-check-circle"></i></button>
+    #                           <button {% if request.user == object or form.is_active.value == False %}disabled{% endif %} class="form-control btn btn-warning mr-1"  type="submit" name="is_active" value="0"><i class="far fa-times-circle"></i></button>
+    #                           <button {% if request.user == object or object.is_superuser == True %}disabled{% endif %} class="form-control btn btn-danger mr-1" type="submit" name="is_superuser" value="1"><i class="fas fa-user-check"></i></button>
+    #                           <button {% if request.user == object or object.is_superuser == False %}disabled{% endif %} class="form-control btn btn-danger mr-1" type="submit" name="is_superuser" value="0"><i class="fas fa-user-times"></i></button>
+    #                        </div>
+    #                     </div>
+    #             ''')),
+    #         ) if self.initial else Field('user_dropdown', HTML('''
+    #             <script>
+    #                 document.getElementById("id_user_dropdown").onchange = event => {
+    #                     let params = new window.URL(location);
+    #                     const name = event.target[event.target.selectedIndex].value
+    #                     params.search ? params.searchParams.set('username', name) : params.searchParams.append('username', name)
+    #                     location = params
+    #                 }
+    #             </script>
+    #         ''')
+            ),
+    #         Row(
+    #             Column(Field('first_name', disabled=True, placeholder=_('Enter First Name'))),
+    #             Column(Field('last_name', disabled=True, placeholder=_('Enter Last Name'))),
+    #             Column(Field('date_of_birth', disabled=True,)),
+    #         ),
+    #         Row(
+    #             Column(PrependedText('phone_number', '+91', disabled=True,
+    #                                  placeholder=_('Enter Phone Number'))),
+    #         ),
+            Field('due_date'),
+    #         Row(
+    #             Column(Field('state', disabled=True)),
+    #             Column(Field('city', disabled=True, placeholder=_('Enter Your City'))),
+    #             Column(Field('pincode', disabled=True, placeholder=_('6 Digit pincode'))),
+    #         ),
+            Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}{%endif%}"
+                value="{% if object %}Update{%else%}Add{%endif%}"
+                class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')),
+                Column(HTML('''<button type="button"
+                class="btn btn-danger btn-lg btn-block m-1"
+                data-toggle="modal"
+                data-target="#deletemodel">
+                Delete
+                </button>''') , id='deletebtn') if self.initial else None
+                ),
+            Row(Column(HTML('''<a href={% url 'system:bookissuing' %}><i class="fas fa-times-circle"></i> Clear Selected User</a>'''),
+                       css_class='btn btn-link')) if self.initial else None,
+        )
+        self.helper.form_id = 'issueForm'
         self.helper.form_method = 'post'

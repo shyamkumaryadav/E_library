@@ -55,9 +55,11 @@
     <title>{{ title }}</title>
     {% endblock head %}
 
-    <!-- test messages -->
   </head>
   <body>
+    <a style="position: fixed;bottom: 25px;right: 25px;display: none;z-index: 1;" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" id="btt" class="btn-lg" role="button">
+      <i class="fas fa-arrow-up text-danger"></i>
+    </a>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="{% url 'system:home' %}">
         <img
@@ -80,23 +82,7 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active align-self-center">
-            <a class="nav-link" href="{% url 'system:home' %}"
-              >{% trans 'Home' %}</a
-            >
-          </li>
-          <li class="nav-item active align-self-center">
-            <a class="nav-link" href="{% url 'system:privacy'%}"
-              >{% trans 'Privacy' %}</a
-            >
-          </li>
-          <li class="nav-item active align-self-center">
-            <a class="nav-link" href="{% url 'system:terms'%}">Terms</a>
-          </li>
-        </ul>
-
-        <ul class="navbar-nav">
+        <ul class="navbar-nav ml-auto">
           <li class="nav-item active align-self-center">
             <a class="nav-link" href="{% url 'system:viewbooks'%}"
               >View Books
@@ -130,94 +116,107 @@
     </nav>
     <!-- main block  -->
     <main id="mainblock">
-      {% if messages %} {% for message in messages %}
-      <div
-        class="alert alert-{{ message.tags }} alert-dismissible fade show my-2"
-        role="alert"
-      >
-        {{ message|safe }}
-        <button
-          type="button"
-          class="close"
-          data-dismiss="alert"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      {% endfor %} {% endif %} {% block main %} {% endblock main %}
+      {% include "system/message.html" %}      
+      {% block main %}
+      {% endblock main %}
     </main>
+    
     <footer>
-      {% if user.is_superuser %}
-      <div id="footer1" class="container-fluid">
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-sm-12 text-center">
-            <p class="py-1 my-1">
-              <a
-                id="linkbtn2"
-                class="footerlinks"
-                href="{% url 'system:authormanagement' %}"
-                >Author Management</a
-              >&nbsp;
-              <a
-                id="linkbtn3"
-                class="footerlinks"
-                href="{% url 'system:publishermanagement' %}"
-                >Publisher Mangement</a
-              >&nbsp;
-              <a
-                id="linkbtn4"
-                class="footerlinks"
-                href="{% url 'system:bookinventory' %}"
-                >Book Inventory</a
-              >&nbsp;
-              <a
-                id="linkbtn5"
-                class="footerlinks"
-                href="{% url 'system:bookissuing' %}"
-                >Book Issuing</a
-              >&nbsp;
-              <a
-                id="linkbtn6"
-                class="footerlinks"
-                href="{% url 'system:membermanagement' %}"
-                >Member Management</a
-              >
-            </p>
+        <div class="footer ">
+          <div class="pt-5">
+            <div class="container">
+              <div class="row  ">
+                <div class="col-xs-6 col-sm-3">
+                  <a href="/" class="d-block mb-4">
+                    <img
+                      src="{% static 'system/images/imgs/books.png' %}"
+                      width="30"
+                      height="30"
+                    />
+                  </a>
+                  <address class="color-light-20">
+                    Ramniranjan Jhunjhunwala College
+                    <br> Mumbai, Maharashtra 400086
+                  </address>
+                  <ul class="list-unstyled list-light">
+                    <li>
+                      <a href="{% url 'system:shyamkumaryadav' %}">Shyamkumar Yadav</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-xs-6 col-sm-3 ml-auto">
+                  <h4 class="my-2">Admin</h4>
+                  <ul class="list-unstyled list-light text-light">
+                    {% if user.is_superuser %}
+                    <li>
+                      <a href="{% url 'system:authormanagement' %}">Author Management</a>
+                    </li>
+                    <li>
+                      <a href="{% url 'system:publishermanagement' %}">Publisher Mangement</a>
+                    </li>
+                    <li>
+                      <a href="{% url 'system:bookinventory' %}">Book Inventory</a>
+                    </li>
+                    <li>
+                      <a href="{% url 'system:bookissuing' %}">Book Issuing</a>
+                    </li>
+                    <li>
+                      <a href="{% url 'system:membermanagement' %}">Member Management</a>
+                    </li>
+                    {% else %}
+                    <li><a href="{% url 'account:signin' %}?admin=1">Admin Login</a></li>
+                    {% endif %}
+                  </ul>
+                </div>
+                </div>
+              <hr>
+              <div class="row f-flex justify-content-between">
+                <div class="col-md-6 text-xs-center text-left my-1">
+                  <p class="mt-2  text-muted"> <i class="far fa-copyright"></i> Copyright <span id="time"></span> • All Rights
+                    Reserved |
+                    <a class=" " href="{% url 'system:privacy'%}">Privacy</a> |
+                    <a class=" " href="{% url 'system:terms'%}">Terms</a>
+                  </p>
+                </div>
+                <div class="col-md-6 text-xs-center   text-lg-right   my-1">
+                  <div class="btn-container  mt-1 text-md-end text-sm-center">
+                    <div class="mb-1 mr-3 align-self-right pt-0 d-inline-block">
+                      <a href="https://twitter.com/shyamkumaryada" role="button"
+                        class=" btn-white p-2 m-2 btn btn-round btn-rised btn-icon x">
+                        <i class="fab fa-twitter fa-lg color-light"
+                          aria-hidden="true"></i>
+                      </a>
+                      <a href="https://www.patreon.com/shyamkumaryadav" role="button"
+                        class=" btn-white p-2 m-2 btn btn-round btn-rised btn-icon x">
+                        <i class="fab fa-patreon fa-lg color-light"
+                          aria-hidden="true"></i>
+                      </a>
+                      <a href="https://www.facebook.com/ishyamkumaryadav" role="button"
+                        class="btn-white p-2 m-2 btn btn-round btn-rised btn-icon ">
+                        <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+                      </a>
+                      <a href="https://www.linkedin.com/in/shyamkumaryadav/" role="button"
+                        class="btn-white p-2 m-2 btn btn-round btn-rised btn-icon  ">
+                        <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+                      </a>
+                      <a href="https://www.youtube.com/channel/UCr2eV9fZwyGTQEGfCWyGCFg" role="button"
+                        class="btn-white p-2 m-2 btn btn-round btn-rised btn-icon  ">
+                        <i class="fab fa-youtube fa-lg" aria-hidden="true"></i>
+                      </a>
+                      <a href="https://github.com/shyamkumaryadav" role="button"
+                        class="btn-white p-2 m-2 btn btn-rised btn-round btn-icon  ">
+                        <i class="fab fa-github fa-lg"
+                          aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      {% else %}
-      <div id="footer1" class="container-fluid">
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-sm-12 text-center">
-            <p class="py-1 my-1">
-              <a
-                id="linkbtn2"
-                class="footerlinks"
-                href="{% url 'account:signin' %}?admin=1"
-                >Admin Login</a
-              >
-            </p>
-          </div>
-        </div>
-      </div>
-      {% endif %}
-      <div class="container-fluid" id="footer2">
-        <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <p class="my-1 py-2" style="color: whitesmoke">
-              <i class="far fa-copyright"></i> All right Reversed.
-              <a
-                class="footerlinks"
-                href="{% url 'system:shyamkumaryadav' %}"
-                >Shyamkumar Yadav</a
-              >
-            </p>
-          </div>
-        </div>
-      </div>
     </footer>
+    
   </body>
   <!-- bootstrap -->
   <!-- bootstrap jquery -->
@@ -236,6 +235,10 @@
   <script
     type="text/javascript"
     src="{% static 'system/bootstrap/javascript/bootstrap.min.js'%}"
+  ></script>
+  <script
+    type="text/javascript"
+    src="{% static 'holder.js' %}"
   ></script>
   <!-- end bootstrap -->
   <!-- master -->

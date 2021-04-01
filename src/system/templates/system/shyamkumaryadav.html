@@ -2,32 +2,81 @@
 {% load static %}
 
 {% block main %}
-<div class="container">
-  <div class="row py-2">
-    <div class="col-md-6 mx-auto">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col text-center">
-              <img
-                width="150px"
-                src="{% static 'system/images/imgs/generaluser.png' %}"
-              />
+  <section class="pt-4 pb-3 mt-0 d-flex bg-dark" 
+      style="background-image: url(&quot;{% static 'profile_bg.jpeg' %}&quot;); min-height: 100vh; background-size: cover;" id="profile">
+      <div class="container-fluid p-md-4" >
+        <div class="row    d-flex  h-100 ">
+          <div class="position-relative  w-100 h-25  d-flex">
+            <div class="container-fluid align-self-start mt-2 mb-2">
+              <div class="row">
+                <div class="col-md-3 col-5">
+                  <h4 class="mt-1 text-light display-5"><a href="#profile">Shyamkumar Yadav</a></h4>
+                </div>
+                <div class="col-md-9 col-7 text-right">
+                  <div class="row align-items-center">
+                    <div class="col-12 align-self-center">
+                      <hr class="border border-border-light mt-3">
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col text-center">
-              <h3>{{ title }}</h3>
+          <div class="position-relative  w-100 h-50  d-flex">
+            <div class="container-fluid align-self-center     mb-2">
+              <div class="row justify-content-center">
+                <div class="col-12 col-md-6">
+                  <h3 class="small text-light">W E L C O M E</h3>
+                  <h1 class="  mb-0 pt-sm-4 text-light">Hi! I am Shyamkumar Yadav
+                    <br>A Freelance Javascript &amp;
+                    <br> Django Developer
+                  </h1>
+                  <a href="mailto:shyamkumaryadav2003@gmail.com" target="_blank" class="btn btn-lg btn-light mt-5">Hire me now</a>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col">
-              <hr />
+          <div class="position-relative  w-100  h-25 d-flex">
+            <div class="container-fluid align-self-center  mt-5 mb-2">
+              <div class="row">
+                <div class="col-md-6">
+                  <div
+                    class=" pt-0 d-md-inline-block d-flex-row text-center text-md-left justyfy-content-md-start justyfy-content-center">
+                    <a href="https://twitter.com/shyamkumaryada" role="button" class=" btn btn-link mr-2" target="_blank">
+                      <i class="fab fa-twitter fa-lg text-light"
+                        aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.patreon.com/shyamkumaryadav" role="button" class=" btn btn-link mr-2" target="_blank">
+                      <i class="fab fa-patreon fa-lg text-light"
+                        aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.facebook.com/ishyamkumaryadav" role="button" class=" btn btn-link mr-2" target="_blank">
+                      <i class="fab fa-facebook fa-lg text-light"
+                        aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/shyamkumaryadav/" role="button" class=" btn btn-link mr-2" target="_blank">
+                      <i aria-hidden="true"
+                        class="fab fa-linkedin fa-lg text-light"></i>
+                    </a>
+                    <a href="https://www.youtube.com/channel/UCr2eV9fZwyGTQEGfCWyGCFg" role="button" class=" btn btn-link mr-2" target="_blank">
+                      <i aria-hidden="true"
+                        class="fab fa-youtube fa-lg text-light"></i>
+                    </a>
+                    <a href="https://www.github.com/shyamkumaryadav" role="button" class=" btn btn-link mr-2" target="_blank">
+                      <i aria-hidden="true"
+                        class="fab fa-github fa-lg text-light"></i>
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="col-md-6 pt-sm-4 text-md-right text-center d-flex justify-content-end">
+                  <a href="//shyamkumaryadav.github.io" class="btn btn-info mt-md-0 mt-3" target="_blank">See my
+                    github Site</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
+    </section>
 {% endblock main %}

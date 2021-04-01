@@ -40,14 +40,14 @@ class UserCreationForm(forms.ModelForm):
         strip=False,
         validators=[password_validation.validate_password],
         widget=forms.PasswordInput(
-            attrs={'class': 'form-control', 'placeholder': 'Enter Password', 'autocomplete': 'new-password'}),
+            attrs={'class': 'form-control', 'placeholder': '******', 'autocomplete': 'new-password'}),
         help_text=password_validation.password_validators_help_text_html()
     )
     password2 = forms.CharField(
         label=_("Password confirmation"),
         validators=[password_validation.validate_password],
         widget=forms.PasswordInput(
-            attrs={'class': 'form-control', 'placeholder': _('Enter Same Password'), 'autocomplete': 'new-password'}),
+            attrs={'class': 'form-control', 'placeholder': _('******'), 'autocomplete': 'new-password'}),
         strip=False,
         help_text=_("Enter the same password as before, for verification."),
     )
@@ -178,7 +178,7 @@ class UserLoginForm(AuthenticationForm):
         self.helper.layout = Layout(
             Field('username', placeholder="Enter Your Username"),
             AppendedText('password',
-                '<i id="eye" class="fa fa-eye-slash" aria-hidden="true"></i>', placeholder="Enter Your Password"),
+                '<i id="eye"  class="fa fa-eye-slash" style="cursor: pointer;" aria-hidden="true"></i>', placeholder="******",),
             HTML('''
                 <script>
                    document.getElementById('div_id_password').children[1].children[0].children[1].children[0].addEventListener('click', (e) => {

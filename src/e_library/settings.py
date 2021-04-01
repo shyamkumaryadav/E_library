@@ -1,12 +1,11 @@
 import os
-import dj_database_url
-import django_heroku
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY', 'hldcqlh=m&4qiweblwoaap&-z_-+av@37sp2by-1fizn=6*!(u')
 
 DEBUG = os.getenv('DEBUG') == '1'
+print(not DEBUG)
 ALLOWED_HOSTS = ['*.herokuapps.com', 'localhost', '*']
 
 
@@ -83,6 +82,7 @@ DATABASES = {
 }
 
 if not DEBUG:
+    import dj_database_url
     print("*"*20, "online", "*"*20)
     DATABASES['default'] = dj_database_url.config(
         conn_max_age=600, ssl_require=True)
@@ -125,7 +125,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 MEDIA_URL = '/media/'
@@ -146,17 +145,19 @@ LOGOUT_REDIRECT_URL = 'account:signin'
 # crispy-form
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.getenv("EMAIL_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'Shyamkumar Yadav'
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_HOST_USER = os.getenv("EMAIL_USER")
+    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    DEFAULT_FROM_EMAIL = 'Shyamkumar Yadav'
 
-DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-DROPBOX_OAUTH2_TOKEN = os.getenv("DROPBOX_TOKEN")
-DROPBOX_ROOT_PATH = '/e_library'
-
-django_heroku.settings(locals())
+    DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
+    DROPBOX_OAUTH2_TOKEN = os.getenv("DROPBOX_TOKEN")
+    DROPBOX_ROOT_PATH = '/e_library'
+    import django_heroku
+    django_heroku.settings(locals())

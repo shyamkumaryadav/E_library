@@ -149,12 +149,38 @@ class AuthorManagementDeleteView(mixins.AdminRequiredMixin, generic.DeleteView):
         return reverse_lazy('system:authormanagement')
 
 
-
-
-
-class BookIssuingView(generic.TemplateView):
+class BookIssuingView(mixins.AdminRequiredMixin, generic.ListView, generic.edit.BaseCreateView):
+    model = models.Issue
+    form_class = forms.IssueForm
+    paginate_by = 5
+    search_kwarg = 'q'
+    success_url = reverse_lazy('system:bookissuing')
     template_name = 'system/adminbookissuing.html'
     extra_context = {'title': 'admin book issuing'}
+
+    def get_context_data(self, **kwargs):
+        self.object = None
+        self.object_list = self.get_queryset()
+
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        kwargs.update({'object_list': self.object_list, 'form': form})
+
+        context = super(BookIssuingView,
+                        self).get_context_data(**kwargs)
+        return context
+
+    def get_queryset(self):
+        search_kwarg = self.search_kwarg
+        name = self.request.GET.get(search_kwarg)
+        if name:
+            object_list = self.model._default_manager.filter(
+                Q(name__icontains=name)
+            )
+        else:
+            object_list = self.model._default_manager.all()
+        return object_list
 
 
 class BookInventoryView(mixins.AdminRequiredMixin, generic.ListView, generic.edit.BaseCreateView):

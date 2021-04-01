@@ -1,4 +1,4 @@
-{% if is_paginated %}
+{% if object_list %}
 <div class="col-sm-12 col-md-6 col-lg-6">
   <div class="input-group">
     <input
@@ -24,7 +24,7 @@
   <small id="searchHelpBlock" class="form-text text-muted">
     <a class="btn-sm btn-link"
       href="{{ request.path }}"
-      >clear Filter</a>
+      >&times; Filter</a>
     </small>
     {% endif %}
 </div>

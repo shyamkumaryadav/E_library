@@ -26,7 +26,69 @@
         <div class="row">
           {% if object_list %}
           {% for book in object_list %}
-          <div class="container-fluid table table-striped table-bordered">
+          <div class="col-12 {% if book.today_stock < 0%}text-muted{% endif %}">
+            <div class="card shadow flex-md-row mb-4 box-shadow h-md-250">
+              <div class="card-body d-flex flex-column align-items-start">
+                <strong class="d-inline-block mb-2 text-success">{{ book.get_language_display}}</strong>
+                <h3 class="mb-0">
+                  <a class="text-dark" href="#update">{{ book.name}}</a>
+                </h3>
+                <div class="mb-1 text-muted">{{ book.publish_date|naturalday}}</div>
+                <div class="row">
+                  <div class="col-12">
+                    Author -
+                    <span style="font-weight: bold">{{ book.author}}</span>
+                    &nbsp;| Genre -
+                    <span style="font-weight: bold"
+                      >[{% for genre in book.genre.all %}
+                      {% if forloop.counter0 < 3 %}
+                          {{ genre }}
+                          {% if forloop.last %}{% else %}, {% endif %}
+                          {% else %}
+                          {% if forloop.last %}...{% endif %}
+                          {% endif %}
+                        {% endfor %}]</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    Publisher -
+                    <span style="font-weight: bold">{{ book.publish }}</span>
+                    &nbsp;| Page -
+                    <span style="font-weight: bold">{{ book.page }}</span>
+                    &nbsp;| Edition -
+                    <span style="font-weight: bold"
+                      >{{ book.edition|ordinal}}</span
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12">
+                    Cost -
+                    <span style="font-weight: bold"
+                      >{{ book.cost|intcomma }}$</span
+                    >
+                    &nbsp;| Actual Stock -
+                    <span style="font-weight: bold">{{ book.stock }}</span>
+                    &nbsp;| Avalabel Stock -
+                    <span style="font-weight: bold"
+                      >{{ book.today_stock }}</span
+                    >
+                  </div>
+                </div>
+                <p class="card-text mb-auto">{{ book.description|truncatechars:120 }}</p>
+                {% if user.is_superuser %}<a href="{{ book.get_update_url }}">Continue reading</a>{% endif %}
+              </div>
+              <img class="card-img-right flex-auto d-none d-md-block"
+                data-src="holder.js/200x250?theme=thumb"
+                alt="{{ book.name }}"
+                src="{% if book.profile.url %}{{book.profile.url }}{%else%}#{% endif %}"
+                data-holder-rendered="true"
+                style="width: 200px; height: 250px;">
+            </div>
+          </div>
+          <!-- <div class="col-md-6">
             <div class="row ml-3">
               <div class="col-md-10">
                 <div class="row pt-3">
@@ -113,7 +175,7 @@
                 />
               </div>
             </div>
-          </div>
+          </div> -->
           {% endfor %}
           {% endif %}
         </div>

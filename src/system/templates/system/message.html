@@ -1,0 +1,21 @@
+{% if messages %}
+{% for message in messages %}
+<section class="alert alert-{{ message.tags }} fade show m-0 rounded-0" role="alert">
+<div>
+<div class="container-fluid">
+    <div class="row align-items-center justify-items-between">
+        <div class="col-10">
+            <p class="text-left mb-md-0 lead fw-bold">{{ message|safe }}</p>
+        </div>
+        <div class="col-2">
+            <a class="close btn"
+            data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </a>
+        </div>
+    </div>
+</div>
+</div>
+</section>
+{% endfor %}
+{% endif %}

@@ -14,6 +14,7 @@ src/db.sqlite3
 src/media/
 src/.env
 !src/media/default.png
+src/staticfiles/
 src/account/migrations/
 src/system/migrations/
 !src/system/migrations/__init__.py

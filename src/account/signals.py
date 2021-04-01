@@ -1,7 +1,11 @@
 import os
+import requests
 from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
 from django.dispatch import receiver
+from django.urls import reverse
+from django.template import loader
 from django.contrib import messages
+
 
 
 def create_admin(sender, *args, **kwargs):
@@ -17,8 +21,19 @@ def create_admin(sender, *args, **kwargs):
 
 @receiver(user_logged_in)
 def user_is_login(request, user, **kwargs):
+    try:
+        data = requests.get("https://api.iplocation.net/", params={"ip": request.META['REMOTE_ADDR'] }).json()
+        data['USER_AGENT'] = request.META['HTTP_USER_AGENT']
+        data['user'] = user
+        data['prourl'] = request.build_absolute_uri(user.prourl)
+        data['login'] = request.build_absolute_uri(reverse('account:signin'))
+        data['pcpng'] = request.build_absolute_uri('/static/pc.png')
+        data['update'] = request.build_absolute_uri(user.get_update_url)
+        body = loader.render_to_string("account/email/login.html", data)
+        user.email_user("New Login at e_library", body, html_message=body)
+    except:
+        pass
     messages.success(request, 'You are Success to Login.')
-    # print(f"request: {request}\nuser: {user}\nkwargs: {kwargs}")
 
 
 @receiver(user_logged_out)

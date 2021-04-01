@@ -161,3 +161,5 @@ if not DEBUG:
     DROPBOX_ROOT_PATH = '/e_library'
     import django_heroku
     django_heroku.settings(locals())
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

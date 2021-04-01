@@ -21,7 +21,7 @@ from django.utils.translation import gettext_lazy as _
 class UserLoginView(LoginView):
     form_class = UserLoginForm
     template_name = 'account/form_.html'
-    # redirect_authenticated_user = False
+    redirect_authenticated_user = True
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -115,8 +115,8 @@ class UserPasswordResetView(LogoutRequiredMixin, PasswordResetView):
     title = 'Password reset'
 
     def get_success_url(self):
-        messages.success(self.request, "We've emailed you instructions for setting your password, if an account exists with the email you entered. You should receive them shortly.")
-        messages.info(self.request, "If you don’t receive an email, please make sure you’ve entered the address you registered with, and check your spam folder.")
+        messages.success(self.request, "We've emailed you instructions for setting your password, if an account exists with the email you entered. You should receive them shortly."
+        	"If you don’t receive an email, please make sure you’ve entered the address you registered with, and check your spam folder.")
         return reverse_lazy('account:signin')
 
 
@@ -124,7 +124,7 @@ class UserPasswordResetConfirmView(LogoutRequiredMixin, PasswordResetConfirmView
     template_name = 'account/password_reset_confirm.html'
 
     def get_success_url(self):
-        messages.success(self.request, 'Your Password Change success.')
+        messages.success(self.request, 'Your Password Reset success.')
         return reverse_lazy('account:signin')
 
 class UserPasswordChangeView(PasswordChangeView):

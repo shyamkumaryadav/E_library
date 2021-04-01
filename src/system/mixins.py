@@ -13,7 +13,7 @@ class AdminRequiredMixin(AccessMixin):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
-                messages.warning(request, 'You Are Not Admin?')
+                messages.warning(request, 'you do not have permission to access this link if you are admin please login...')
                 return self.handle_no_permission()
         if request.user.is_authenticated and request.user.is_superuser:
             return super().dispatch(request, *args, **kwargs)

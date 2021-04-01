@@ -3,8 +3,8 @@ import secrets
 from django.db import models
 from system import data_list
 from django.utils import timezone
-from django.core.mail import send_mail
 from django.core import validators
+from django.urls import reverse_lazy
 from django.core.exceptions import ValidationError
 from django.template.defaultfilters import filesizeformat
 from django.contrib.auth.validators import UnicodeUsernameValidator
@@ -102,6 +102,12 @@ class AbstractUser(BaseAbstractUser):
         verbose_name = _('user')
         verbose_name_plural = _('users')
         abstract = True
+
+    @property
+    def get_update_url(self):
+        return reverse_lazy('account:update', kwargs={
+            'username': self.username
+        })
 
     @property
     def prourl(self):

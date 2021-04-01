@@ -6,8 +6,6 @@ from django.utils.encoding import force_bytes
 from django.urls import reverse_lazy
 
 
-# https://raw.githubusercontent.com/LeoneBacciu/django-email-verification/master/email_flow.png
-
 class EmailActivationTokenGenerator(PasswordResetTokenGenerator):
     def _make_hash_value(self, user, timestamp):
         login_timestamp = '' if user.last_login is None else user.last_login.replace(microsecond=0, tzinfo=None)

@@ -22,7 +22,12 @@ def create_admin(sender, *args, **kwargs):
 @receiver(user_logged_in)
 def user_is_login(request, user, **kwargs):
     try:
-        data = requests.get("https://api.iplocation.net/", params={"ip": request.META['REMOTE_ADDR'] }).json()
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        data = requests.get("https://api.iplocation.net/", params={"ip": ip }).json()
         data['USER_AGENT'] = request.META['HTTP_USER_AGENT']
         data['user'] = user
         data['prourl'] = request.build_absolute_uri(user.prourl)

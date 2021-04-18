@@ -86,7 +86,7 @@ class ViewBookView(generic.ListView):
     search_kwarg = 'q'
     paginate_by = 5
     template_name = 'system/viewbooks.html'
-    extra_context = {'title': 'Books'}
+    extra_context = {'title': 'Books Lists'}
     
     def get_queryset(self, *args, **kwargs):
         search_kwarg = self.search_kwarg
@@ -98,6 +98,13 @@ class ViewBookView(generic.ListView):
             object_list = self.model._default_manager.all()
         return object_list
 
+
+class BookInventoryDetailView(generic.DetailView):
+    form_class = forms.BookForm
+    model = models.Book
+    success_url = reverse_lazy('system:bookinventory')
+    template_name = 'system/viewbooks.html'
+    extra_context = {'title': 'book Detail'}
 
 class AuthorManagementView(mixins.AdminRequiredMixin, generic.CreateView, generic.ListView):
     template_name = 'system/adminauthormanagement.html'
@@ -232,12 +239,6 @@ class BookIssuingDeleteView(mixins.AdminRequiredMixin, generic.DeleteView):
         messages.success(self.request, 'Issued Book Delete Success.')
         return reverse_lazy('system:bookissuing')
 
-class BookInventoryDetailView(mixins.AdminRequiredMixin, generic.DetailView):
-    form_class = forms.BookForm
-    model = models.Book
-    success_url = reverse_lazy('system:bookinventory')
-    template_name = 'system/viewbooksdetail.html'
-    extra_context = {'title': 'admin book inventory'}
 
 class BookInventoryUpdateView(mixins.AdminRequiredMixin, generic.UpdateView):
     form_class = forms.BookForm

@@ -182,7 +182,7 @@
                         <div class="col-12">
                           Description -
                           <span style="font-weight: bold"
-                            >{{ book.description }}</span
+                            >{{ book.description|truncatechars:120 }}</span
                           >
                         </div>
                       </div>
@@ -271,7 +271,7 @@
                       <div class="col-12">
                         Description -
                         <span style="font-weight: bold"
-                          >{{ object.description }}</span
+                          >{{ object.description|truncatechars:120 }}</span
                         >
                       </div>
                     </div>

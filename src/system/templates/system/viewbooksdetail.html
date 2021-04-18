@@ -14,7 +14,7 @@
               <div class="body d-flex flex-column align-items-start">
                 <strong class="d-inline-block mb-2 text-success">{{ object.get_language_display}}</strong>
                 <h3 class="mb-0">
-                  <p class="text-dark">{{ object.name}}</p>
+                  <p class="text-dark">{{ object.name }}</p>
                 </h3>
                 <div class="mb-1 text-muted">{{ object.publish_date|naturalday}}</div>
                 <div class="row">
@@ -68,7 +68,7 @@
                 alt="{{ object.name }}"
                 style="width: 200px; height: 250px;">
             </div>
-            <a class="text-decoration-none" href={% url 'system:viewbooks' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>
+            
           </div>
         </div>
       </div>

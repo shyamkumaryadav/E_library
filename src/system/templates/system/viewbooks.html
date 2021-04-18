@@ -12,7 +12,7 @@
           <div class="col">
             <div class="row">
               <div class="col-md-6 col-lg-6">
-                <h1>Book List</h1>
+                <h1>Book {% if object %}Detils{% else %}List{% endif %}</h1>
               </div>
               {% include 'system/search.html' %}
             </div>
@@ -26,58 +26,25 @@
         <div class="row">
           {% if object_list %}
           {% for book in object_list %}
-          <div class="col-12 {% if book.today_stock < 0%}text-muted{% endif %}">
+          <div class="col-12 {% if book.today_stock <= 0%}text-muted{% endif %}">
             <div class="card shadow flex-md-row mb-4 box-shadow h-md-250">
               <div class="card-body d-flex flex-column align-items-start">
-                <strong class="d-inline-block mb-2 text-success">{{ book.get_language_display}}</strong>
                 <h3 class="mb-0">
-                  <a class="text-dark" href="#{{ book.pk }}" id="{{ book.pk }}">{{ book.name}}</a>
+                  <p><a class="text-dark text-decoration-none sky-link" href="#{{ book.name|cut:" " }}" id="{{ book.name|cut:" " }}">#</a> {{ book.name}} | {{ book.get_language_display}}</p>
                 </h3>
                 <div class="mb-1 text-muted">{{ book.publish_date|naturalday}}</div>
                 <div class="row">
                   <div class="col-12">
-                    Author -
-                    <span style="font-weight: bold">{{ book.author}}</span>
-                    &nbsp;| Genre -
-                    <span style="font-weight: bold"
-                      >[{% for genre in book.genre.all %}
-                      {% if forloop.counter0 < 3 %}
-                          {{ genre }}
-                          {% if forloop.last %}{% else %}, {% endif %}
-                          {% else %}
-                          {% if forloop.last %}...{% endif %}
-                          {% endif %}
-                        {% endfor %}]</span
-                    >
+                    by <span style="font-weight: bold">{{ book.author }}</span> ( Author )
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12">
                     Publisher -
                     <span style="font-weight: bold">{{ book.publish }}</span>
-                    &nbsp;| Page -
-                    <span style="font-weight: bold">{{ book.page }}</span>
-                    &nbsp;| Edition -
-                    <span style="font-weight: bold"
-                      >{{ book.edition|ordinal}}</span
-                    >
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-12">
-                    Cost -
-                    <span style="font-weight: bold"
-                      >{{ book.cost|intcomma }} &#8377;</span
-                    >
-                    &nbsp;| Actual Stock -
-                    <span style="font-weight: bold">{{ book.stock }}</span>
-                    &nbsp;| Avalabel Stock -
-                    <span style="font-weight: bold"
-                      >{{ book.today_stock }}</span
-                    >
-                  </div>
-                </div>
-                <p class="card-text mb-auto">{{ book.description|truncatechars:120 }}</p>
+                <p class="card-text my-auto">{{ book.description|truncatechars:120 }}</p>
                 {% if user.is_superuser %}<a href="{{ book.get_update_url }}" class="text-decoration-none"></a>{% endif %}
                 <a href="{{ book.get_detail_url }}" class="text-decoration-none">Continue reading</a>
               </div>
@@ -85,98 +52,60 @@
                 src="{% if book.profile.url %}{{ book.profile.url }}{% endif %}"
                 alt="{{ book.name }}"
                 
-                style="width: 200px; height: 250px;">
+                style="width: 200px; height: 300px;">
             </div>
           </div>
-          <!-- <div class="col-md-6">
-            <div class="row ml-3">
-              <div class="col-md-10">
-                <div class="row pt-3">
-                  <div class="col-12">
-                    <h3 style="font-weight: bold; font-size: x-large">
-                      {{ book.name}}
-                    </h3>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    Author -
-                    <span style="font-weight: bold">{{ book.author}}</span>
-                    &nbsp;| Genre -
-                    <span style="font-weight: bold"
-                      >[{% for genre in book.genre.all %}
-                      {% if forloop.counter0 < 4 %}
-                          {{ genre }}
-                          {% if not forloop.first %}, {% endif %}
-                          {% else %}
-                          {% if forloop.last %}...{% endif %}
-                          {% endif %}
-                        {% endfor %}]</span
-                    >&nbsp;| Language -
-                    <span style="font-weight: bold"
-                      >{{ book.get_language_display}}</span
-                    >
-                  </div>
-                </div>
+          {% endfor %}
+          {% elif object %}
+          <a class="text-decoration-none" href={% url 'system:viewbooks' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>
+          <div class="col-12">
+            <div class="text-center">
+              <img
+              class="mb-3 card-img"
+              src="{% if object.profile.url %}{{ object.profile.url }}{% endif %}"
+              alt="{{ object.name }}"                
+              style="width: 300px; height: 450px;border: outset;border-radius: 15px;">
+              <div class="card-img-overlay">
+                <h5 class="card-title text-primary">{{ object.edition|ordinal }} edition</h5>
+              </div>
+              <br>
+              {% for genre in object.genre.all %}
+              <span class="badge badge-primary">{{ genre }}</span>{% endfor %}              
+            </div>
+                <h3 class="mt-4">
+                  <p>{{ object.name}} | {{ object.get_language_display}} </p>
+                </h3>
+                <div class="text-muted">{{ object.publish_date|naturalday}}</div>
+                <div class="col">
+                    by <span style="font-weight: bold">{{ object.author }}</span> ( Author )
                 <div class="row">
                   <div class="col-12">
                     Publisher -
-                    <span style="font-weight: bold">{{ book.publish }}</span>
-                    &nbsp;| Publish date -
-                    <span style="font-weight: bold"
-                      >{{ book.publish_date|naturalday}}</span
-                    >
-                    &nbsp;| Page -
-                    <span style="font-weight: bold">{{ book.page }}</span>
-                    &nbsp;| Edition -
-                    <span style="font-weight: bold"
-                      >{{ book.edition|ordinal}}</span
-                    >
+                    <span style="font-weight: bold">{{ object.publish }}</span>
+                    &nbsp;| Total Page -
+                    <span style="font-weight: bold">{{ object.page }}</span>
+                    
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12">
                     Cost -
                     <span style="font-weight: bold"
-                      >{{ book.cost|intcomma }}$</span
+                      >{{ object.cost|intcomma }} &#8377;</span
                     >
-                    &nbsp;| Actual Stock -
-                    <span style="font-weight: bold">{{ book.stock }}</span>
-                    &nbsp;| Avalabel Stock -
+                    &nbsp;| Stock -
                     <span style="font-weight: bold"
-                      >{{ book.today_stock }}</span
+                      >{% if object.today_stock <= 0%}Not Avalabel{% else %}{{ object.today_stock }}{% endif %}</span
                     >
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-12">
-                    Description -
-                    <span style="font-weight: bold"
-                      >{{ book.description }}</span
-                    >
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <span>{{ book.date|naturaltime|naturalday}} Added</span
-                    ><br />
-                    <a href="{{ book.get_update_url }}">Edit Book</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-2 pr-0">
-                <img
-                  src="{% if book.profile.url %}{{book.profile.url }}{%else%}#{% endif %}"
-                  class="img-fluid"
-                  alt=""
-                  data-toggle="tooltip"
-                  data-placement="left"
-                  title="{{ book.rating }}"
-                />
-              </div>
-            </div>
-          </div> -->
-          {% endfor %}
+                <br>
+                <h5>Description</h5>
+                <hr>
+                <p class="mb-auto">{{ object.description }}</p>
+                {% if user.is_superuser %}<a href="{{ object.get_update_url }}" class="text-decoration-none">Edit</a>{% endif %}
+              
+          </div>
           {% else %}
               <div class="col">
                 <img src="{% static 'no_data.svg' %}" alt="" srcset="">

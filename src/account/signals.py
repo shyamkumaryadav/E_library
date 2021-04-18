@@ -18,7 +18,6 @@ def create_admin(sender, *args, **kwargs):
     else:
         pass
 
-
 @receiver(user_logged_in)
 def user_is_login(request, user, **kwargs):
     try:

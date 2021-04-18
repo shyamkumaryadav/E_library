@@ -146,8 +146,8 @@ class Book(models.Model):
 class Issue(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={
         'is_defaulter': False})
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True,)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, limit_choices_to={
+        'today_stock__gt': 0})
     date = models.DateTimeField(auto_now_add=True, editable=False,
         help_text="The date book is issue by user.",
     )

@@ -190,10 +190,10 @@ class MemberForm(forms.ModelForm):
                         <label>Status</label>
                         <div class="form-group">
                            <div class="input-group">
-                              <button {% if request.user == object or form.is_active.value == True %}disabled{% endif %} class="form-control btn btn-success mr-1" type="submit" name="is_active" value="1"><i class="fas fa-check-circle"></i></button>
-                              <button {% if request.user == object or form.is_active.value == False %}disabled{% endif %} class="form-control btn btn-warning mr-1"  type="submit" name="is_active" value="0"><i class="far fa-times-circle"></i></button>
-                              <button {% if request.user == object or object.is_superuser == True %}disabled{% endif %} class="form-control btn btn-danger mr-1" type="submit" name="is_superuser" value="1"><i class="fas fa-user-check"></i></button>
-                              <button {% if request.user == object or object.is_superuser == False %}disabled{% endif %} class="form-control btn btn-danger mr-1" type="submit" name="is_superuser" value="0"><i class="fas fa-user-times"></i></button>
+                              <button {% if request.user == object or form.is_active.value == True %}disabled{% endif %} class="form-control btn btn-success mr-1" type="submit" name="is_active" value="1" title="is_active"><i class="fas fa-check-circle"></i></button>
+                              <button {% if request.user == object or form.is_active.value == False %}disabled{% endif %} class="form-control btn btn-warning mr-1"  type="submit" name="is_active" value="0" title="is_active"><i class="far fa-times-circle"></i></button>
+                              <button {% if request.user == object or object.is_superuser == True %}disabled{% endif %} class="form-control btn btn-danger mr-1" type="submit" name="is_superuser" value="1" title="is_superuser"><i class="fas fa-user-check"></i></button>
+                              <button {% if request.user == object or object.is_superuser == False %}disabled{% endif %} class="form-control btn btn-danger mr-1" type="submit" name="is_superuser" value="0" title="is_superuser"><i class="fas fa-user-times"></i></button>
                            </div>
                         </div>
                 ''')),
@@ -242,8 +242,6 @@ class IssueForm(forms.ModelForm):
         model = models.Issue
         fields = '__all__'
         widgets = {
-        #     'contactNo': forms.NumberInput(),
-        #     'pincode': forms.NumberInput(),
             'due_date': DateInput(),
         }
 
@@ -254,22 +252,22 @@ class IssueForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
-                Column(Field('user')),
-                Column(Field('book')),
+                None if self.initial else Column(Field('user',)),
+                None if self.initial else Column(Field('book',)),
             ),
-            Field('due_date'),
-            Row(Column(HTML('''<input type="submit" name="{% if object %}update{%else%}{%endif%}"
-                    value="{% if object %}Update{%else%}Add{%endif%}"
-                    class="btn btn-{% if object %}success{%else%}primary{%endif%} btn-lg btn-block m-1">''')),
-                    Column(HTML('''<button type="button"
+            None if self.initial else Field('due_date'),
+            Row(
+                Column(Submit('Add', 'add', css_class="btn btn-primary btn-lg btn-block m-1")) if not self.initial else None,
+                Column(HTML('''<button type="button"
                     class="btn btn-danger btn-lg btn-block m-1"
                     data-toggle="modal"
                     data-target="#deletemodel">
                     Delete
                     </button>''') , id='deletebtn') if self.initial else None
-                ),
+            ),
             Row(Column(HTML('''<a style='text-decoration:none;' href={% url 'system:bookissuing' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>'''),
                        css_class='btn btn-link')) if self.initial else None,
             )
         self.helper.form_id = 'issueForm'
         self.helper.form_method = 'post'
+

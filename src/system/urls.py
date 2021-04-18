@@ -40,7 +40,7 @@ urlpatterns = [
           name='viewbooks'),
      path('book-inventory/', views.BookInventoryView.as_view(),
           name='bookinventory'),
-     path('book-inventory/<pk>/', views.BookInventoryDetailView.as_view(),
+     path('view-books/<pk>/', views.BookInventoryDetailView.as_view(),
           name='bookinventorydetail'),
      path('book-inventory/<uuid:pk>/', views.BookInventoryUpdateView.as_view(),
           name='bookinventoryupdate'),

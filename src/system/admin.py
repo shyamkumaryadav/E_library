@@ -14,7 +14,7 @@ class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         (None, {'fields': ('pk', 'name', 'author')}),
         ('Information', {
             'classes': ('collapse',),
-            'fields': ('genre', 'publish', 'language', 'edition', 'cost', 'page', 'description', 'stock', 'rating', 'profile')}),
+            'fields': ('genre', 'publish', 'language', 'edition', 'cost', 'page', 'description', 'stock', 'today_stock', 'rating', 'profile')}),
     )
     search_fields = ('name',)
     readonly_fields = ('today_stock', 'pk', 'date')

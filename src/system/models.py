@@ -89,7 +89,7 @@ class Genre(models.Model):
 
 
 class Book(models.Model):
-    # ['id', 'name', 'genre', 'author', 'publish', 'publish_date', 'language', 'edition', 'cost', 'discription', ]
+    # ['id', 'name', 'genre', 'author', 'publish', 'publish_date', 'date', 'language', 'edition', 'cost', 'page', 'discription', 'stock', 'today_stock', 'rating', 'profile']
     id = models.UUIDField(verbose_name="Book ID",
                           primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=120, verbose_name="Name", unique=True)

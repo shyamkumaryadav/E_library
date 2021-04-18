@@ -7,6 +7,8 @@ from .models import Book, Issue, BookAuthor, BookPublish, Genre
 import decimal
 
 
+# ['id', 'name', 'genre', 'author', 'publish', 'publish_date', 'date', 'language', 'edition', 'cost', 'page', 'discription', 'stock',
+# 'today_stock', 'rating', 'profile']
 @admin.register(Book)
 class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('__str__', 'author', 'date', 'stock', 'today_stock')
@@ -14,7 +16,7 @@ class BookAdmin(ImportExportModelAdmin, admin.ModelAdmin):
         (None, {'fields': ('pk', 'name', 'author')}),
         ('Information', {
             'classes': ('collapse',),
-            'fields': ('genre', 'publish', 'language', 'edition', 'cost', 'page', 'description', 'stock', 'today_stock', 'rating', 'profile')}),
+            'fields': ('genre', 'publish', 'publish_date', 'language', 'edition', 'cost', 'page', 'description', 'stock', 'today_stock', 'rating', 'profile')}),
     )
     search_fields = ('name',)
     readonly_fields = ('today_stock', 'pk', 'date')

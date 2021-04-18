@@ -10,9 +10,6 @@
 #####     ```PostgreSQL DATABASE (From Heroku)```
 #####     ```HTML CSS JavaScript```
 #####     ```BOOTSTRAP```
-#####     ```VUE :-)```
-#####     ```AJAX```
-
 ### *Detail*
      0. Member Signup -- New users can sign up
      1. Member Login -- Signed up users will login in
@@ -24,7 +21,7 @@
      7. Book Issuing Process -- Issue/Return Books
 
 ### My Model
-[<img src="Image_db/All_Model.png">](Image_db/All_model.png)
+[<img src="Image_db/All_model.png">](Image_db/All_model.png)
 
 
 

@@ -124,14 +124,11 @@
                     <div class="col-md-12">
                       <div class="card-body">
                         <h5 class="card-title">
-                          First Name - {{ object.first_name|title }}
+                          {{ object.first_name|title }} {{ object.last_name|title }}
                         </h5>
                         <p class="card-text">
-                          Last Name - {{ object.last_name|title }}
-                        </p>
-                        <p class="card-text">
                           <small class="text-muted"
-                            >{{ object.date_of_birth }}</small
+                            >{{ object.date_of_birth }} - {{ object.date_of_death|default_if_none:"Present" }}</small
                           >
                         </p>
                       </div>
@@ -150,14 +147,11 @@
                     <div class="col-md-12">
                       <div class="card-body">
                         <h5 class="card-title">
-                          First Name - {{ object.first_name|title }}
+                          {{ object.first_name|title }} {{ object.last_name|title }}
                         </h5>
                         <p class="card-text">
-                          Last Name - {{ object.last_name|title }}
-                        </p>
-                        <p class="card-text">
                           <small class="text-muted"
-                            >{{ object.date_of_birth }}</small
+                            >{{ object.date_of_birth }} - {{ object.date_of_death }}</small
                           >
                         </p>
                       </div>

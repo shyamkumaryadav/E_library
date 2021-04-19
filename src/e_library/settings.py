@@ -112,11 +112,8 @@ LANGUAGES = [
     ('hi', 'Hindi'),
 ]
 
-LANGUAGE_COOKIE_NAME = 'library_language'
+LANGUAGE_COOKIE_NAME = 'elibrary_language'
 
-LOCALE_PATH = (
-    os.path.join(BASE_DIR, 'locale'),
-)
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -128,11 +125,6 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale'),
-)
 
 # Custome User Model
 AUTH_USER_MODEL = 'account.User'

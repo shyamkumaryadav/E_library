@@ -44,9 +44,9 @@
                     <div class="modal-header">
                       <h5 class="modal-title" id="exampleModalLabel">
                         Issue
-                        <span class="badge badge-danger"
-                          >{{ object|title }}</span
-                        >
+                        <span class="badge badge-danger">
+                          {{ object|title|truncatechars:50 }}
+                        </span>
                       </h5>
                       <button
                         type="button"

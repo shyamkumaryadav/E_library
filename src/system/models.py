@@ -9,8 +9,10 @@ from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
 from django.urls import reverse_lazy
 from PIL import Image
-from account.models import User, upload_to, age_18, profile_size
+from account.models import upload_to, age_18, profile_size
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 class BookAuthor(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -92,15 +94,14 @@ class Book(models.Model):
     # ['id', 'name', 'genre', 'author', 'publish', 'publish_date', 'date', 'language', 'edition', 'cost', 'page', 'discription', 'stock', 'today_stock', 'rating', 'profile']
     id = models.UUIDField(verbose_name="Book ID",
                           primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=120, verbose_name="Name", unique=True)
+    name = models.CharField(max_length=255, verbose_name="Name", unique=True)
     genre = models.ManyToManyField(
         Genre, verbose_name="Genre", help_text='Hold down “Control”, or “Command” on a Mac, to select more than one.')
     author = models.ForeignKey(
         BookAuthor, on_delete=models.CASCADE, verbose_name="Author Name")
     publish = models.ForeignKey('BookPublish', on_delete=models.CASCADE,
                                 verbose_name="Publisher Name")
-    publish_date = models.DateField(
-        validators=[], verbose_name="Publish Date")
+    publish_date = models.DateField(verbose_name="Publish Date")
     date = models.DateTimeField(auto_now=True, verbose_name="Date")
     language = models.CharField(max_length=12, verbose_name="Language", choices=[
                                 (None, "Select Language")] + global_settings.LANGUAGES)
@@ -117,7 +118,7 @@ class Book(models.Model):
         max_digits=2, decimal_places=1, verbose_name="Rating", validators=[validators.MinValueValidator(0), validators.MaxValueValidator(10)])
     profile = models.FileField(
         upload_to=upload_to, verbose_name="Book cover",
-        default="default.jpg", blank=True,
+        blank=True,
         validators=[validators.FileExtensionValidator(
                 allowed_extensions=validators.get_available_image_extensions(),
                 message="Select valid Cover Image."), profile_size
@@ -125,7 +126,7 @@ class Book(models.Model):
     )
 
     class Meta:
-        ordering = ['date']
+        ordering = ['publish_date']
 
     def __str__(self):
         return self.name

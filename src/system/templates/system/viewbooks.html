@@ -32,20 +32,23 @@
                 <h3 class="mb-0">
                   <p><a class="text-dark text-decoration-none sky-link" href="#{{ book.name|cut:" " }}" id="{{ book.name|cut:" " }}">#</a> {{ book.name}} | {{ book.get_language_display}}</p>
                 </h3>
-                <div class="mb-1 text-muted">{{ book.publish_date|naturalday}}</div>
+                <div class="mb-1 text-muted">{{ book.publish_date|naturalday}} <i class="fas fa-star text-warning"></i> {{ book.rating}}/10</div>
                 <div class="row">
                   <div class="col-12">
                     by <span style="font-weight: bold">{{ book.author }}</span> ( Author )
                   </div>
+                  
                 </div>
                 <div class="row">
                   <div class="col-12">
                     Publisher -
                     <span style="font-weight: bold">{{ book.publish }}</span>
                   </div>
+                  
                 </div>
+                <br>
                 <p class="card-text my-auto">{{ book.description|truncatechars:120 }}</p>
-                {% if user.is_superuser %}<a href="{{ book.get_update_url }}" class="text-decoration-none"></a>{% endif %}
+                {% if user.is_superuser %}<a href="{{ book.get_update_url }}" class="text-decoration-none">Edit</a>{% endif %}
                 <a href="{{ book.get_detail_url }}" class="text-decoration-none">Continue reading</a>
               </div>
               <img class="card-img-right flex-auto d-none d-md-block"
@@ -57,8 +60,10 @@
           </div>
           {% endfor %}
           {% elif object %}
-          <a class="text-decoration-none" href={% url 'system:viewbooks' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>
-          <div class="col-12">
+          <div class="col-12 text-center">
+            <a class="text-decoration-none" href={% url 'system:viewbooks' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>
+          </div>
+          <div class="col-12 {% if book.today_stock <= 0%}text-muted{% endif %}">
             <div class="text-center">
               <img
               class="mb-3 card-img"
@@ -66,16 +71,16 @@
               alt="{{ object.name }}"                
               style="width: 300px; height: 450px;border: outset;border-radius: 15px;">
               <div class="card-img-overlay">
-                <h5 class="card-title text-primary">{{ object.edition|ordinal }} edition</h5>
+                <h3 class="card-title badge badge-pill badge-info">{{ object.edition|ordinal }} edition</h3>
               </div>
               <br>
               {% for genre in object.genre.all %}
-              <span class="badge badge-primary">{{ genre }}</span>{% endfor %}              
+              <span class="badge badge-primary">{{ genre }}</span>{% endfor %}
             </div>
                 <h3 class="mt-4">
                   <p>{{ object.name}} | {{ object.get_language_display}} </p>
                 </h3>
-                <div class="text-muted">{{ object.publish_date|naturalday}}</div>
+                <div class="text-muted">{{ object.publish_date|naturalday}} <i class="fas fa-star text-warning"></i> {{ book.rating}}/10</div>
                 <div class="col">
                     by <span style="font-weight: bold">{{ object.author }}</span> ( Author )
                 <div class="row">

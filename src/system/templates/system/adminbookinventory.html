@@ -119,7 +119,7 @@
             <div class="row">
               <div class="col">
                 {% if object_list %} {% for book in object_list %}
-                <div class="container-fluid table table-striped table-bordered">
+                <div class="container-fluid table table-striped table-bordered {% if book.today_stock <= 0%}text-muted{% endif %}">
                   <div class="row ml-3">
                     <div class="col-md-10">
                       <div class="row pt-3">
@@ -137,7 +137,7 @@
                           >
                           &nbsp;| Genre -
                           <span style="font-weight: bold"
-                            >[{% for genre in book.genre.all %}{{ genre }}, {% endfor %}]</span
+                            >[{% for genre in book.genre.all %} <span class="badge badge-pill badge-light">{{ genre }}</span> {% endfor %}]</span
                           >&nbsp;| Language -
                           <span style="font-weight: bold"
                             >{{ book.get_language_display}}</span
@@ -152,7 +152,7 @@
                           >
                           &nbsp;| Publish date -
                           <span style="font-weight: bold"
-                            >{{ book.publish_date|naturalday}}</span
+                            >{{ book.publish_date }}</span
                           >
                           &nbsp;| Page -
                           <span style="font-weight: bold">{{ book.page }}</span>
@@ -166,7 +166,7 @@
                         <div class="col-12">
                           Cost -
                           <span style="font-weight: bold"
-                            >{{ book.cost|intcomma }}$</span
+                            >{{ book.cost|intcomma }} &#8377;</span
                           >
                           &nbsp;| Actual Stock -
                           <span style="font-weight: bold"
@@ -187,10 +187,9 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-12">
-                          <span
-                            >{{ book.date|naturaltime|naturalday}} Added</span
-                          ><br />
+                        <div class="col-12 text-muted">
+                          <span>{{ book.publish_date|naturalday }} published  <i class="fas fa-star text-warning"></i> {{ book.rating }}/10 </span>
+                            <br />
                           <a href="{{ book.get_update_url }}">Edit Book</a>
                         </div>
                       </div>
@@ -209,7 +208,7 @@
                 </div>
                 {% endfor %}
                 {% elif object %}
-                <div class="row ml-3">
+                <div class="row ml-3 {% if book.today_stock <= 0%}text-muted{% endif %}">
                   <div class="col-md-10">
                     <div class="row pt-3">
                       <div class="col-12">
@@ -225,8 +224,8 @@
                           >{{ object.author}}</span
                         >
                         &nbsp;| Genre -
-                        <span style="font-weight: bold"
-                          >[{% for genre in object.genre.all %}{{ genre }}, {% endfor %}]</span
+                        <span
+                          >[{% for genre in object.genre.all %} <span class="badge badge-pill badge-light">{{ genre }}</span>{% endfor %}]</span
                         >&nbsp;| Language -
                         <span style="font-weight: bold"
                           >{{ object.get_language_display}}</span
@@ -241,7 +240,7 @@
                         >
                         &nbsp;| Publish date -
                         <span style="font-weight: bold"
-                          >{{ object.publish_date|naturalday}}</span
+                          >{{ object.publish_date }}</span
                         >
                         &nbsp;| Page -
                         <span style="font-weight: bold">{{ object.page }}</span>
@@ -255,7 +254,7 @@
                       <div class="col-12">
                         Cost -
                         <span style="font-weight: bold"
-                          >{{ object.cost|intcomma }}$</span
+                          >{{ object.cost|intcomma }} &#8377;</span
                         >
                         &nbsp;| Actual Stock -
                         <span style="font-weight: bold"
@@ -271,15 +270,14 @@
                       <div class="col-12">
                         Description -
                         <span style="font-weight: bold"
-                          >{{ object.description|truncatechars:120 }}</span
+                          >{{ object.description }}</span
                         >
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-12">
-                        <span
-                          >{{ object.date|naturaltime|naturalday}} Added</span
-                        ><br />
+                        <span class="text-muted">{{ book.publish_date|naturalday }} published  <i class="fas fa-star text-warning"></i> {{ book.rating }}/10 </span>
+                        <br />
                       </div>
                     </div>
                   </div>

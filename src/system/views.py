@@ -33,6 +33,7 @@ class TermsView(generic.TemplateView):
 class MemberManagementView(mixins.AdminRequiredMixin, generic.UpdateView, generic.ListView):
     template_name = 'system/adminmembermanagement.html'
     model = User
+    context_object_name = "user123"
     extra_context = {'title': 'Member management'}
     template_name = 'system/adminmembermanagement.html' 
     search_kwarg = 'q'
@@ -104,7 +105,7 @@ class BookInventoryDetailView(generic.DetailView):
     model = models.Book
     success_url = reverse_lazy('system:bookinventory')
     template_name = 'system/viewbooks.html'
-    extra_context = {'title': 'book Detail'}
+    extra_context = {'title': 'Book Detail'}
 
 class AuthorManagementView(mixins.AdminRequiredMixin, generic.CreateView, generic.ListView):
     template_name = 'system/adminauthormanagement.html'

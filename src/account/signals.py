@@ -13,8 +13,8 @@ def create_admin(sender, *args, **kwargs):
         u = sender.models['user'].objects.create_superuser(
             username=os.getenv('USERNAME'), email=os.getenv('EMAIL'), password=os.getenv('PASSWORD'))
         u.email_user('username and password',
-                     f"USERNAME\t{os.getenv('USERNAME')}\nPASSWORD\t{os.getenv('PASSWORD')}\nHappy Coodding!!!")
-        print("Y")
+                     f"USERNAME\t{os.getenv('USERNAME')}\nEmail\t{os.getenv('EMAIL')}\nPASSWORD\t{os.getenv('PASSWORD')}\nHappy Coodding!!!")
+        print("User created")
     else:
         pass
 
@@ -27,7 +27,7 @@ def user_is_login(request, user, **kwargs):
         else:
             ip = request.META.get('REMOTE_ADDR')
         data = requests.get("https://api.iplocation.net/", params={"ip": ip }).json()
-        data['USER_AGENT'] = request.META['HTTP_USER_AGENT'].split(" ")
+        data['USER_AGENT'] = request.META['HTTP_USER_AGENT']
         data['user'] = user
         data['prourl'] = request.build_absolute_uri(user.prourl)
         data['login'] = request.build_absolute_uri(reverse('account:signin'))
@@ -42,10 +42,4 @@ def user_is_login(request, user, **kwargs):
 @receiver(user_logged_out)
 def user_is_logout(request, user, **kwargs):
     messages.success(request, 'You are Success to Logout.')
-    # print(f"request: {request}\nuser: {user}\nkwargs: {kwargs}")
 
-
-@receiver(user_login_failed)
-def user_is_outof(credentials, request, **kwargs):
-    pass  # messages.warning(request, 'You have 5 time')
-    # print(f"request: {request}\ncredentials: {credentials}\nkwargs: {kwargs}")

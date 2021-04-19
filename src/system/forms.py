@@ -50,8 +50,8 @@ class BookAuthorForm(forms.ModelForm):
                        id='deletebtn'
                        ) if self.initial else None,
                 ),
-            Row(Column(HTML('''{% if object %}<a style='text-decoration:none;' href={% url 'system:authormanagement' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>{%endif%}'''),
-                       css_class='btn btn-link')),
+            Row(Column(HTML('''{% if object %}<a class="text-decoration-none" href={% url 'system:authormanagement' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>{%endif%}'''),
+                       css_class='text-center')),
         )
         self.helper.form_id = 'bookAuthorForm'
         self.helper.form_class = 'form-group'
@@ -93,8 +93,8 @@ class BookPublishForm(forms.ModelForm):
                        id='deletebtn'
                        ) if self.initial else None,
                 ),
-            Row(Column(HTML('''{% if object %}<a href={% url 'system:publishermanagement' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>{%endif%}'''),
-                       css_class='btn btn-link', id='goback')),
+            Row(Column(HTML('''{% if object %}<a class="text-decoration-none" href={% url 'system:publishermanagement' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>{%endif%}'''),
+                       css_class='text-center', id='goback')),
         )
         self.helper.form_id = 'bookAuthorForm'
         self.helper.form_class = 'form-group'
@@ -138,7 +138,7 @@ class BookForm(forms.ModelForm):
             ),
             Row(
                 Column(Field('description', placeholder='Book Description',
-                             maxlength=100, rows=2))
+                             rows=4))
             ),
             Row(Column(Field('stock', placeholder="Total Stock"))),
             Row(Column(Field('genre'))),
@@ -156,8 +156,8 @@ class BookForm(forms.ModelForm):
                 Delete
                 </button>''') , id='deletebtn') if self.initial else None
                 ),
-            Row(Column(HTML('''<a style='text-decoration:none;' href={% url 'system:bookinventory' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>'''),
-                       css_class='btn btn-link')) if self.initial else None,
+            Row(Column(HTML('''<a class="text-decoration-none" href={% url 'system:bookinventory' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>'''),
+                       css_class='text-center')) if self.initial else None,
         )
         self.helper.form_id = 'bookForm'
         self.helper.form_class = 'form-group'
@@ -230,8 +230,8 @@ class MemberForm(forms.ModelForm):
                 data-target="#deletemodel">
                 Delete User Permanently
                 </button>''') , id='deletebtn')) if self.initial else None,
-            Row(Column(HTML('''<a href={% url 'system:membermanagement' %}><i class="fas fa-times-circle"></i> Clear Selected User</a>'''),
-                       css_class='btn btn-link')) if self.initial else None,
+            Row(Column(HTML('''<a class="text-decoration-none" href={% url 'system:membermanagement' %}><i class="fas fa-times-circle"></i> Clear Selected User</a>'''),
+                       css_class='text-center')) if self.initial else None,
         )
         self.helper.form_id = 'memberForm'
         self.helper.form_method = 'post'
@@ -265,8 +265,8 @@ class IssueForm(forms.ModelForm):
                     Delete
                     </button>''') , id='deletebtn') if self.initial else None
             ),
-            Row(Column(HTML('''<a style='text-decoration:none;' href={% url 'system:bookissuing' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>'''),
-                       css_class='btn btn-link')) if self.initial else None,
+            Row(Column(HTML('''<a class="text-decoration-none" href={% url 'system:bookissuing' %}><i class="fas fa-arrow-circle-left"></i> Go Back</a>'''),
+                       css_class='text-center')) if self.initial else None,
             )
         self.helper.form_id = 'issueForm'
         self.helper.form_method = 'post'

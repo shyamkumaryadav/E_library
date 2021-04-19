@@ -83,21 +83,21 @@
                                             <div class="row g-0">
                                                 <div class="col-md-12">
                                                 <div class="card-body">
-                                                    <h5 class="card-title">Name - {{ object.name|title }}</h5>
-                                                    <p class="card-text">Address - {{ object.address|title }}</p>
+                                                    <h5 class="card-title text-success">{{ object.name|title }}</h5>
+                                                    <p class="card-text">{{ object.address }}</p>
                                                 </div>
                                                 </div>
                                             </div>
                                             </div>
                                         {% endfor %}
                                     {% elif object %}
-                                    <div class="card mb-2"
+                                    <div class="col-12 card mb-2"
                                             onclick="if (document.location.pathname !== '{{ object.get_update_url }}'){document.location = '{{ object.get_update_url }}';};" style="cursor: pointer;">
                                             <div class="row g-0">
                                                 <div class="col-md-12">
                                                 <div class="card-body">
-                                                    <h5 class="card-title">First Name - {{ object.name|title }}</h5>
-                                                    <p class="card-text">Address - {{ object.address|title }}</p>
+                                                    <h5 class="card-title text-success">{{ object.name|title }}</h5>
+                                                    <p class="card-text">{{ object.address }}</p>
                                                 </div>
                                                 </div>
                                             </div>

@@ -259,14 +259,22 @@
                 "
               >
                 <p style="margin: 0">
-                    Hi {{ user.username }},
-                    We just Noticed a New Login.
+                  We're verifying a recent sign-in for {{ user.email }}:
                 </p>
                 <br />
-                <p style="margin: 0">
-                  {{ USER_AGENT.2 }} ({{ USER_AGENT.3 }} - {{ USER_AGENT.8 }} <br>
-                  {{ ip }} {{ country_name }} {{ isp }} <br>
-                </p>
+                <table>
+                  <tbody>
+                  <tr>
+                      <td style="font-weight:bold">IP Address:</td>
+                      <td>{{ ip }}</td>
+                  </tr>
+                  
+                      <tr>
+                          <td style="font-weight:bold">User agent:</td>
+                          <td>{{ USER_AGENT }}</td>
+                      </tr>                  
+              </tbody>
+            </table>
               </td>
             </tr>
             <tr>

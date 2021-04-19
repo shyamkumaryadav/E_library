@@ -60,8 +60,17 @@ Pillow = "==7.2.0"
 PyYAML = "==5.3.1"
 tqdm = "*"
 
-[dev-packages]
-tqdm = "*"
-
 [requires]
 python_version = "3.8"
+
+[scripts]
+help="bash -c 'tail Pipfile -n 13 | head'"
+cmd="python src/manage.py"
+collect = "python src/manage.py collectstatic --noinput"
+make = "python src/manage.py makemigrations"
+shell = "python src/manage.py shell"
+migrate = "python src/manage.py migrate"
+server = "bash -c 'printf \"$(tput bold)$(tput setaf 2)Starting development server also on http://$(hostname -I)\b:8000/$(tput sgr0)\n\";python src/manage.py runserver 0.0.0.0:8000'"
+
+[pipenv]
+allow_prereleases = true

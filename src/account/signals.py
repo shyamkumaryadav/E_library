@@ -26,9 +26,7 @@ def user_is_login(request, user, **kwargs):
     data['login'] = request.build_absolute_uri(reverse('account:signin'))
     data['update'] = request.build_absolute_uri(user.get_update_url)
     body = loader.render_to_string("account/email/login.html", data)
-            user.email_user("New Login at e_library", body, html_message=body)
-        except:
-            pass
+    user.email_user("New Login at e_library", body, html_message=body)
     messages.success(request, 'You are Success to Login.')
 
 

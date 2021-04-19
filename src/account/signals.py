@@ -19,6 +19,7 @@ def create_admin(sender, *args, **kwargs):
 
 @receiver(user_logged_in)
 def user_is_login(request, user, **kwargs):
+    data = {}
     data['ip']  = request.META.get('HTTP_X_FORWARDED_FOR')
     data['USER_AGENT'] = request.META['HTTP_USER_AGENT']
     data['user'] = user

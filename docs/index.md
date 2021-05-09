@@ -20,7 +20,7 @@
 
 ### *Data Link*
 #### [Book Author](Data/BookAuthor.json)
-#### [Book Publisher](Data/Bookpublish.json)
+#### [Book Publisher](Data/BookPublish.json)
 #### [Book](Data/Book.json)
 
 ### *Detail*

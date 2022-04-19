@@ -21,7 +21,7 @@ django-otp-twilio==1.0.0
 django-storages==1.10.1
 dropbox==10.4.1
 et-xmlfile==1.0.1
-Faker==4.1.4
+Faker==4.18.0
 gunicorn==20.0.4
 html5lib==1.0.1
 idna==2.10

@@ -31,7 +31,7 @@ lockfile==0.12.2
 MarkupPy==1.14
 msgpack==0.6.2
 odfpy==1.4.1
-openpyxl==3.0.5
+openpyxl==3.0.9
 packaging==20.3
 pep517==0.8.2
 Pillow==7.2.0
